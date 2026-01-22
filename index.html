@@ -38,13 +38,125 @@
       color: #666;
       margin-bottom: 32px;
     }
+
+    #config-input {
+      width: 100%;
+      min-height: 300px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      resize: vertical;
+    }
+
+    #validate-btn {
+      background: #0066ff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    #validate-btn:hover {
+      background: #0052cc;
+    }
+
+    #results {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+    }
+
+    #results.hidden {
+      display: none;
+    }
+
+    #results.valid {
+      background: #e6f4ea;
+      border: 1px solid #34a853;
+      color: #137333;
+    }
+
+    #results.invalid {
+      background: #fce8e6;
+      border: 1px solid #ea4335;
+      color: #c5221f;
+    }
+
+    .status {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .status.valid {
+      color: #137333;
+    }
+
+    .status.invalid {
+      color: #c5221f;
+    }
+
+    .error-list, .warning-list {
+      margin-top: 12px;
+    }
+
+    .error-item, .warning-item {
+      margin: 8px 0;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 4px;
+    }
+
+    .error-item {
+      border-left: 3px solid #ea4335;
+    }
+
+    .warning-item {
+      border-left: 3px solid #fbbc04;
+      color: #b06000;
+    }
+
+    .field-path {
+      font-weight: bold;
+      color: #666;
+    }
+
+    .fix {
+      margin-top: 4px;
+      font-style: italic;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <h1>x402 Config Validator</h1>
     <p class="subtitle">Validate your x402 payment configuration in under 30 seconds</p>
-    <!-- UI will be built in subsequent plans -->
+
+    <textarea id="config-input" placeholder='Paste your x402 config JSON here...
+
+Example:
+{
+  "x402Version": 1,
+  "payments": [{
+    "chain": "base",
+    "address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+    "asset": "USDC",
+    "minAmount": "1.00"
+  }]
+}'></textarea>
+
+    <button id="validate-btn">Validate</button>
+
+    <div id="results" class="hidden"></div>
   </div>
 
   <!-- CDN Libraries (load before app scripts) -->
@@ -54,5 +166,80 @@
   <!-- App Scripts -->
   <script src="chains.js"></script>
   <script src="validator.js"></script>
+
+  <!-- UI Logic -->
+  <script>
+    const configInput = document.getElementById('config-input');
+    const validateBtn = document.getElementById('validate-btn');
+    const resultsDiv = document.getElementById('results');
+
+    validateBtn.addEventListener('click', () => {
+      const configText = configInput.value.trim();
+
+      if (!configText) {
+        resultsDiv.className = 'invalid';
+        resultsDiv.innerHTML = '<div class="status invalid">No config provided</div><p>Please paste a JSON config in the textarea above.</p>';
+        return;
+      }
+
+      const result = validateX402Config(configText);
+
+      // Clear previous results
+      resultsDiv.className = '';
+      resultsDiv.innerHTML = '';
+
+      // Show status
+      if (result.valid) {
+        resultsDiv.className = 'valid';
+        const statusText = result.warnings.length > 0
+          ? `Valid (${result.warnings.length} warning${result.warnings.length > 1 ? 's' : ''})`
+          : 'Valid';
+        resultsDiv.innerHTML = `<div class="status valid">✓ ${statusText}</div>`;
+
+        if (result.version) {
+          resultsDiv.innerHTML += `<p>x402 version ${result.version} detected</p>`;
+        }
+      } else {
+        resultsDiv.className = 'invalid';
+        const errorText = result.errors.length > 1 ? 'errors' : 'error';
+        const warningText = result.warnings.length > 0
+          ? `, ${result.warnings.length} warning${result.warnings.length > 1 ? 's' : ''}`
+          : '';
+        resultsDiv.innerHTML = `<div class="status invalid">✗ Invalid — ${result.errors.length} ${errorText}${warningText}</div>`;
+      }
+
+      // Show errors
+      if (result.errors.length > 0) {
+        let errorHtml = '<div class="error-list"><strong>Errors:</strong>';
+        result.errors.forEach(error => {
+          errorHtml += `
+            <div class="error-item">
+              <div class="field-path">${error.field}</div>
+              <div>${error.message}</div>
+              <div class="fix">→ ${error.fix}</div>
+            </div>
+          `;
+        });
+        errorHtml += '</div>';
+        resultsDiv.innerHTML += errorHtml;
+      }
+
+      // Show warnings
+      if (result.warnings.length > 0) {
+        let warningHtml = '<div class="warning-list"><strong>Warnings:</strong>';
+        result.warnings.forEach(warning => {
+          warningHtml += `
+            <div class="warning-item">
+              <div class="field-path">${warning.field}</div>
+              <div>${warning.message}</div>
+              <div class="fix">→ ${warning.fix}</div>
+            </div>
+          `;
+        });
+        warningHtml += '</div>';
+        resultsDiv.innerHTML += warningHtml;
+      }
+    });
+  </script>
 </body>
 </html>
