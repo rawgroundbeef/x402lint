@@ -40,20 +40,21 @@ Plans:
 - [x] 01-02-PLAN.md — Core validation engine with all VAL requirements
 
 ### Phase 2: Input & Proxy
-**Goal**: Users can submit configs via URL or direct JSON paste
+**Goal**: Users can submit configs via URL or direct JSON paste with smart auto-detection
 **Depends on**: Phase 1
-**Requirements**: INP-01, INP-02, INP-03, INP-05
+**Requirements**: INP-01, INP-02, INP-05 (INP-03 superseded by smart detection per CONTEXT.md)
 **Success Criteria** (what must be TRUE):
   1. User can enter URL in input field and submit for validation
   2. User can paste raw JSON into textarea and submit for validation
-  3. User can toggle between URL and JSON input modes via tabs
+  3. Tool auto-detects URL vs JSON input (no tabs/toggles needed)
   4. Tool fetches URLs via Cloudflare Worker proxy (bypasses CORS)
-  5. Tool extracts config from X-Payment header or response body (handles both 402 and 200 status)
+  5. Tool extracts config from PAYMENT-REQUIRED header or response body (handles both 402 and 200 status)
   6. Tool shows loading state while fetching URL
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (to be planned)
+- [ ] 02-01-PLAN.md — Cloudflare Worker CORS proxy setup and deployment
+- [ ] 02-02-PLAN.md — Smart input UI with URL fetching and config extraction
 
 ### Phase 3: Results Display
 **Goal**: Users see clear pass/fail status with actionable error messages
@@ -92,7 +93,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Validation | 2/2 | ✓ Complete | 2026-01-22 |
-| 2. Input & Proxy | 0/TBD | Not started | - |
+| 1. Foundation & Validation | 2/2 | Complete | 2026-01-22 |
+| 2. Input & Proxy | 0/2 | Planned | - |
 | 3. Results Display | 0/TBD | Not started | - |
 | 4. Polish | 0/TBD | Not started | - |
