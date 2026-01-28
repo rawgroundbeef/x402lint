@@ -6,6 +6,8 @@
 
 // Allowed origins for CORS requests
 const allowedOrigins = [
+  'https://x402check.com',
+  'https://x402check.pages.dev',
   'http://localhost:8000',
   'http://localhost:3000',
   'http://127.0.0.1:8000',
@@ -77,7 +79,11 @@ export default {
     }
 
     // Validate Origin header (allow null for direct browser navigation/testing)
-    if (origin !== null && !allowedOrigins.includes(origin)) {
+    const isAllowedOrigin = origin === null ||
+      allowedOrigins.includes(origin) ||
+      (origin && origin.endsWith('.x402check.pages.dev'));
+
+    if (!isAllowedOrigin) {
       return errorResponse('Forbidden', 403, null);
     }
 
