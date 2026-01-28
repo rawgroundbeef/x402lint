@@ -81,12 +81,19 @@ export default {
       return errorResponse('Forbidden', 403, null);
     }
 
-    // Extract target URL from query parameter
+    // Extract target URL and method from query parameters
     const url = new URL(request.url);
     const targetUrl = url.searchParams.get('url');
+    const method = url.searchParams.get('method') || 'GET';
 
     if (!targetUrl) {
       return errorResponse('Missing ?url= parameter', 400, origin);
+    }
+
+    // Validate method
+    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'];
+    if (!allowedMethods.includes(method.toUpperCase())) {
+      return errorResponse(`Invalid method: ${method}`, 400, origin);
     }
 
     // Validate target URL format
@@ -106,7 +113,7 @@ export default {
     let response;
     try {
       response = await fetch(targetUrl, {
-        method: 'GET',
+        method: method.toUpperCase(),
         headers: {
           'User-Agent': 'x402check/1.0',
         },

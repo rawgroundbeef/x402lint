@@ -153,6 +153,71 @@
       font-size: 0.875rem;
       margin-bottom: 8px;
     }
+
+    /* Method selector */
+    .input-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    #method-select {
+      padding: 8px 12px;
+      font-size: 14px;
+      font-family: 'Courier New', Courier, monospace;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .method-label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Request info in results */
+    .request-info {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .request-info .method {
+      font-weight: bold;
+      color: #0066ff;
+    }
+
+    /* Raw response toggle */
+    .raw-response {
+      margin-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding-top: 12px;
+    }
+
+    .raw-response summary {
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: #666;
+      user-select: none;
+    }
+
+    .raw-response summary:hover {
+      color: #333;
+    }
+
+    .raw-response pre {
+      margin-top: 8px;
+      padding: 12px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
@@ -176,7 +241,17 @@ Example JSON:
   }]
 }'></textarea>
 
-    <button id="validate-btn">Validate</button>
+    <div class="input-controls">
+      <span class="method-label">HTTP Method:</span>
+      <select id="method-select">
+        <option value="GET" selected>GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+        <option value="PATCH">PATCH</option>
+      </select>
+      <button id="validate-btn">Validate</button>
+    </div>
 
     <div id="results" class="hidden"></div>
   </div>
@@ -194,11 +269,13 @@ Example JSON:
   <script>
     const configInput = document.getElementById('config-input');
     const validateBtn = document.getElementById('validate-btn');
+    const methodSelect = document.getElementById('method-select');
     const resultsDiv = document.getElementById('results');
 
     // Click handler with loading state
     validateBtn.addEventListener('click', async () => {
       const inputValue = configInput.value.trim();
+      const method = methodSelect.value;
 
       if (!inputValue) {
         resultsDiv.className = 'invalid';
@@ -213,7 +290,7 @@ Example JSON:
       validateBtn.textContent = 'Validating...';
 
       try {
-        await handleValidation(inputValue, displayResults, displayError);
+        await handleValidation(inputValue, method, displayResults, displayError);
       } catch (error) {
         displayError(error.message);
       } finally {
@@ -230,9 +307,9 @@ Example JSON:
       resultsDiv.className = '';
       let html = '';
 
-      // Source info for URL fetches (not shown for direct input)
+      // Request info for URL fetches (not shown for direct input)
       if (result.source && result.source !== 'direct input') {
-        html += `<div class="source-info">Config found in: ${result.source}</div>`;
+        html += `<div class="request-info"><span class="method">${result.method}</span> ${result.url} → ${result.source}</div>`;
       }
 
       // Status warning for non-402 responses
@@ -290,7 +367,24 @@ Example JSON:
         html += '</div>';
       }
 
+      // Show raw fetched config for URL fetches
+      if (result.fetchedConfig) {
+        html += `
+          <details class="raw-response">
+            <summary>View fetched config</summary>
+            <pre>${escapeHtml(result.fetchedConfig)}</pre>
+          </details>
+        `;
+      }
+
       resultsDiv.innerHTML = html;
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     // Display error message

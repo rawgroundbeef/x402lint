@@ -27,10 +27,11 @@ function detectInputType(input) {
 /**
  * Fetch x402 config from a URL via CORS proxy
  * @param {string} url - Target URL to fetch
+ * @param {string} method - HTTP method (GET, POST, etc.)
  * @param {string} proxyBaseUrl - Proxy base URL (defaults to PROXY_URL)
- * @returns {Promise<Object>} - { config: string, source: string, status: number, warning?: string }
+ * @returns {Promise<Object>} - { config: string, source: string, status: number, method: string, warning?: string }
  */
-async function fetchConfigFromUrl(url, proxyBaseUrl = PROXY_URL) {
+async function fetchConfigFromUrl(url, method = 'GET', proxyBaseUrl = PROXY_URL) {
   // Step 1: Validate URL format
   try {
     new URL(url);
@@ -38,8 +39,8 @@ async function fetchConfigFromUrl(url, proxyBaseUrl = PROXY_URL) {
     throw new Error('Invalid URL format');
   }
 
-  // Step 2: Build proxy URL
-  const proxyUrl = `${proxyBaseUrl}?url=${encodeURIComponent(url)}`;
+  // Step 2: Build proxy URL with method
+  const proxyUrl = `${proxyBaseUrl}?url=${encodeURIComponent(url)}&method=${encodeURIComponent(method)}`;
 
   // Step 3: Fetch with timeout
   let response;
@@ -63,7 +64,10 @@ async function fetchConfigFromUrl(url, proxyBaseUrl = PROXY_URL) {
   }
 
   // Step 5: Extract config
-  return await extractX402Config(response);
+  const result = await extractX402Config(response);
+  result.method = method;
+  result.url = url;
+  return result;
 }
 
 /**
@@ -148,16 +152,17 @@ function formatJsonForDisplay(jsonString) {
 /**
  * Main entry point for validation - called by index.html
  * @param {string} inputValue - User input (URL or JSON)
+ * @param {string} method - HTTP method for URL fetches
  * @param {Function} displayResultsFn - Function to display results
  * @param {Function} displayErrorFn - Function to display errors
  */
-async function handleValidation(inputValue, displayResultsFn, displayErrorFn) {
+async function handleValidation(inputValue, method, displayResultsFn, displayErrorFn) {
   const inputType = detectInputType(inputValue);
 
   try {
     if (inputType === 'url') {
       // Fetch config from URL
-      const result = await fetchConfigFromUrl(inputValue);
+      const result = await fetchConfigFromUrl(inputValue, method);
 
       // Validate fetched config
       const validationResult = validateX402Config(result.config);
@@ -166,6 +171,9 @@ async function handleValidation(inputValue, displayResultsFn, displayErrorFn) {
       displayResultsFn({
         ...validationResult,
         source: result.source,
+        method: result.method,
+        url: result.url,
+        fetchedConfig: result.config,
         warning: result.warning
       });
     } else {
