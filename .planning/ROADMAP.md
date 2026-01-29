@@ -77,11 +77,11 @@ Plans:
   3. EIP-55 checksum validation correctly accepts `0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed` and rejects a lowercase version as a checksum warning
   4. Address validation returns an error when an EVM-format address is used on a Solana network (cross-chain mismatch)
   5. All crypto primitives have zero runtime dependencies -- only vendored source code
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 07-01: Keccak-256 and Base58 vendoring with test vectors
-- [ ] 07-02: Address validation rules (EVM, Solana, dispatch by CAIP-2 namespace)
+- [ ] 07-01-PLAN.md -- Keccak-256 and Base58 vendoring with test vectors
+- [ ] 07-02-PLAN.md -- Address validation rules (EVM, Solana, dispatch by CAIP-2 namespace)
 
 ### Phase 8: Validation Rules and Orchestrator
 **Goal**: The complete `validate()` API works end-to-end -- developers can pass any x402 config (string or object, any format) and get back a structured result with errors, warnings, fix suggestions, and normalized output
@@ -145,4 +145,4 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-01-29 -- Phase 6 complete*
+*Last updated: 2026-01-29 -- Phase 7 planned*
