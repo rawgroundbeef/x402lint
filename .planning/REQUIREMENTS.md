@@ -41,11 +41,11 @@ Requirements for spec-compliant SDK extraction and website rebuild. Each maps to
 
 ### Address Validation
 
-- [ ] **ADDR-01**: EVM address must be 42-char hex with `0x` prefix
-- [ ] **ADDR-02**: EVM address checksum validation (EIP-55) using vendored keccak256
-- [ ] **ADDR-03**: Solana address must be valid Base58, 32-byte decoded length
-- [ ] **ADDR-04**: Address format must match network type (EVM address on Solana network = error)
-- [ ] **ADDR-05**: Address validation dispatches by CAIP-2 namespace (`eip155:*` → EVM, `solana:*` → Solana)
+- [x] **ADDR-01**: EVM address must be 42-char hex with `0x` prefix
+- [x] **ADDR-02**: EVM address checksum validation (EIP-55) using vendored keccak256
+- [x] **ADDR-03**: Solana address must be valid Base58, 32-byte decoded length
+- [x] **ADDR-04**: Address format must match network type (EVM address on Solana network = error)
+- [x] **ADDR-05**: Address validation dispatches by CAIP-2 namespace (`eip155:*` → EVM, `solana:*` → Solana)
 
 ### Network & Asset Registry
 
@@ -69,10 +69,10 @@ Requirements for spec-compliant SDK extraction and website rebuild. Each maps to
 
 ### Crypto Vendoring
 
-- [ ] **CRYPTO-01**: Vendored keccak256 implementation (NOT SHA-3) with empty-string canary test
-- [ ] **CRYPTO-02**: Vendored Base58 decoder handling leading-zero bytes correctly
-- [ ] **CRYPTO-03**: EIP-55 checksum function built on vendored keccak256
-- [ ] **CRYPTO-04**: Zero runtime dependencies — all crypto is vendored source code
+- [x] **CRYPTO-01**: Vendored keccak256 implementation (NOT SHA-3) with empty-string canary test
+- [x] **CRYPTO-02**: Vendored Base58 decoder handling leading-zero bytes correctly
+- [x] **CRYPTO-03**: EIP-55 checksum function built on vendored keccak256
+- [x] **CRYPTO-04**: Zero runtime dependencies — all crypto is vendored source code
 
 ### Build & Package
 
@@ -88,8 +88,8 @@ Requirements for spec-compliant SDK extraction and website rebuild. Each maps to
 - [ ] **TEST-01**: Unit tests for every validation rule (each error code exercised)
 - [ ] **TEST-02**: Format detection tests (v2, v1, flat-legacy, unknown)
 - [ ] **TEST-03**: Normalization tests (flat → v2, v1 → v2, v2 passthrough, extra/extensions preserved)
-- [ ] **TEST-04**: Address validation tests (valid/invalid EVM, valid/invalid Solana, network mismatch)
-- [ ] **TEST-05**: Crypto primitive tests (keccak256 canary, Base58 leading zeros, EIP-55 reference vectors)
+- [x] **TEST-04**: Address validation tests (valid/invalid EVM, valid/invalid Solana, network mismatch)
+- [x] **TEST-05**: Crypto primitive tests (keccak256 canary, Base58 leading zeros, EIP-55 reference vectors)
 - [ ] **TEST-06**: Integration tests (real-world configs, round-trip normalize→validate)
 - [ ] **TEST-07**: JSON fixture files for reproducible testing
 - [ ] **TEST-08**: 100+ test cases total
@@ -164,11 +164,11 @@ Deferred beyond v2.0.
 | ERR-03 | Phase 6 | Complete |
 | ERR-04 | Phase 6 | Complete |
 | ERR-05 | Phase 6 | Complete |
-| ADDR-01 | Phase 7 | Pending |
-| ADDR-02 | Phase 7 | Pending |
-| ADDR-03 | Phase 7 | Pending |
-| ADDR-04 | Phase 7 | Pending |
-| ADDR-05 | Phase 7 | Pending |
+| ADDR-01 | Phase 7 | Complete |
+| ADDR-02 | Phase 7 | Complete |
+| ADDR-03 | Phase 7 | Complete |
+| ADDR-04 | Phase 7 | Complete |
+| ADDR-05 | Phase 7 | Complete |
 | REG-01 | Phase 6 | Complete |
 | REG-02 | Phase 6 | Complete |
 | REG-03 | Phase 6 | Complete |
@@ -183,10 +183,10 @@ Deferred beyond v2.0.
 | FMT-06 | Phase 6 | Complete |
 | FMT-07 | Phase 6 | Complete |
 | FMT-08 | Phase 6 | Complete |
-| CRYPTO-01 | Phase 7 | Pending |
-| CRYPTO-02 | Phase 7 | Pending |
-| CRYPTO-03 | Phase 7 | Pending |
-| CRYPTO-04 | Phase 7 | Pending |
+| CRYPTO-01 | Phase 7 | Complete |
+| CRYPTO-02 | Phase 7 | Complete |
+| CRYPTO-03 | Phase 7 | Complete |
+| CRYPTO-04 | Phase 7 | Complete |
 | BUILD-01 | Phase 9 | Pending |
 | BUILD-02 | Phase 9 | Pending |
 | BUILD-03 | Phase 9 | Pending |
@@ -196,8 +196,8 @@ Deferred beyond v2.0.
 | TEST-01 | Phase 8 | Pending |
 | TEST-02 | Phase 8 | Pending |
 | TEST-03 | Phase 8 | Pending |
-| TEST-04 | Phase 7 | Pending |
-| TEST-05 | Phase 7 | Pending |
+| TEST-04 | Phase 7 | Complete |
+| TEST-05 | Phase 7 | Complete |
 | TEST-06 | Phase 8 | Pending |
 | TEST-07 | Phase 8 | Pending |
 | TEST-08 | Phase 8 | Pending |
@@ -224,4 +224,4 @@ Deferred beyond v2.0.
 
 ---
 *Requirements defined: 2026-01-29*
-*Last updated: 2026-01-29 after roadmap creation (traceability added)*
+*Last updated: 2026-01-29 -- Phase 7 requirements complete*
