@@ -1,0 +1,10 @@
+{
+  "name": "x402check-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build:sdk": "pnpm --filter x402check build",
+    "test:sdk": "pnpm --filter x402check test",
+    "lint:sdk": "pnpm --filter x402check lint"
+  }
+}

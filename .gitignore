@@ -13,3 +13,9 @@ verify-*.html
 
 # Node
 node_modules/
+
+# Build outputs
+dist/
+
+# pnpm
+.pnpm-debug.log
