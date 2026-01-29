@@ -11,17 +11,17 @@ See: .planning/PROJECT.md (updated 2026-01-29)
 
 Phase: 6 of 10 (Types, Detection, and Normalization)
 Plan: 3 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-29 — Completed 06-03-PLAN.md
+Status: Phase complete
+Last activity: 2026-01-29 — Completed 06-02-PLAN.md
 
-Progress: [███░░░░░░░] 25% (3/12 plans across 6 phases)
+Progress: [████░░░░░░] 33% (4/12 plans across 6 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6 (3 v1.0 + 3 v2.0)
-- Average duration: 2.8 min
-- Total execution time: 0.28 hours
+- Total plans completed: 7 (3 v1.0 + 4 v2.0)
+- Average duration: 2.7 min
+- Total execution time: 0.31 hours
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [███░░░░░░░] 25% (3/12 plans across 6 phases)
 | 1 - Foundation & Validation | 2/2 | 5.4 min | 2.7 min |
 | 2 - Input & Proxy | 1/2 | 4.0 min | 4.0 min |
 | 5 - Repository Restructuring | 1/1 | 3.0 min | 3.0 min |
-| 6 - Types, Detection, Normalization | 2/3 | 4.8 min | 2.4 min |
+| 6 - Types, Detection, Normalization | 3/3 | 8.8 min | 2.9 min |
 
 *Updated after each plan completion*
 
@@ -54,6 +54,9 @@ Recent decisions affecting current work:
 | Store EVM addresses in lowercase for case-insensitive lookup | 06-03 | Asset registry implementation |
 | Separate isValidCaip2 from isKnownNetwork | 06-03 | Unknown-but-valid networks produce warnings not errors |
 | Use community convention for Aptos networks (aptos:1, aptos:2) | 06-03 | No official CAIP namespace yet |
+| Detection uses x402Version value, not resource presence | 06-02 | v2 without resource detects as v2, fails validation later |
+| Payments array alone identifies flat-legacy format | 06-02 | Handles nested network/chain in payments entries |
+| Preserve unrecognized networks through normalization | 06-02 | Validation catches unknown networks with actionable errors |
 
 ### Pending Todos
 
@@ -66,7 +69,7 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-29
-Stopped at: Completed 06-03-PLAN.md (Network and Asset Registries)
+Last session: 2026-01-29 21:18:49 UTC
+Stopped at: Completed 06-02-PLAN.md (Detection and Normalization)
 Resume file: None
-Next: Execute 06-02-PLAN.md (Detection and Normalization)
+Next: Phase 6 complete - ready for Phase 7 (Field Validation)
