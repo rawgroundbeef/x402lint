@@ -10,7 +10,13 @@ export * from './registries'
 // Re-export detection (Phase 6 Plan 02)
 export { detect, normalize } from './detection'
 
-// Re-export validation when available (Phase 8)
+// Re-export crypto primitives (Phase 7 Plan 01)
+export * from './crypto'
+
+// Re-export validation utilities (Phase 7 Plan 02)
+export { validateAddress, validateEvmAddress, validateSolanaAddress } from './validation'
+
+// Re-export validation orchestrator when available (Phase 8)
 // export { validate } from './validation'
 
 // Version constant
