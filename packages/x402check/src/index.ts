@@ -4,6 +4,9 @@
 // Re-export types (Phase 6 Plan 01)
 export * from './types'
 
+// Re-export registries (Phase 6 Plan 03)
+export * from './registries'
+
 // Re-export detection when available (Phase 6)
 // export { detect, normalize } from './detection'
 
