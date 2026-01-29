@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-29)
 ## Current Position
 
 Phase: 8 of 10 (Validation Rules and Orchestrator)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-01-29 — Completed 08-01-PLAN.md
+Last activity: 2026-01-29 — Completed 08-02-PLAN.md
 
-Progress: [███████░░░] 58% (7/12 plans across 6 phases)
+Progress: [████████░░] 67% (8/12 plans across 6 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10 (3 v1.0 + 7 v2.0)
-- Average duration: 2.9 min
-- Total execution time: 0.47 hours
+- Total plans completed: 11 (3 v1.0 + 8 v2.0)
+- Average duration: 2.7 min
+- Total execution time: 0.49 hours
 
 **By Phase:**
 
@@ -32,7 +32,7 @@ Progress: [███████░░░] 58% (7/12 plans across 6 phases)
 | 5 - Repository Restructuring | 1/1 | 3.0 min | 3.0 min |
 | 6 - Types, Detection, Normalization | 3/3 | 8.8 min | 2.9 min |
 | 7 - Crypto Vendoring & Address Validation | 2/2 | 7.3 min | 3.7 min |
-| 8 - Validation Rules & Orchestrator | 1/3 | 2.7 min | 2.7 min |
+| 8 - Validation Rules & Orchestrator | 2/3 | 3.7 min | 1.9 min |
 
 *Updated after each plan completion*
 
@@ -69,6 +69,8 @@ Recent decisions affecting current work:
 | Stellar/Aptos accept any address | 07-02 | Deep validation deferred to future phases |
 | Pull error codes forward when downstream modules need them | 08-01 | INVALID_URL/INVALID_TIMEOUT added in Task 1 to unblock fields.ts |
 | Cast literal types to number for runtime safety checks | 08-01 | NormalizedConfig.x402Version is literal 2 but runtime value could be anything |
+| Separate runPipeline() from validate() for clean try/catch | 08-02 | Safety net boundary stays minimal, pipeline logic stays readable |
+| Route issues by severity field, not by rule module | 08-02 | Network validation returns both errors and warnings |
 
 ### Pending Todos
 
@@ -81,6 +83,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: Completed 08-01-PLAN.md (validation rule modules)
+Stopped at: Completed 08-02-PLAN.md (validation orchestrator)
 Resume file: None
-Next: Execute 08-02-PLAN.md (validation orchestrator)
+Next: Execute 08-03-PLAN.md (integration testing)
