@@ -45,10 +45,10 @@ v2.0 extracts the validation logic from the plain HTML/JS website into a standal
   1. Running `pnpm install` at the repo root installs workspace dependencies for both root and `packages/x402check/`
   2. The existing website (`index.html`) still loads and functions correctly after restructuring
   3. `packages/x402check/src/index.ts` exists and compiles with `tsc --noEmit`
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 05-01: Monorepo scaffold and SDK package skeleton
+- [ ] 05-01-PLAN.md -- Monorepo scaffold, website move, and SDK package skeleton
 
 ### Phase 6: Types, Detection, and Normalization
 **Goal**: The SDK's type system, error vocabulary, format detection, normalization pipeline, and chain/asset registries are complete -- every downstream module has the interfaces and data it needs
