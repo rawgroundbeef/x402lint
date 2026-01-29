@@ -28,7 +28,7 @@ v2.0 extracts the validation logic from the plain HTML/JS website into a standal
 
 ## v2.0 Spec-Compliant SDK
 
-- [ ] **Phase 5: Repository Restructuring** - Monorepo scaffold with SDK package skeleton
+- [x] **Phase 5: Repository Restructuring** - Monorepo scaffold with SDK package skeleton
 - [ ] **Phase 6: Types, Detection, and Normalization** - Type system, error codes, format detection, normalization, and registries
 - [ ] **Phase 7: Crypto Vendoring and Address Validation** - Vendored keccak256 + Base58, EVM and Solana address validation
 - [ ] **Phase 8: Validation Rules and Orchestrator** - All validation rules, orchestrator pipeline, public validate() API
@@ -48,7 +48,7 @@ v2.0 extracts the validation logic from the plain HTML/JS website into a standal
 **Plans:** 1 plan
 
 Plans:
-- [ ] 05-01-PLAN.md -- Monorepo scaffold, website move, and SDK package skeleton
+- [x] 05-01-PLAN.md -- Monorepo scaffold, website move, and SDK package skeleton
 
 ### Phase 6: Types, Detection, and Normalization
 **Goal**: The SDK's type system, error vocabulary, format detection, normalization pipeline, and chain/asset registries are complete -- every downstream module has the interfaces and data it needs
@@ -136,7 +136,7 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 5. Repository Restructuring | v2.0 | 0/1 | Not started | - |
+| 5. Repository Restructuring | v2.0 | 1/1 | Complete | 2026-01-29 |
 | 6. Types, Detection, Normalization | v2.0 | 0/3 | Not started | - |
 | 7. Crypto & Address Validation | v2.0 | 0/2 | Not started | - |
 | 8. Validation Rules & Orchestrator | v2.0 | 0/3 | Not started | - |
@@ -145,4 +145,4 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-01-29*
+*Last updated: 2026-01-29 — Phase 5 complete*

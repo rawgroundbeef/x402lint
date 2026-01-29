@@ -192,7 +192,7 @@ Deferred beyond v2.0.
 | BUILD-03 | Phase 9 | Pending |
 | BUILD-04 | Phase 9 | Pending |
 | BUILD-05 | Phase 9 | Pending |
-| BUILD-06 | Phase 5 | Pending |
+| BUILD-06 | Phase 5 | Complete |
 | TEST-01 | Phase 8 | Pending |
 | TEST-02 | Phase 8 | Pending |
 | TEST-03 | Phase 8 | Pending |
