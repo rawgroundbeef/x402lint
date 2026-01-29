@@ -7,8 +7,8 @@ export * from './types'
 // Re-export registries (Phase 6 Plan 03)
 export * from './registries'
 
-// Re-export detection when available (Phase 6)
-// export { detect, normalize } from './detection'
+// Re-export detection (Phase 6 Plan 02)
+export { detect, normalize } from './detection'
 
 // Re-export validation when available (Phase 8)
 // export { validate } from './validation'
