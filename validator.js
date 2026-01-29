@@ -285,6 +285,15 @@ function validateX402Config(configText) {
     });
   }
 
+  // Version field warning
+  if (!config.x402Version) {
+    warnings.push({
+      field: 'x402Version',
+      message: 'Missing x402Version field',
+      fix: 'Add "x402Version": 1 for protocol compliance'
+    });
+  }
+
   // Validate payments
   if (!normalized.payments || normalized.payments.length === 0) {
     errors.push({
