@@ -9,8 +9,10 @@ const allowedOrigins = [
   'https://x402check.com',
   'https://x402check.pages.dev',
   'http://localhost:8000',
+  'http://localhost:8080',
   'http://localhost:3000',
   'http://127.0.0.1:8000',
+  'http://127.0.0.1:8080',
 ];
 
 // Internal IP patterns to block (SSRF protection)

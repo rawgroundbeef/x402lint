@@ -563,10 +563,9 @@
     }
 
     .response-body-section .code-block {
-      max-height: 400px;
-      overflow-y: auto;
       white-space: pre-wrap;
       word-break: break-word;
+      margin-bottom: 0;
     }
 
     .error-card {
@@ -763,6 +762,196 @@
     .request-info .method {
       color: var(--info);
       font-weight: 600;
+    }
+
+    /* Verdict Section */
+    .verdict-section {
+      text-align: center;
+      padding: 28px 20px;
+      margin-bottom: 20px;
+    }
+
+    .verdict-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .verdict-icon.valid {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .verdict-icon.invalid {
+      background: var(--error-dim);
+      color: var(--error);
+    }
+
+    .verdict-label {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .verdict-label.valid {
+      color: var(--accent);
+    }
+
+    .verdict-label.invalid {
+      color: var(--error);
+    }
+
+    .verdict-counts {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .verdict-format {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Status Badges */
+    .status-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-pass {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .badge-fail {
+      background: var(--error-dim);
+      color: var(--error);
+    }
+
+    /* Collapsible Response Body */
+    .response-body-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .response-body-wrapper.response-body-collapsed {
+      max-height: 100px;
+    }
+
+    .response-body-wrapper.response-body-collapsed::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(transparent, var(--bg-deep));
+      pointer-events: none;
+    }
+
+    .response-body-wrapper.response-body-expanded .code-block {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .response-body-toggle {
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .response-body-toggle:hover {
+      color: var(--text-secondary);
+    }
+
+    /* Compact Issues List */
+    .issues-list {
+      background: var(--bg-elevated);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .issues-list-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .issues-list-header.errors {
+      color: var(--error);
+    }
+
+    .issues-list-header.warnings {
+      color: var(--warning);
+    }
+
+    .issue-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 5px 0;
+      font-size: 13px;
+    }
+
+    .issue-row + .issue-row {
+      border-top: 1px solid var(--border);
+    }
+
+    .issue-row-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 72px;
+      flex-shrink: 0;
+    }
+
+    .issue-row.error .issue-row-label {
+      color: var(--error);
+    }
+
+    .issue-row.warning .issue-row-label {
+      color: var(--warning);
+    }
+
+    .issue-row-message {
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .issue-row-fix {
+      color: var(--text-secondary);
     }
   </style>
 </head>
@@ -1050,29 +1239,20 @@
 
     function displayResults(result) {
       let html = '';
+      const validation = result.validation;
+      const config = result.config;
+      const checks = result.type === 'url' ? result.checks : null;
 
       if (result.type === 'url') {
-        // URL test result with checklist
         html += `<div class="request-info"><span class="method">${result.method}</span> ${result.url}</div>`;
+      }
 
-        // Checklist
-        html += '<div class="checklist">';
-        for (const [key, check] of Object.entries(result.checks)) {
-          const icon = check.pass ? 'pass' : (check.label.includes('optional') || check.label.includes('v2') ? 'warn' : 'fail');
-          const symbol = check.pass ? '✓' : (icon === 'warn' ? '⚠' : '✗');
-          html += `
-            <div class="check-item">
-              <div class="check-icon ${icon}">${symbol}</div>
-              <div>
-                <div class="check-label">${check.label}</div>
-                ${check.detail ? `<div class="check-detail">${check.detail}</div>` : ''}
-              </div>
-            </div>`;
-        }
-        html += '</div>';
+      if (validation && typeof validation.valid !== 'undefined') {
+        // 1. Verdict (always first)
+        html += renderVerdict(validation, checks);
 
-        // Response body (shown immediately)
-        if (result.rawBody) {
+        // 2. Response body (collapsed, URL only)
+        if (result.type === 'url' && result.rawBody) {
           let formattedBody = result.rawBody;
           try { formattedBody = JSON.stringify(JSON.parse(result.rawBody), null, 2); } catch(e) {}
           html += `
@@ -1081,51 +1261,64 @@
                 <span class="response-body-label">Response Body</span>
                 <button class="copy-btn" onclick="copyResponseBody(this)">Copy</button>
               </div>
-              <div class="code-block" id="response-body-content">${escapeHtml(formattedBody)}</div>
+              <div class="response-body-wrapper response-body-collapsed" id="response-body-wrapper">
+                <div class="code-block" id="response-body-content">${escapeHtml(formattedBody)}</div>
+              </div>
+              <button class="response-body-toggle" onclick="toggleResponseBody()">
+                <span id="rb-toggle-icon">▼</span> Show full response
+              </button>
             </div>`;
         }
 
-        if (result.validation) {
-          html += renderValidationResult(result.validation, result.config);
-        } else if (result.config) {
+        // 3. Errors, warnings, parsed config, raw config
+        html += renderDetails(validation, config);
+      } else if (result.type === 'url') {
+        if (result.config) {
           html += '<div class="error-card"><strong>Config found but validation failed</strong><br>Raw config: <pre>' + escapeHtml(JSON.stringify(result.config, null, 2)) + '</pre></div>';
         } else {
           html += '<div class="error-card"><strong>No payment config found</strong><br>The endpoint returned ' + result.status + ' but no valid JSON config was extracted from the response body or PAYMENT-REQUIRED header.</div>';
         }
-      } else {
-        // Direct JSON validation
-        html += renderValidationResult(result.validation, result.config);
       }
 
       resultsEl.innerHTML = html;
       resultsEl.classList.remove('hidden');
     }
 
-    function renderValidationResult(validation, config) {
-      let html = '';
-
-      // Guard against undefined validation
+    function renderVerdict(validation, checks) {
       if (!validation || typeof validation.valid === 'undefined') {
         return '<div class="error-card"><strong>Validation error</strong><br>Could not validate the config.</div>';
       }
 
-      // Status header
       const isValid = validation.valid;
-      html += `
-        <div class="status-header">
-          <div class="status-icon ${isValid ? 'valid' : 'invalid'}">
-            ${isValid
-              ? '<svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
-              : '<svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
-            }
-          </div>
-          <div class="status-text ${isValid ? 'valid' : 'invalid'}">
-            <h3>${isValid ? 'Valid' : 'Invalid'}</h3>
-            <p>${validation.errors.length} error${validation.errors.length !== 1 ? 's' : ''}, ${validation.warnings.length} warning${validation.warnings.length !== 1 ? 's' : ''}</p>
-          </div>
-        </div>`;
+      let html = '<div class="verdict-section">';
 
-      // Format badge
+      // Icon
+      html += `<div class="verdict-icon ${isValid ? 'valid' : 'invalid'}">
+        ${isValid
+          ? '<svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>'
+          : '<svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>'
+        }
+      </div>`;
+
+      // Label + counts
+      html += `<div class="verdict-label ${isValid ? 'valid' : 'invalid'}">${isValid ? 'Valid' : 'Invalid'}</div>`;
+      html += `<div class="verdict-counts">${validation.errors.length} error${validation.errors.length !== 1 ? 's' : ''} · ${validation.warnings.length} warning${validation.warnings.length !== 1 ? 's' : ''}</div>`;
+
+      // Inline status badges (URL checks only)
+      if (checks) {
+        const badgeOrder = ['returns402', 'hasCors', 'hasConfig', 'hasHeader'];
+        const badgeLabels = { returns402: '402', hasCors: 'CORS', hasConfig: 'Body', hasHeader: 'Header' };
+        html += '<div class="status-badges">';
+        badgeOrder.forEach(key => {
+          if (checks[key]) {
+            const pass = checks[key].pass;
+            html += `<span class="badge ${pass ? 'badge-pass' : 'badge-fail'}">${badgeLabels[key]} ${pass ? '✓' : '✗'}</span>`;
+          }
+        });
+        html += '</div>';
+      }
+
+      // Format detection
       const formatLabels = {
         'flat': 'Flat (Simple)',
         'v1': 'accepts (v1)',
@@ -1133,41 +1326,47 @@
         'v2-marketplace': 'v2 + Marketplace'
       };
       const formatClass = validation.detectedFormat.startsWith('v2') ? 'v2' : validation.detectedFormat;
-      html += `
-        <div class="format-badge-section">
-          <div class="format-row">
-            <div>
-              <span style="color: var(--text-secondary); font-size: 12px;">Detected Format</span><br>
-              <span class="format-badge ${formatClass}">${formatLabels[validation.detectedFormat] || validation.detectedFormat}</span>
-            </div>
-            ${!validation.detectedFormat.startsWith('v2') ? '<button class="upgrade-btn" onclick="showV2Equivalent()">Show v2 equivalent →</button>' : ''}
-          </div>
-        </div>`;
+      html += `<div class="verdict-format">
+        <span class="format-badge ${formatClass}">${formatLabels[validation.detectedFormat] || validation.detectedFormat}</span>
+        ${!validation.detectedFormat.startsWith('v2') ? '<button class="upgrade-btn" onclick="showV2Equivalent()">Show v2 equivalent →</button>' : ''}
+      </div>`;
 
-      // Errors
+      // Help link on invalid
+      if (!isValid) {
+        html += `<div style="margin-top: 12px;"><a href="#" onclick="document.querySelector('.examples-section').open = true; return false;" style="color: var(--info); font-size: 13px; text-decoration: none;">View example configs →</a></div>`;
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    function renderDetails(validation, config) {
+      if (!validation || typeof validation.valid === 'undefined') return '';
+
+      let html = '';
+
+      // Errors (compact list)
       if (validation.errors.length > 0) {
-        html += '<div class="issues-section">';
+        html += `<div class="issues-list">
+          <div class="issues-list-header errors">Errors (${validation.errors.length})</div>`;
         validation.errors.forEach(err => {
-          html += `
-            <div class="issue-card error">
-              <div class="issue-field">${err.field}</div>
-              <div class="issue-message">${err.message}</div>
-              <div class="issue-fix"><span>→</span> ${err.fix}</div>
-            </div>`;
+          html += `<div class="issue-row error">
+            <span class="issue-row-label">${err.field}</span>
+            <span class="issue-row-message">${err.message}${err.fix ? ' <span class="issue-row-fix">→ ' + err.fix + '</span>' : ''}</span>
+          </div>`;
         });
         html += '</div>';
       }
 
-      // Warnings
+      // Warnings (compact list)
       if (validation.warnings.length > 0) {
-        html += '<div class="issues-section">';
+        html += `<div class="issues-list">
+          <div class="issues-list-header warnings">Warnings (${validation.warnings.length})</div>`;
         validation.warnings.forEach(warn => {
-          html += `
-            <div class="issue-card warning">
-              <div class="issue-field">${warn.field}</div>
-              <div class="issue-message">${warn.message}</div>
-              <div class="issue-fix"><span>→</span> ${warn.fix}</div>
-            </div>`;
+          html += `<div class="issue-row warning">
+            <span class="issue-row-label">${warn.field}</span>
+            <span class="issue-row-message">${warn.message}${warn.fix ? ' <span class="issue-row-fix">→ ' + warn.fix + '</span>' : ''}</span>
+          </div>`;
         });
         html += '</div>';
       }
@@ -1216,19 +1415,17 @@
 
     function displayError(message) {
       resultsEl.innerHTML = `
-        <div class="status-header">
-          <div class="status-icon invalid">
-            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        <div class="verdict-section">
+          <div class="verdict-icon invalid">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
           </div>
-          <div class="status-text invalid">
-            <h3>Error</h3>
-            <p>${message}</p>
+          <div class="verdict-label invalid">Error</div>
+          <div class="verdict-counts">${message}</div>
+          <div style="margin-top: 12px;">
+            <a href="#" onclick="document.querySelector('.examples-section').open = true; return false;" style="color: var(--info); font-size: 13px; text-decoration: none;">View example configs →</a>
           </div>
-        </div>
-        <div class="example-helper" style="margin-top: 16px;">
-          Not sure what's wrong? <a href="#" onclick="document.querySelector('.examples-section').open = true; return false;" style="color: var(--info);">View example configs →</a>
         </div>`;
       resultsEl.classList.remove('hidden');
     }
@@ -1244,6 +1441,20 @@
             btn.classList.remove('copied');
           }, 2000);
         });
+      }
+    }
+
+    function toggleResponseBody() {
+      const wrapper = document.getElementById('response-body-wrapper');
+      const toggle = wrapper.closest('.response-body-section').querySelector('.response-body-toggle');
+      if (wrapper.classList.contains('response-body-collapsed')) {
+        wrapper.classList.remove('response-body-collapsed');
+        wrapper.classList.add('response-body-expanded');
+        toggle.innerHTML = '<span>▲</span> Hide full response';
+      } else {
+        wrapper.classList.remove('response-body-expanded');
+        wrapper.classList.add('response-body-collapsed');
+        toggle.innerHTML = '<span>▼</span> Show full response';
       }
     }
 
