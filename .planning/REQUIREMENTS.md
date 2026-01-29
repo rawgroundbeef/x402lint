@@ -141,77 +141,87 @@ Deferred beyond v2.0.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| API-01 | — | Pending |
-| API-02 | — | Pending |
-| API-03 | — | Pending |
-| API-04 | — | Pending |
-| API-05 | — | Pending |
-| API-06 | — | Pending |
-| API-07 | — | Pending |
-| RULE-01 | — | Pending |
-| RULE-02 | — | Pending |
-| RULE-03 | — | Pending |
-| RULE-04 | — | Pending |
-| RULE-05 | — | Pending |
-| RULE-06 | — | Pending |
-| RULE-07 | — | Pending |
-| RULE-08 | — | Pending |
-| RULE-09 | — | Pending |
-| RULE-10 | — | Pending |
-| RULE-11 | — | Pending |
-| ERR-01 | — | Pending |
-| ERR-02 | — | Pending |
-| ERR-03 | — | Pending |
-| ERR-04 | — | Pending |
-| ERR-05 | — | Pending |
-| ADDR-01 | — | Pending |
-| ADDR-02 | — | Pending |
-| ADDR-03 | — | Pending |
-| ADDR-04 | — | Pending |
-| ADDR-05 | — | Pending |
-| REG-01 | — | Pending |
-| REG-02 | — | Pending |
-| REG-03 | — | Pending |
-| REG-04 | — | Pending |
-| REG-05 | — | Pending |
-| REG-06 | — | Pending |
-| FMT-01 | — | Pending |
-| FMT-02 | — | Pending |
-| FMT-03 | — | Pending |
-| FMT-04 | — | Pending |
-| FMT-05 | — | Pending |
-| FMT-06 | — | Pending |
-| FMT-07 | — | Pending |
-| FMT-08 | — | Pending |
-| CRYPTO-01 | — | Pending |
-| CRYPTO-02 | — | Pending |
-| CRYPTO-03 | — | Pending |
-| CRYPTO-04 | — | Pending |
-| BUILD-01 | — | Pending |
-| BUILD-02 | — | Pending |
-| BUILD-03 | — | Pending |
-| BUILD-04 | — | Pending |
-| BUILD-05 | — | Pending |
-| BUILD-06 | — | Pending |
-| TEST-01 | — | Pending |
-| TEST-02 | — | Pending |
-| TEST-03 | — | Pending |
-| TEST-04 | — | Pending |
-| TEST-05 | — | Pending |
-| TEST-06 | — | Pending |
-| TEST-07 | — | Pending |
-| TEST-08 | — | Pending |
-| WEB-01 | — | Pending |
-| WEB-02 | — | Pending |
-| WEB-03 | — | Pending |
-| WEB-04 | — | Pending |
-| WEB-05 | — | Pending |
+| API-01 | Phase 8 | Pending |
+| API-02 | Phase 6 | Pending |
+| API-03 | Phase 6 | Pending |
+| API-04 | Phase 6 | Pending |
+| API-05 | Phase 8 | Pending |
+| API-06 | Phase 8 | Pending |
+| API-07 | Phase 6 | Pending |
+| RULE-01 | Phase 8 | Pending |
+| RULE-02 | Phase 8 | Pending |
+| RULE-03 | Phase 8 | Pending |
+| RULE-04 | Phase 8 | Pending |
+| RULE-05 | Phase 8 | Pending |
+| RULE-06 | Phase 8 | Pending |
+| RULE-07 | Phase 8 | Pending |
+| RULE-08 | Phase 8 | Pending |
+| RULE-09 | Phase 8 | Pending |
+| RULE-10 | Phase 8 | Pending |
+| RULE-11 | Phase 8 | Pending |
+| ERR-01 | Phase 6 | Pending |
+| ERR-02 | Phase 6 | Pending |
+| ERR-03 | Phase 6 | Pending |
+| ERR-04 | Phase 6 | Pending |
+| ERR-05 | Phase 6 | Pending |
+| ADDR-01 | Phase 7 | Pending |
+| ADDR-02 | Phase 7 | Pending |
+| ADDR-03 | Phase 7 | Pending |
+| ADDR-04 | Phase 7 | Pending |
+| ADDR-05 | Phase 7 | Pending |
+| REG-01 | Phase 6 | Pending |
+| REG-02 | Phase 6 | Pending |
+| REG-03 | Phase 6 | Pending |
+| REG-04 | Phase 6 | Pending |
+| REG-05 | Phase 6 | Pending |
+| REG-06 | Phase 6 | Pending |
+| FMT-01 | Phase 6 | Pending |
+| FMT-02 | Phase 6 | Pending |
+| FMT-03 | Phase 6 | Pending |
+| FMT-04 | Phase 6 | Pending |
+| FMT-05 | Phase 6 | Pending |
+| FMT-06 | Phase 6 | Pending |
+| FMT-07 | Phase 6 | Pending |
+| FMT-08 | Phase 6 | Pending |
+| CRYPTO-01 | Phase 7 | Pending |
+| CRYPTO-02 | Phase 7 | Pending |
+| CRYPTO-03 | Phase 7 | Pending |
+| CRYPTO-04 | Phase 7 | Pending |
+| BUILD-01 | Phase 9 | Pending |
+| BUILD-02 | Phase 9 | Pending |
+| BUILD-03 | Phase 9 | Pending |
+| BUILD-04 | Phase 9 | Pending |
+| BUILD-05 | Phase 9 | Pending |
+| BUILD-06 | Phase 5 | Pending |
+| TEST-01 | Phase 8 | Pending |
+| TEST-02 | Phase 8 | Pending |
+| TEST-03 | Phase 8 | Pending |
+| TEST-04 | Phase 7 | Pending |
+| TEST-05 | Phase 7 | Pending |
+| TEST-06 | Phase 8 | Pending |
+| TEST-07 | Phase 8 | Pending |
+| TEST-08 | Phase 8 | Pending |
+| WEB-01 | Phase 10 | Pending |
+| WEB-02 | Phase 10 | Pending |
+| WEB-03 | Phase 10 | Pending |
+| WEB-04 | Phase 10 | Pending |
+| WEB-05 | Phase 10 | Pending |
 
 **Coverage:**
-- v2.0 requirements: 55 total
-- Mapped to phases: 0
-- Unmapped: 55 (pending roadmap creation)
+- v2.0 requirements: 65 total
+- Mapped to phases: 65
+- Unmapped: 0
+
+**Phase distribution:**
+| Phase | Count | Categories |
+|-------|-------|------------|
+| Phase 5 | 1 | BUILD |
+| Phase 6 | 23 | API, ERR, FMT, REG |
+| Phase 7 | 11 | CRYPTO, ADDR, TEST |
+| Phase 8 | 20 | API, RULE, TEST |
+| Phase 9 | 5 | BUILD |
+| Phase 10 | 5 | WEB |
 
 ---
 *Requirements defined: 2026-01-29*
-*Last updated: 2026-01-29 after initial definition*
+*Last updated: 2026-01-29 after roadmap creation (traceability added)*

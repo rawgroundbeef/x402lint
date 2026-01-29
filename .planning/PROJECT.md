@@ -93,7 +93,7 @@ The site is live and functional. However, the validator was built on assumptions
 - **Client-side first**: All validation logic runs in browser, proxy only for URL fetching
 - **CORS**: Direct URL fetches will fail, proxy required for URL input method
 - **Zero runtime deps**: SDK must have no runtime dependencies for browser bundle size
-- **Monorepo**: SDK lives in `packages/x402check/`, website stays at root
+- **Monorepo**: SDK lives in `packages/x402check/`, website stays at root, pnpm workspaces
 
 ## Key Decisions
 

@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-01-29)
 
 **Core value:** Developers can validate their x402 config in under 30 seconds with actionable feedback
-**Current focus:** Milestone v2.0 — Spec-Compliant SDK
+**Current focus:** Phase 5 - Repository Restructuring (v2.0 Spec-Compliant SDK)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-01-29 — Milestone v2.0 started
+Phase: 5 of 10 (Repository Restructuring)
+Plan: 0 of 1 in current phase
+Status: Ready to plan
+Last activity: 2026-01-29 — Roadmap created for v2.0 milestone (Phases 5-10)
 
-Progress: Milestone v2.0 initialized. Requirements and roadmap in progress.
+Progress: [░░░░░░░░░░] 0% (0/12 plans across 6 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3 (via GSD)
+- Total plans completed: 3 (v1.0 milestone)
 - Average duration: 3.1 min
 - Total execution time: 0.15 hours
 
@@ -36,7 +36,13 @@ Progress: Milestone v2.0 initialized. Requirements and roadmap in progress.
 
 ### Decisions
 
-See PROJECT.md Key Decisions table for full list with outcomes.
+See PROJECT.md Key Decisions table for full list.
+Recent decisions affecting current work:
+
+- Monorepo: SDK in packages/x402check/, website at root, npm workspaces
+- Zero runtime deps: Vendor Base58 + keccak256
+- Use tsdown (not tsup): Better UMD support, actively maintained
+- Named exports only: No default export (IIFE compatibility)
 
 ### Pending Todos
 
@@ -44,11 +50,12 @@ None.
 
 ### Blockers/Concerns
 
-- Validator field names don't match canonical x402 v2 spec (critical — being addressed in v2.0)
+- tsdown UMD config specifics need verification during Phase 9
+- Keccak-256 vendoring strategy (vendor vs devDep+tree-shake) to decide in Phase 7
 
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: Milestone v2.0 initialization
+Stopped at: Roadmap created for v2.0 milestone
 Resume file: None
-Next: Define requirements → create roadmap
+Next: Plan Phase 5 (Repository Restructuring)
