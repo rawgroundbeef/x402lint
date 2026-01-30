@@ -4,21 +4,26 @@
   "description": "Validate x402 payment configurations",
   "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "dist/"
+  ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm test && pnpm build && publint"
   },
   "keywords": [
     "x402",
@@ -26,9 +31,18 @@
     "validation"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropics/x402check"
+  },
+  "homepage": "https://github.com/anthropics/x402check#readme",
+  "bugs": {
+    "url": "https://github.com/anthropics/x402check/issues"
+  },
   "devDependencies": {
     "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
+    "publint": "^0.3.16",
     "tsdown": "^0.20.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
