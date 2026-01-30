@@ -978,9 +978,9 @@
         </summary>
         <div class="examples-content">
           <div class="tabs">
-            <button class="tab active" data-tab="flat">Flat (Simple)</button>
+            <button class="tab active" data-tab="flat">Flat (Legacy)</button>
             <button class="tab" data-tab="v1">accepts (v1)</button>
-            <button class="tab" data-tab="v2">payments (v2)</button>
+            <button class="tab" data-tab="v2">v2 (Canonical)</button>
             <button class="tab" data-tab="marketplace">+ Marketplace</button>
           </div>
 
@@ -1102,8 +1102,9 @@
           <span class="arrow">▶</span>
         </summary>
         <div class="faq-answer">
-          <strong>Chains:</strong> <code>solana</code>, <code>base</code>, <code>solana-devnet</code>, <code>base-sepolia</code><br><br>
-          <strong>Formats:</strong> We accept 3 formats (Flat, v1 accepts, v2 payments). All work, but v2 is recommended for new endpoints.
+          <strong>Chains:</strong> <code>base</code> (eip155:8453), <code>solana</code> (solana:5eykt...), <code>base-sepolia</code>, <code>solana-devnet</code>, <code>avalanche</code>, and more. Networks use <a href="https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-2.md" target="_blank" rel="noopener">CAIP-2</a> identifiers internally.<br><br>
+          <strong>Formats:</strong> Three formats are supported: Flat (legacy), v1 (accepts), and v2 (canonical). All work, but v2 is recommended for new endpoints.<br><br>
+          Powered by the <a href="https://github.com/rawgroundbeef/x402check" target="_blank" rel="noopener">x402check SDK</a>.
         </div>
       </details>
 
@@ -1317,9 +1318,9 @@
 
       // Format detection
       const formatLabels = {
-        'flat': 'Flat (Simple)',
-        'v1': 'accepts (v1)',
-        'v2': 'payments (v2)',
+        'flat': 'Flat (Legacy)',
+        'v1': 'v1 (accepts)',
+        'v2': 'v2 (Canonical)',
         'v2-marketplace': 'v2 + Marketplace'
       };
       const formatClass = validation.detectedFormat.startsWith('v2') ? 'v2' : validation.detectedFormat;
@@ -1464,9 +1465,11 @@
     function showV2Equivalent() {
       try {
         const config = JSON.parse(inputEl.value);
-        const v2 = generateV2Equivalent(config);
-        inputEl.value = v2;
-        validateBtn.click();
+        const normalized = window.x402Validate.normalize(config);
+        if (normalized) {
+          inputEl.value = JSON.stringify(normalized, null, 2);
+          validateBtn.click();
+        }
       } catch (e) {
         // ignore
       }
