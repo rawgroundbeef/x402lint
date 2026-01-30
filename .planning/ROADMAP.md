@@ -126,8 +126,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md -- SDK bundle integration and adapter layer
-- [ ] 10-02-PLAN.md -- Example config updates and CDN cleanup
+- [x] 10-01-PLAN.md -- SDK bundle integration and adapter layer
+- [x] 10-02-PLAN.md -- Example config updates and CDN cleanup
 
 ## Progress
 
@@ -141,8 +141,8 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 7. Crypto & Address Validation | v2.0 | 2/2 | Complete | 2026-01-29 |
 | 8. Validation Rules & Orchestrator | v2.0 | 3/3 | Complete | 2026-01-29 |
 | 9. Build Pipeline | v2.0 | 1/1 | Complete | 2026-01-29 |
-| 10. Website Integration | v2.0 | 0/2 | Not started | - |
+| 10. Website Integration | v2.0 | 2/2 | Complete | 2026-01-29 |
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-01-29 -- Phase 10 planned*
+*Last updated: 2026-01-29 -- Phase 10 complete*
