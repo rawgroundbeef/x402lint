@@ -109,10 +109,10 @@ Plans:
   2. Loading the UMD/IIFE bundle via `<script>` tag makes `window.x402Validate.validate` a callable function
   3. The browser bundle is under 15KB minified
   4. TypeScript consumers get full type inference -- `validate()` return type shows `valid`, `errors`, `warnings`, `version`, `normalized` fields with correct types
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 09-01: Build config (tsdown), output verification, and package.json exports
+- [ ] 09-01-PLAN.md -- Build config (tsdown), output verification, and package.json exports
 
 ### Phase 10: Website Integration
 **Goal**: The live website uses the SDK browser bundle instead of the old validator.js, removing ~810KB of CDN dependencies while maintaining all existing functionality
@@ -145,4 +145,4 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-01-29 -- Phase 8 complete*
+*Last updated: 2026-01-29 -- Phase 9 planned*
