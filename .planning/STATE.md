@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-29)
 
 **Core value:** Developers can validate their x402 config in under 30 seconds with actionable feedback
-**Current focus:** Phase 9 - Build Pipeline and Package Publishing (v2.0 Spec-Compliant SDK)
+**Current focus:** Phase 10 - Documentation and Website (v2.0 Spec-Compliant SDK)
 
 ## Current Position
 
 Phase: 9 of 10 (Build Pipeline and Package Publishing)
-Plan: 0 of 1 in current phase
-Status: Ready to plan
-Last activity: 2026-01-29 — Phase 8 verified and complete
+Plan: 1 of 1 in current phase
+Status: Phase complete
+Last activity: 2026-01-29 — Completed 09-01-PLAN.md
 
-Progress: [█████████░] 75% (9/12 plans across 7 phases)
+Progress: [██████████░] 83% (10/12 plans across 8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12 (3 v1.0 + 9 v2.0)
+- Total plans completed: 13 (3 v1.0 + 10 v2.0)
 - Average duration: 2.9 min
-- Total execution time: 0.58 hours
+- Total execution time: 0.62 hours
 
 **By Phase:**
 
@@ -33,6 +33,7 @@ Progress: [█████████░] 75% (9/12 plans across 7 phases)
 | 6 - Types, Detection, Normalization | 3/3 | 8.8 min | 2.9 min |
 | 7 - Crypto Vendoring & Address Validation | 2/2 | 7.3 min | 3.7 min |
 | 8 - Validation Rules & Orchestrator | 3/3 | 9.3 min | 3.1 min |
+| 9 - Build Pipeline & Package Publishing | 1/1 | 3.0 min | 3.0 min |
 
 *Updated after each plan completion*
 
@@ -71,6 +72,10 @@ Recent decisions affecting current work:
 | Separate runPipeline() from validate() for clean try/catch | 08-02 | Safety net boundary stays minimal, pipeline logic stays readable |
 | Route issues by severity field, not by rule module | 08-02 | Network and timeout validation return both errors and warnings |
 | Orchestrator routes timeout by severity | 08-03 | INVALID_TIMEOUT is error, MISSING_MAX_TIMEOUT is warning |
+| Use IIFE format (not UMD) for browser bundle | 09-01 | tsdown supports IIFE natively, functionally equivalent |
+| ESM output as .js (not .mjs) per type:module convention | 09-01 | Package declares type:module, Node interprets .js as ESM |
+| Split types conditions in exports for ESM/CJS | 09-01 | publint best practice for correct TypeScript resolution |
+| IIFE bundle 27KB raw / 9KB gzip acceptable | 09-01 | Crypto vendoring tradeoff for zero runtime deps |
 
 ### Pending Todos
 
@@ -78,11 +83,11 @@ None.
 
 ### Blockers/Concerns
 
-- tsdown UMD config specifics need verification during Phase 9
+None.
 
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: Phase 8 complete, verified, roadmap updated
+Stopped at: Completed 09-01-PLAN.md (Phase 9 complete)
 Resume file: None
-Next: Plan Phase 9 (Build Pipeline and Package Publishing)
+Next: Plan Phase 10 (Documentation and Website)
