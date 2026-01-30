@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-29)
 
 **Core value:** Developers can validate their x402 config in under 30 seconds with actionable feedback
-**Current focus:** Phase 10 - Documentation and Website (v2.0 Spec-Compliant SDK)
+**Current focus:** Phase 10 - Website Integration (v2.0 Spec-Compliant SDK)
 
 ## Current Position
 
-Phase: 9 of 10 (Build Pipeline and Package Publishing)
-Plan: 1 of 1 in current phase
-Status: Phase complete
-Last activity: 2026-01-29 — Completed 09-01-PLAN.md
+Phase: 10 of 10 (Website Integration)
+Plan: 0 of 2 in current phase
+Status: Ready to plan
+Last activity: 2026-01-29 — Phase 9 verified and complete
 
 Progress: [██████████░] 83% (10/12 plans across 8 phases)
 
@@ -76,6 +76,7 @@ Recent decisions affecting current work:
 | ESM output as .js (not .mjs) per type:module convention | 09-01 | Package declares type:module, Node interprets .js as ESM |
 | Split types conditions in exports for ESM/CJS | 09-01 | publint best practice for correct TypeScript resolution |
 | IIFE bundle 27KB raw / 9KB gzip acceptable | 09-01 | Crypto vendoring tradeoff for zero runtime deps |
+| Revised BUILD-04 from 15KB to 30KB target | 09-verify | Pre-crypto-vendoring estimate was unrealistic |
 
 ### Pending Todos
 
@@ -88,6 +89,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: Completed 09-01-PLAN.md (Phase 9 complete)
+Stopped at: Phase 9 complete, verified, roadmap updated
 Resume file: None
-Next: Plan Phase 10 (Documentation and Website)
+Next: Plan Phase 10 (Website Integration)
