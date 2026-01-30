@@ -1,11 +1,138 @@
 /**
- * x402 Input Handler v2
+ * x402 Input Handler v3
  *
  * Smart input detection, URL testing with checklist, config extraction.
+ * Adapter layer: maps SDK validate() to old website API shape.
  */
 
 const PROXY_URL = 'https://x402-proxy.mail-753.workers.dev';
 const FETCH_TIMEOUT_MS = 10000;
+
+// ── CAIP-2 Reverse Lookup ──────────────────────────────────────────────────
+// Maps SDK CAIP-2 network identifiers back to simple display names
+const CAIP2_TO_SIMPLE = {
+  'eip155:8453': 'base',
+  'eip155:84532': 'base-sepolia',
+  'eip155:43114': 'avalanche',
+  'eip155:43113': 'avalanche-fuji',
+  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': 'solana',
+  'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1': 'solana-devnet',
+  'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z': 'solana-testnet',
+  'stellar:pubnet': 'stellar',
+  'stellar:testnet': 'stellar-testnet',
+  'aptos:1': 'aptos',
+  'aptos:2': 'aptos-testnet',
+};
+
+// ── Amount Normalization (display helper) ──────────────────────────────────
+// Moved from validator.js. Converts atomic/micro-unit amounts for display.
+function normalizeAmount(value) {
+  if (value === undefined || value === null) {
+    return { normalized: null, original: value, isMicroUnits: false };
+  }
+
+  const num = typeof value === 'string' ? parseFloat(value) : value;
+
+  if (isNaN(num)) {
+    return { normalized: null, original: value, isMicroUnits: false, error: 'Invalid number' };
+  }
+
+  // Heuristic: if > 1000, assume micro-units (divide by 1,000,000)
+  const isMicroUnits = num > 1000;
+  const normalized = isMicroUnits ? num / 1_000_000 : num;
+
+  return {
+    normalized,
+    original: value,
+    isMicroUnits,
+    microUnits: isMicroUnits ? num : Math.round(normalized * 1_000_000)
+  };
+}
+
+// ── SDK Adapter ────────────────────────────────────────────────────────────
+// Maps window.x402Validate.validate() output to the old validator shape
+// that the display logic (renderVerdict, renderDetails) expects.
+
+/**
+ * Adapter: validates config via SDK and maps result to old website API shape.
+ * Called by handleValidation() and testX402Url() -- preserves all existing flows.
+ *
+ * @param {string|object} configText - JSON string or parsed config object
+ * @returns {{ valid, errors, warnings, detectedFormat, normalized }}
+ */
+function validateX402Config(configText) {
+  try {
+    const sdkResult = window.x402Validate.validate(configText);
+
+    return {
+      valid: sdkResult.valid,
+      errors: sdkResult.errors.map(e => ({
+        field: e.field,
+        message: e.message,
+        fix: e.fix || undefined
+      })),
+      warnings: sdkResult.warnings.map(w => ({
+        field: w.field,
+        message: w.message,
+        fix: w.fix || undefined
+      })),
+      detectedFormat: mapVersionToFormat(sdkResult.version, sdkResult.normalized),
+      normalized: adaptNormalized(sdkResult.normalized)
+    };
+  } catch (error) {
+    return {
+      valid: false,
+      errors: [{ field: 'root', message: error.message }],
+      warnings: [],
+      detectedFormat: 'unknown',
+      normalized: null
+    };
+  }
+}
+
+/**
+ * Map SDK version string to old format label.
+ * Also checks for marketplace extensions to preserve v2-marketplace badge.
+ */
+function mapVersionToFormat(version, normalized) {
+  if (version === 'v2' && normalized && normalized.extensions) {
+    const ext = normalized.extensions;
+    if (ext.metadata || ext.outputSchema || ext.inputSchema) {
+      return 'v2-marketplace';
+    }
+  }
+
+  const map = {
+    'v2': 'v2',
+    'v1': 'v1',
+    'flat-legacy': 'flat',
+    'unknown': 'unknown'
+  };
+  return map[version] || 'unknown';
+}
+
+/**
+ * Adapt SDK NormalizedConfig (accepts[] with CAIP-2 networks) to old shape
+ * (payments[] with simple chain names).
+ */
+function adaptNormalized(sdkNormalized) {
+  if (!sdkNormalized || !sdkNormalized.accepts) return null;
+
+  return {
+    x402Version: sdkNormalized.x402Version,
+    payments: sdkNormalized.accepts.map(accept => ({
+      chain: CAIP2_TO_SIMPLE[accept.network] || accept.network,
+      address: accept.payTo,
+      asset: accept.asset,
+      minAmount: accept.amount,
+      _normalizedAmount: normalizeAmount(accept.amount)
+    })),
+    metadata: sdkNormalized.extensions?.metadata,
+    outputSchema: sdkNormalized.extensions?.outputSchema
+  };
+}
+
+// ── Input Detection ────────────────────────────────────────────────────────
 
 /**
  * Detect input type based on content
@@ -17,6 +144,8 @@ function detectInputType(input) {
   }
   return 'json';
 }
+
+// ── URL Testing ────────────────────────────────────────────────────────────
 
 /**
  * Test a URL and return checklist results
@@ -146,6 +275,8 @@ async function testX402Url(url, method = 'GET', body = null) {
     url
   };
 }
+
+// ── Main Handler ───────────────────────────────────────────────────────────
 
 /**
  * Main handler for validation
