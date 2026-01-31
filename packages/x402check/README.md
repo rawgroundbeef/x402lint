@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../../assets/banner.png" alt="x402check — Lint for x402" width="100%" />
+</p>
+
 # x402check
 
 Validate [x402](https://www.x402.org/) payment configurations. Works in Node, browsers, and edge runtimes — zero dependencies.
