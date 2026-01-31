@@ -1,135 +1,12 @@
 /**
- * x402 Input Handler v3
+ * x402 Input Handler v4
  *
- * Smart input detection, URL testing with checklist, config extraction.
- * Adapter layer: maps SDK validate() to old website API shape.
+ * Uses the unified check() API from x402check SDK.
+ * No more adapter layer — check() returns display-ready data directly.
  */
 
 const PROXY_URL = 'https://x402-proxy.mail-753.workers.dev';
 const FETCH_TIMEOUT_MS = 10000;
-
-// ── CAIP-2 Reverse Lookup ──────────────────────────────────────────────────
-// Maps SDK CAIP-2 network identifiers back to simple display names
-const CAIP2_TO_SIMPLE = {
-  'eip155:8453': 'base',
-  'eip155:84532': 'base-sepolia',
-  'eip155:43114': 'avalanche',
-  'eip155:43113': 'avalanche-fuji',
-  'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': 'solana',
-  'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1': 'solana-devnet',
-  'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z': 'solana-testnet',
-  'stellar:pubnet': 'stellar',
-  'stellar:testnet': 'stellar-testnet',
-  'aptos:1': 'aptos',
-  'aptos:2': 'aptos-testnet',
-};
-
-// ── Amount Normalization (display helper) ──────────────────────────────────
-// Moved from validator.js. Converts atomic/micro-unit amounts for display.
-function normalizeAmount(value) {
-  if (value === undefined || value === null) {
-    return { normalized: null, original: value, isMicroUnits: false };
-  }
-
-  const num = typeof value === 'string' ? parseFloat(value) : value;
-
-  if (isNaN(num)) {
-    return { normalized: null, original: value, isMicroUnits: false, error: 'Invalid number' };
-  }
-
-  // Heuristic: if > 1000, assume micro-units (divide by 1,000,000)
-  const isMicroUnits = num > 1000;
-  const normalized = isMicroUnits ? num / 1_000_000 : num;
-
-  return {
-    normalized,
-    original: value,
-    isMicroUnits,
-    microUnits: isMicroUnits ? num : Math.round(normalized * 1_000_000)
-  };
-}
-
-// ── SDK Adapter ────────────────────────────────────────────────────────────
-// Maps window.x402Validate.validate() output to the old validator shape
-// that the display logic (renderVerdict, renderDetails) expects.
-
-/**
- * Adapter: validates config via SDK and maps result to old website API shape.
- * Called by handleValidation() and testX402Url() -- preserves all existing flows.
- *
- * @param {string|object} configText - JSON string or parsed config object
- * @returns {{ valid, errors, warnings, detectedFormat, normalized }}
- */
-function validateX402Config(configText) {
-  try {
-    const sdkResult = window.x402Validate.validate(configText);
-
-    return {
-      valid: sdkResult.valid,
-      errors: sdkResult.errors.map(e => ({
-        field: e.field,
-        message: e.message,
-        fix: e.fix || undefined
-      })),
-      warnings: sdkResult.warnings.map(w => ({
-        field: w.field,
-        message: w.message,
-        fix: w.fix || undefined
-      })),
-      detectedFormat: mapVersionToFormat(sdkResult.version, sdkResult.normalized),
-      normalized: adaptNormalized(sdkResult.normalized)
-    };
-  } catch (error) {
-    return {
-      valid: false,
-      errors: [{ field: 'root', message: error.message }],
-      warnings: [],
-      detectedFormat: 'unknown',
-      normalized: null
-    };
-  }
-}
-
-/**
- * Map SDK version string to old format label.
- * Also checks for marketplace extensions to preserve v2-marketplace badge.
- */
-function mapVersionToFormat(version, normalized) {
-  if (version === 'v2' && normalized && normalized.extensions) {
-    const ext = normalized.extensions;
-    if (ext.metadata || ext.outputSchema || ext.inputSchema) {
-      return 'v2-marketplace';
-    }
-  }
-
-  const map = {
-    'v2': 'v2',
-    'v1': 'v1',
-    'unknown': 'unknown'
-  };
-  return map[version] || 'unknown';
-}
-
-/**
- * Adapt SDK NormalizedConfig (accepts[] with CAIP-2 networks) to old shape
- * (payments[] with simple chain names).
- */
-function adaptNormalized(sdkNormalized) {
-  if (!sdkNormalized || !sdkNormalized.accepts) return null;
-
-  return {
-    x402Version: sdkNormalized.x402Version,
-    payments: sdkNormalized.accepts.map(accept => ({
-      chain: CAIP2_TO_SIMPLE[accept.network] || accept.network,
-      address: accept.payTo,
-      asset: accept.asset,
-      minAmount: accept.amount,
-      _normalizedAmount: normalizeAmount(accept.amount)
-    })),
-    metadata: sdkNormalized.extensions?.metadata,
-    outputSchema: sdkNormalized.extensions?.outputSchema
-  };
-}
 
 // ── Input Detection ────────────────────────────────────────────────────────
 
@@ -147,7 +24,7 @@ function detectInputType(input) {
 // ── URL Testing ────────────────────────────────────────────────────────────
 
 /**
- * Test a URL and return checklist results
+ * Test a URL via proxy and run check() on the response.
  */
 async function testX402Url(url, method = 'GET', body = null) {
   // Validate URL
@@ -171,31 +48,7 @@ async function testX402Url(url, method = 'GET', body = null) {
     throw new Error(`Network error: ${error.message}`);
   }
 
-  // Build checklist
-  const checks = {
-    returns402: {
-      pass: response.status === 402,
-      label: 'Returns 402',
-      detail: response.status === 402 ? null : `Returned ${response.status}`
-    },
-    hasConfig: {
-      pass: false,
-      label: 'Valid payment config',
-      detail: null
-    },
-    hasHeader: {
-      pass: !!response.headers.get('PAYMENT-REQUIRED'),
-      label: 'PAYMENT-REQUIRED header',
-      detail: response.headers.get('PAYMENT-REQUIRED') ? 'Present (base64)' : 'Not present (optional)'
-    },
-    hasCors: {
-      pass: true, // If we got here through proxy, CORS is handled
-      label: 'CORS accessible',
-      detail: 'Via proxy'
-    }
-  };
-
-  // Always read response body
+  // Read response body
   let rawBody = null;
   try {
     rawBody = await response.text();
@@ -203,71 +56,64 @@ async function testX402Url(url, method = 'GET', body = null) {
     console.log('Failed to read body:', e.message);
   }
 
-  // Try to extract config
-  let config = null;
-  let configSource = null;
+  // Parse body as JSON for check()
+  let parsedBody = null;
+  if (rawBody && rawBody.trim()) {
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch (e) {
+      // Not valid JSON — leave as null, check() will try headers
+    }
+  }
 
-  // Priority 1: PAYMENT-REQUIRED header
+  // Build headers for check()
+  const headers = {};
   const paymentHeader = response.headers.get('PAYMENT-REQUIRED');
   if (paymentHeader) {
-    try {
-      const decoded = atob(paymentHeader);
-      config = JSON.parse(decoded);
-      configSource = 'PAYMENT-REQUIRED header';
-    } catch (e) {
-      try {
-        config = JSON.parse(paymentHeader);
-        configSource = 'PAYMENT-REQUIRED header (raw JSON)';
-      } catch (e2) {
-        // Header exists but invalid
-      }
-    }
+    headers['PAYMENT-REQUIRED'] = paymentHeader;
   }
 
-  // Priority 2: Response body
-  if (!config && rawBody && rawBody.trim()) {
-    try {
-      config = JSON.parse(rawBody);
-      configSource = 'response body';
-    } catch (e) {
-      // Not valid JSON
+  // Unified check: extraction + validation + registry lookups
+  const checkResult = window.x402Validate.check({ body: parsedBody, headers });
+
+  // Build endpoint checklist from response + checkResult
+  const checks = {
+    returns402: {
+      pass: response.status === 402,
+      label: 'Returns 402',
+      detail: response.status === 402 ? null : `Returned ${response.status}`
+    },
+    hasConfig: {
+      pass: checkResult.extracted,
+      label: 'Valid payment config',
+      detail: checkResult.extracted
+        ? `Found in ${checkResult.source === 'header' ? 'PAYMENT-REQUIRED header' : 'response body'}`
+        : 'No valid config found'
+    },
+    hasHeader: {
+      pass: !!paymentHeader,
+      label: 'PAYMENT-REQUIRED header',
+      detail: paymentHeader ? 'Present (base64)' : 'Not present (optional)'
+    },
+    hasCors: {
+      pass: true,
+      label: 'CORS accessible',
+      detail: 'Via proxy'
     }
-  }
+  };
 
-  if (config) {
-    checks.hasConfig.pass = true;
-    checks.hasConfig.detail = `Found in ${configSource}`;
-  } else {
-    checks.hasConfig.detail = 'No valid JSON config found';
-  }
-
-  // Validate if we have config
-  let validation = null;
-  if (config) {
-    try {
-      validation = validateX402Config(config);
-
-      // Add format check
-      if (validation && validation.detectedFormat) {
-        checks.formatCheck = {
-          pass: validation.detectedFormat === 'v2' || validation.detectedFormat === 'v2-marketplace',
-          label: 'Using v2 format',
-          detail: validation.detectedFormat === 'v2' || validation.detectedFormat === 'v2-marketplace'
-            ? 'Canonical format'
-            : `Using ${validation.detectedFormat} format`
-        };
-      }
-    } catch (e) {
-      console.error('Validation error:', e);
-      // validation stays null
-    }
+  // Add format check when we have a config
+  if (checkResult.extracted) {
+    checks.formatCheck = {
+      pass: checkResult.version === 'v2',
+      label: 'Using v2 format',
+      detail: checkResult.version === 'v2' ? 'Canonical format' : `Using ${checkResult.version} format`
+    };
   }
 
   return {
     checks,
-    config,
-    configSource,
-    validation,
+    validation: checkResult,
     rawBody,
     status: response.status,
     method,
@@ -291,11 +137,19 @@ async function handleValidation(inputValue, method, displayResultsFn, displayErr
         ...result
       });
     } else {
-      const validation = validateX402Config(inputValue);
+      // JSON input — wrap in ResponseLike shape for check()
+      let parsed;
+      try {
+        parsed = JSON.parse(inputValue);
+      } catch (e) {
+        displayErrorFn('Invalid JSON: ' + e.message);
+        return;
+      }
+      const checkResult = window.x402Validate.check({ body: parsed });
       displayResultsFn({
         type: 'json',
-        validation,
-        config: validation.normalized
+        validation: checkResult,
+        config: parsed
       });
     }
   } catch (error) {

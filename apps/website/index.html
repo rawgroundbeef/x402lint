@@ -845,6 +845,18 @@
       color: var(--text-muted);
     }
 
+    .verdict-version {
+      margin-left: auto;
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
     /* Error Messages (shown directly, not expandable) */
     .error-messages {
       margin-top: 8px;
@@ -1628,7 +1640,7 @@
   </script>
 
   <!-- Scripts: SDK IIFE bundle + input handler with adapter -->
-  <script src="https://cdn.jsdelivr.net/npm/x402check@0.0.1/dist/index.iife.js"></script>
+  <script src="x402check.iife.js"></script>
   <script src="input.js"></script>
 
   <script>
@@ -1746,6 +1758,21 @@
       }
     });
 
+    // Helper: format atomic amount using registry decimals
+    function formatCheckAmount(amount, decimals) {
+      if (decimals == null) return amount || '\u2014';
+      const num = parseInt(amount, 10);
+      if (isNaN(num)) return amount;
+      return (num / 10 ** decimals).toFixed(decimals > 2 ? 2 : decimals);
+    }
+
+    // Helper: truncate long addresses for display
+    function truncateAddr(addr) {
+      if (!addr) return '\u2014';
+      if (addr.length <= 14) return addr;
+      return addr.slice(0, 8) + '...' + addr.slice(-6);
+    }
+
     function displayResults(result) {
       let html = '';
       const validation = result.validation;
@@ -1758,11 +1785,7 @@
         html += renderDetails(validation, config, result, checks);
         html += '</div>';
       } else if (result.type === 'url') {
-        if (result.config) {
-          html += '<div class="error-card"><strong>Config found but validation failed</strong><br>Raw config: <pre>' + escapeHtml(JSON.stringify(result.config, null, 2)) + '</pre></div>';
-        } else {
-          html += '<div class="error-card"><strong>No payment config found</strong><br>The endpoint returned ' + result.status + ' but no valid JSON config was extracted from the response body or PAYMENT-REQUIRED header.</div>';
-        }
+        html += '<div class="error-card"><strong>No payment config found</strong><br>The endpoint returned ' + result.status + ' but no valid JSON config was extracted from the response body or PAYMENT-REQUIRED header.</div>';
       }
 
       resultsEl.innerHTML = html;
@@ -1785,10 +1808,15 @@
         countText = `${validation.warnings.length} warning${validation.warnings.length !== 1 ? 's' : ''}`;
       }
 
+      const versionBadge = validation.version && validation.version !== 'unknown'
+        ? `<span class="verdict-version">${escapeHtml(validation.version)}</span>`
+        : '';
+
       return `<div class="verdict-line">
         <span class="verdict-icon-inline ${isValid ? 'valid' : 'invalid'}">${isValid ? checkSvg : xSvg}</span>
         <span class="verdict-text ${isValid ? 'valid' : 'invalid'}">${isValid ? 'Valid' : 'Invalid'}</span>
         ${countText ? `<span class="verdict-count">&middot; ${countText}</span>` : ''}
+        ${versionBadge}
       </div>`;
     }
 
@@ -1797,11 +1825,16 @@
 
       let html = '';
 
+      // Extraction error (no config found at all)
+      if (!validation.extracted && validation.extractionError) {
+        html += `<div class="error-messages"><div class="error-message">${escapeHtml(validation.extractionError)}</div></div>`;
+      }
+
       // Errors shown directly (not expandable)
       if (validation.errors.length > 0) {
         html += '<div class="error-messages">';
         validation.errors.forEach(err => {
-          html += `<div class="error-message">${err.message}${err.fix ? ' <span class="issue-row-fix">\u2192 ' + err.fix + '</span>' : ''}</div>`;
+          html += `<div class="error-message">${escapeHtml(err.message)}${err.fix ? ' <span class="issue-row-fix">\u2192 ' + escapeHtml(err.fix) + '</span>' : ''}</div>`;
         });
         html += '</div>';
       }
@@ -1816,38 +1849,38 @@
           <div class="expand-content">`;
         validation.warnings.forEach(warn => {
           html += `<div class="warning-row">
-            ${warn.field && warn.field !== '$' ? `<span class="warning-field">${warn.field}</span>` : ''}
-            <span>${warn.message}${warn.fix ? ' <span class="issue-row-fix">\u2192 ' + warn.fix + '</span>' : ''}</span>
+            ${warn.field && warn.field !== '$' ? `<span class="warning-field">${escapeHtml(warn.field)}</span>` : ''}
+            <span>${escapeHtml(warn.message)}${warn.fix ? ' <span class="issue-row-fix">\u2192 ' + escapeHtml(warn.fix) + '</span>' : ''}</span>
           </div>`;
         });
         html += '</div></details>';
       }
 
-      // Parsed config (expandable)
-      if (validation.normalized && validation.normalized.payments && validation.normalized.payments.length > 0) {
-        const p = validation.normalized.payments[0];
-        const amount = p._normalizedAmount || normalizeAmount(p.minAmount);
-        const formatLabels = { 'v1': 'v1', 'v2': 'v2 (Canonical)', 'v2-marketplace': 'v2 + Marketplace', 'unknown': 'Unknown' };
+      // Parsed config (expandable) — uses AcceptSummary from check()
+      if (validation.summary && validation.summary.length > 0) {
+        const s = validation.summary[0];
+        const displayAmount = formatCheckAmount(s.amount, s.assetDecimals);
+        const formatLabels = { 'v1': 'v1', 'v2': 'v2 (Canonical)', 'unknown': 'Unknown' };
         html += `<details class="expand-section">
           <summary class="expand-link"><span class="chevron">\u25B8</span> View parsed config</summary>
           <div class="expand-content">
             <div class="parsed-config">
-              <div class="parsed-row"><span class="parsed-label">Chain</span><span class="parsed-value">${p.chain || '\u2014'}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Address</span><span class="parsed-value truncate">${p.address || '\u2014'}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Amount</span><span class="parsed-value">${amount.normalized || '\u2014'} ${p.asset || ''} ${amount.isMicroUnits ? '(' + amount.original + ' micro)' : ''}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Asset</span><span class="parsed-value">${p.asset || '\u2014'}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Format</span><span class="parsed-value">${formatLabels[validation.detectedFormat] || validation.detectedFormat}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Marketplace</span><span class="parsed-value">${validation.normalized.metadata ? '\u2713 Ready' : '\u2717 No metadata'}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Chain</span><span class="parsed-value">${escapeHtml(s.networkName || '\u2014')}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Address</span><span class="parsed-value truncate" title="${escapeHtml(s.payTo || '')}">${escapeHtml(truncateAddr(s.payTo))}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Amount</span><span class="parsed-value">${escapeHtml(displayAmount)} ${escapeHtml(s.assetSymbol || '')}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Asset</span><span class="parsed-value">${s.assetSymbol ? escapeHtml(s.assetSymbol) + ' (' + escapeHtml(truncateAddr(s.asset)) + ')' : escapeHtml(s.asset || '\u2014')}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Scheme</span><span class="parsed-value">${escapeHtml(s.scheme || '\u2014')}</span></div>
+              <div class="parsed-row"><span class="parsed-label">Format</span><span class="parsed-value">${formatLabels[validation.version] || escapeHtml(validation.version)}</span></div>
             </div>
-            ${!validation.detectedFormat.startsWith('v2') ? '<button class="upgrade-btn" onclick="showV2Equivalent()" style="margin-top: 8px;">Show v2 equivalent \u2192</button>' : ''}
+            ${validation.version !== 'v2' ? '<button class="upgrade-btn" onclick="showV2Equivalent()" style="margin-top: 8px;">Show v2 equivalent \u2192</button>' : ''}
           </div>
         </details>`;
       }
 
       // Endpoint checks (expandable, URL only)
       if (checks) {
-        const checkOrder = ['returns402', 'hasCors', 'hasConfig', 'hasHeader'];
-        const checkLabels = { returns402: 'Returns 402', hasCors: 'CORS accessible', hasConfig: 'Config in body', hasHeader: 'PAYMENT-REQUIRED header' };
+        const checkOrder = ['returns402', 'hasCors', 'hasConfig', 'hasHeader', 'formatCheck'];
+        const checkLabels = { returns402: 'Returns 402', hasCors: 'CORS accessible', hasConfig: 'Valid payment config', hasHeader: 'PAYMENT-REQUIRED header', formatCheck: 'Using v2 format' };
         html += `<details class="expand-section">
           <summary class="expand-link"><span class="chevron">\u25B8</span> View endpoint checks</summary>
           <div class="expand-content">`;
@@ -1892,7 +1925,8 @@
 
       // Fix with AI (only on errors)
       if (!validation.valid && validation.errors.length > 0) {
-        const configStr = config ? JSON.stringify(config, null, 2) : inputEl.value.trim();
+        const rawConfig = validation.raw || config;
+        const configStr = rawConfig ? JSON.stringify(rawConfig, null, 2) : inputEl.value.trim();
         const prompt = generateFixPrompt(validation.errors, validation.warnings, configStr);
         html += `<details class="fix-with-ai">
           <summary class="fix-with-ai-header">
