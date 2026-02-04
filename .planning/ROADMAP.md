@@ -40,6 +40,12 @@
 
 **Dependencies:** None (v2.0 foundation complete)
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — Manifest types, extended ConfigFormat, guards, and detection order
+- [ ] 11-02-PLAN.md — Wild manifest normalization and comprehensive tests
+
 **Requirements:**
 - MAN-01: Manifest schema definition (collection of v2 PaymentRequired entries with service metadata)
 - MAN-04: Compatibility layer for non-standard wild manifests (normalize biwas-style formats)
@@ -197,7 +203,7 @@ Phase 12 (Stacks)  ─────────────┘ (parallel with 13)
 | 8. Validation Rules & Orchestrator | v2.0 | 3/3 | Complete | 2026-01-29 |
 | 9. Build Pipeline | v2.0 | 1/1 | Complete | 2026-01-29 |
 | 10. Website Integration | v2.0 | 2/2 | Complete | 2026-01-29 |
-| 11. Manifest Types & Detection | v3.0 | -- | Pending | -- |
+| 11. Manifest Types & Detection | v3.0 | 0/2 | In Progress | -- |
 | 12. Stacks Chain Support | v3.0 | -- | Pending | -- |
 | 13. Manifest Validation | v3.0 | -- | Pending | -- |
 | 14. CLI Manifest Mode | v3.0 | -- | Pending | -- |
@@ -206,4 +212,4 @@ Phase 12 (Stacks)  ─────────────┘ (parallel with 13)
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-02-04 -- v3.0 roadmap added (phases 11-16)*
+*Last updated: 2026-02-04 -- Phase 11 planned (2 plans in 2 waves)*
