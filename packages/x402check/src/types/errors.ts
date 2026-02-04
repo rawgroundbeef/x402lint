@@ -37,6 +37,15 @@ export const ErrorCode = {
   INVALID_SOLANA_ADDRESS: 'INVALID_SOLANA_ADDRESS',
   ADDRESS_NETWORK_MISMATCH: 'ADDRESS_NETWORK_MISMATCH',
 
+  // Manifest errors
+  MISSING_ENDPOINTS: 'MISSING_ENDPOINTS',
+  INVALID_ENDPOINTS: 'INVALID_ENDPOINTS',
+  EMPTY_ENDPOINTS: 'EMPTY_ENDPOINTS',
+  INVALID_ENDPOINT_CONFIG: 'INVALID_ENDPOINT_CONFIG',
+  WILD_MANIFEST_ARRAY_FORMAT: 'WILD_MANIFEST_ARRAY_FORMAT',
+  WILD_MANIFEST_NESTED_FORMAT: 'WILD_MANIFEST_NESTED_FORMAT',
+  WILD_MANIFEST_NAME_PROMOTED: 'WILD_MANIFEST_NAME_PROMOTED',
+
   // Extension / schema warnings
   INVALID_BAZAAR_INFO: 'INVALID_BAZAAR_INFO',
   INVALID_BAZAAR_SCHEMA: 'INVALID_BAZAAR_SCHEMA',
@@ -91,6 +100,15 @@ export const ErrorMessages = {
   NO_EVM_CHECKSUM: 'EVM address is all-lowercase with no checksum protection',
   INVALID_SOLANA_ADDRESS: 'Invalid Solana address format',
   ADDRESS_NETWORK_MISMATCH: 'Address format does not match network type',
+
+  // Manifest errors
+  MISSING_ENDPOINTS: 'Manifest must have an endpoints field',
+  INVALID_ENDPOINTS: 'endpoints must be a Record (object) mapping IDs to v2 configs',
+  EMPTY_ENDPOINTS: 'Manifest has no endpoints defined',
+  INVALID_ENDPOINT_CONFIG: 'Endpoint config is not a valid v2 PaymentRequired object',
+  WILD_MANIFEST_ARRAY_FORMAT: 'Detected non-standard array format, normalized to endpoints collection',
+  WILD_MANIFEST_NESTED_FORMAT: 'Detected non-standard nested service format, normalized to endpoints collection',
+  WILD_MANIFEST_NAME_PROMOTED: 'Top-level name field promoted to service.name',
 
   // Extension / schema warnings
   INVALID_BAZAAR_INFO: 'extensions.bazaar.info must be an object with input and output',

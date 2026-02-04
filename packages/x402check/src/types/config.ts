@@ -5,7 +5,7 @@
 /**
  * Config format discriminator
  */
-export type ConfigFormat = 'v2' | 'v1' | 'unknown'
+export type ConfigFormat = 'manifest' | 'v2' | 'v1' | 'unknown'
 
 /**
  * HTTP resource definition
