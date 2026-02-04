@@ -17,6 +17,11 @@ export const SIMPLE_NAME_TO_CAIP2 = {
   'solana-devnet': 'solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
   'solana-testnet': 'solana:4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z',
 
+  // Stacks networks
+  stacks: 'stacks:1',
+  'stacks-mainnet': 'stacks:1',
+  'stacks-testnet': 'stacks:2147483648',
+
   // Stellar networks
   stellar: 'stellar:pubnet',
   'stellar-testnet': 'stellar:testnet',

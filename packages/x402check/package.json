@@ -52,6 +52,7 @@
     "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
     "@types/node": "^25.1.0",
+    "c32check": "^2.0.0",
     "publint": "^0.3.16",
     "tsdown": "^0.20.1",
     "typescript": "^5.9.3",

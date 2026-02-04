@@ -35,6 +35,8 @@ export const ErrorCode = {
   BAD_EVM_CHECKSUM: 'BAD_EVM_CHECKSUM',
   NO_EVM_CHECKSUM: 'NO_EVM_CHECKSUM',
   INVALID_SOLANA_ADDRESS: 'INVALID_SOLANA_ADDRESS',
+  INVALID_STACKS_ADDRESS: 'INVALID_STACKS_ADDRESS',
+  STACKS_NETWORK_MISMATCH: 'STACKS_NETWORK_MISMATCH',
   ADDRESS_NETWORK_MISMATCH: 'ADDRESS_NETWORK_MISMATCH',
 
   // Manifest errors
@@ -99,6 +101,8 @@ export const ErrorMessages = {
   BAD_EVM_CHECKSUM: 'EVM address has invalid checksum',
   NO_EVM_CHECKSUM: 'EVM address is all-lowercase with no checksum protection',
   INVALID_SOLANA_ADDRESS: 'Invalid Solana address format',
+  INVALID_STACKS_ADDRESS: 'Invalid Stacks address',
+  STACKS_NETWORK_MISMATCH: 'Stacks address does not match the specified network',
   ADDRESS_NETWORK_MISMATCH: 'Address format does not match network type',
 
   // Manifest errors
