@@ -66,12 +66,17 @@ Plans:
 
 **Dependencies:** None (parallel with Phase 13, extends existing address validation registry)
 
+**Plans:** 1 plan
+
+Plans:
+- [ ] 12-01-PLAN.md — Install c32check, add Stacks address validator, registry entries, and tests
+
 **Requirements:**
 - MAN-05: Stacks chain address validation (SP/SM addresses, c32check encoding)
 
 **Success Criteria:**
-1. Stacks mainnet addresses (SP prefix) and contract addresses (SM prefix) pass validation when paired with `stacks:mainnet` network
-2. Stacks testnet addresses (ST prefix, SN prefix) pass validation when paired with `stacks:testnet` network
+1. Stacks mainnet addresses (SP prefix) and contract addresses (SM prefix) pass validation when paired with `stacks:1` network
+2. Stacks testnet addresses (ST prefix, SN prefix) pass validation when paired with `stacks:2147483648` network
 3. Invalid c32check checksums produce an error with actionable fix suggestion
 4. Mainnet address on testnet network (and vice versa) produces an error identifying the mismatch
 
@@ -204,7 +209,7 @@ Phase 12 (Stacks)  ─────────────┘ (parallel with 13)
 | 9. Build Pipeline | v2.0 | 1/1 | Complete | 2026-01-29 |
 | 10. Website Integration | v2.0 | 2/2 | Complete | 2026-01-29 |
 | 11. Manifest Types & Detection | v3.0 | 2/2 | Complete | 2026-02-04 |
-| 12. Stacks Chain Support | v3.0 | -- | Pending | -- |
+| 12. Stacks Chain Support | v3.0 | 0/1 | Planned | -- |
 | 13. Manifest Validation | v3.0 | -- | Pending | -- |
 | 14. CLI Manifest Mode | v3.0 | -- | Pending | -- |
 | 15. Website Manifest UI | v3.0 | -- | Pending | -- |
@@ -212,4 +217,4 @@ Phase 12 (Stacks)  ─────────────┘ (parallel with 13)
 
 ---
 *Roadmap created: 2026-01-29*
-*Last updated: 2026-02-04 -- Phase 11 complete (2/2 plans, verified)*
+*Last updated: 2026-02-04 -- Phase 12 planned (1 plan)*
