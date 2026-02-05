@@ -1,9 +1,9 @@
 ---
-name: x402check
+name: x402lint
 description: "Validate and create x402 payment endpoint responses (HTTP 402 Payment Required). Use when the user asks to: (1) validate an x402 config or 402 response, (2) create/generate an x402 payment config, (3) build an HTTP 402 endpoint that returns payment requirements, (4) debug why an x402 config is invalid, (5) convert between x402 v1 and v2 formats, (6) check EVM/Solana addresses for x402, or (7) work with CAIP-2 network identifiers for payment configs. Triggers on keywords: x402, 402 payment, payment-required header, paywall config, CAIP-2 payment."
 ---
 
-# x402check
+# x402lint
 
 Validate and create x402 payment configurations. The x402 protocol defines how HTTP 402 responses communicate payment requirements to clients.
 
@@ -18,10 +18,10 @@ For full protocol details, field rules, registries, and error codes, read [refer
 
 ## Validation
 
-Validate using the `x402check` SDK in the project at `packages/x402check/`.
+Validate using the `x402lint` SDK in the project at `packages/x402lint/`.
 
 ```typescript
-import { check } from './packages/x402check/src/index'
+import { check } from './packages/x402lint/src/index'
 
 const result = check({
   body: configObject,           // or parse from header
