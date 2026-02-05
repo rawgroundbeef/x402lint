@@ -7,7 +7,7 @@ score: 5/5 success criteria verified
 
 # Phase 14: CLI Manifest Mode Verification Report
 
-**Phase Goal:** Developers can run `npx x402check` against a manifest file or URL and get per-endpoint validation results in the terminal.
+**Phase Goal:** Developers can run `npx x402lint` against a manifest file or URL and get per-endpoint validation results in the terminal.
 
 **Verified:** 2026-02-05T06:12:45Z
 **Status:** PASSED
@@ -19,8 +19,8 @@ score: 5/5 success criteria verified
 
 | # | Truth | Status | Evidence |
 |---|-------|--------|----------|
-| 1 | `npx x402check manifest.json` auto-detects and shows per-endpoint summaries | ✓ VERIFIED | Manual test shows "Detected: manifest with N endpoints" + summary table with Status/Endpoint/Errors/Warnings columns + detailed per-endpoint results |
-| 2 | `npx x402check config.json` auto-detects single config with no regression | ✓ VERIFIED | Manual test with valid-v2-base.json shows "Detected: v2 config" + existing output format. All 410 tests pass including 30 CLI tests |
+| 1 | `npx x402lint manifest.json` auto-detects and shows per-endpoint summaries | ✓ VERIFIED | Manual test shows "Detected: manifest with N endpoints" + summary table with Status/Endpoint/Errors/Warnings columns + detailed per-endpoint results |
+| 2 | `npx x402lint config.json` auto-detects single config with no regression | ✓ VERIFIED | Manual test with valid-v2-base.json shows "Detected: v2 config" + existing output format. All 410 tests pass including 30 CLI tests |
 | 3 | `--json` outputs pure JSON parseable by JSON.parse() with no ANSI codes | ✓ VERIFIED | JSON output verified parseable. ANSI code check: 0 occurrences of `\x1b` in --json output |
 | 4 | `--quiet` suppresses all output and communicates via exit code only | ✓ VERIFIED | --quiet output is empty string. Exit code 0 for valid manifest verified |
 | 5 | All flag combinations compose correctly | ✓ VERIFIED | --strict --json: outputs strict JSON (warnings promoted to errors). --quiet --json: quiet takes precedence (empty output). Tests verify all combinations |
@@ -31,15 +31,15 @@ score: 5/5 success criteria verified
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `packages/x402check/src/cli/args.ts` | CLI argument parsing with util.parseArgs | ✓ VERIFIED | 75 lines. Exports parseCliArgs, CliArgs. Imports parseArgs from node:util. Parses --header as repeatable flag |
-| `packages/x402check/src/cli/fetch.ts` | URL fetching with redirect tracking and custom headers | ✓ VERIFIED | 95 lines. Exports fetchWithRedirects, FetchResult. Uses redirect: 'manual' with loop, 10s timeout, custom headers |
-| `packages/x402check/src/cli/detect.ts` | Input detection and loading (file, URL, stdin, manifest vs config) | ✓ VERIFIED | 125 lines. Exports loadInput (resolveInput), InputResult, isUrl, isJsonLike, readStdin. Imports detect() and normalizeWildManifest() |
-| `packages/x402check/src/cli/format.ts` | Terminal output formatting for manifest and single-config results | ✓ VERIFIED | 321 lines. Exports formatManifestResult, formatValidationResult, formatCheckResult, calculateExitCode. Imports Table from cli-table3 |
-| `packages/x402check/src/cli.ts` | Main CLI entry point with manifest routing | ✓ VERIFIED | 277 lines. Implements main(), handleUrl(), handleFileOrJson(), applyStrictMode(). Composes all CLI modules. Full manifest routing logic |
-| `packages/x402check/test/fixtures/valid-manifest.json` | Test fixture for valid manifest | ✓ VERIFIED | Valid manifest with 2 endpoints (api/weather, api/maps). Uses real checksummed addresses |
-| `packages/x402check/test/fixtures/invalid-manifest.json` | Test fixture with failing endpoint | ✓ VERIFIED | Manifest with 2 valid + 1 invalid endpoint (api/broken with empty accepts). Tests majority-pass logic |
-| `packages/x402check/test/cli.test.ts` | CLI tests covering manifest mode | ✓ VERIFIED | 30 test cases total (15 describe blocks). Covers manifest detection, --json, --quiet, --strict, flag composition, stdin |
-| `packages/x402check/dist/cli.mjs` | Built CLI binary | ✓ VERIFIED | Built successfully. Executable with node. Help and version flags work |
+| `packages/x402lint/src/cli/args.ts` | CLI argument parsing with util.parseArgs | ✓ VERIFIED | 75 lines. Exports parseCliArgs, CliArgs. Imports parseArgs from node:util. Parses --header as repeatable flag |
+| `packages/x402lint/src/cli/fetch.ts` | URL fetching with redirect tracking and custom headers | ✓ VERIFIED | 95 lines. Exports fetchWithRedirects, FetchResult. Uses redirect: 'manual' with loop, 10s timeout, custom headers |
+| `packages/x402lint/src/cli/detect.ts` | Input detection and loading (file, URL, stdin, manifest vs config) | ✓ VERIFIED | 125 lines. Exports loadInput (resolveInput), InputResult, isUrl, isJsonLike, readStdin. Imports detect() and normalizeWildManifest() |
+| `packages/x402lint/src/cli/format.ts` | Terminal output formatting for manifest and single-config results | ✓ VERIFIED | 321 lines. Exports formatManifestResult, formatValidationResult, formatCheckResult, calculateExitCode. Imports Table from cli-table3 |
+| `packages/x402lint/src/cli.ts` | Main CLI entry point with manifest routing | ✓ VERIFIED | 277 lines. Implements main(), handleUrl(), handleFileOrJson(), applyStrictMode(). Composes all CLI modules. Full manifest routing logic |
+| `packages/x402lint/test/fixtures/valid-manifest.json` | Test fixture for valid manifest | ✓ VERIFIED | Valid manifest with 2 endpoints (api/weather, api/maps). Uses real checksummed addresses |
+| `packages/x402lint/test/fixtures/invalid-manifest.json` | Test fixture with failing endpoint | ✓ VERIFIED | Manifest with 2 valid + 1 invalid endpoint (api/broken with empty accepts). Tests majority-pass logic |
+| `packages/x402lint/test/cli.test.ts` | CLI tests covering manifest mode | ✓ VERIFIED | 30 test cases total (15 describe blocks). Covers manifest detection, --json, --quiet, --strict, flag composition, stdin |
+| `packages/x402lint/dist/cli.mjs` | Built CLI binary | ✓ VERIFIED | Built successfully. Executable with node. Help and version flags work |
 | `cli-table3` devDependency | For summary table rendering | ✓ VERIFIED | Installed in package.json devDependencies: "cli-table3": "^0.6.5" |
 
 **All artifacts:** VERIFIED (10/10)
@@ -72,11 +72,11 @@ score: 5/5 success criteria verified
 **None.**
 
 Scanned files:
-- `packages/x402check/src/cli/args.ts` — No TODO/FIXME/placeholder patterns
-- `packages/x402check/src/cli/fetch.ts` — No TODO/FIXME/placeholder patterns
-- `packages/x402check/src/cli/detect.ts` — No TODO/FIXME/placeholder patterns
-- `packages/x402check/src/cli/format.ts` — No TODO/FIXME/placeholder patterns
-- `packages/x402check/src/cli.ts` — No TODO/FIXME/placeholder patterns
+- `packages/x402lint/src/cli/args.ts` — No TODO/FIXME/placeholder patterns
+- `packages/x402lint/src/cli/fetch.ts` — No TODO/FIXME/placeholder patterns
+- `packages/x402lint/src/cli/detect.ts` — No TODO/FIXME/placeholder patterns
+- `packages/x402lint/src/cli/format.ts` — No TODO/FIXME/placeholder patterns
+- `packages/x402lint/src/cli.ts` — No TODO/FIXME/placeholder patterns
 
 console.log calls in cli.ts are intentional (user-facing output), not anti-patterns.
 
@@ -84,8 +84,8 @@ console.log calls in cli.ts are intentional (user-facing output), not anti-patte
 
 All 5 phase success criteria from ROADMAP.md are verified:
 
-1. ✓ **`npx x402check manifest.json` auto-detects manifest**: Manual test confirms detection message "Detected: manifest with 2 endpoints", summary table with Status/Endpoint/Errors/Warnings columns, per-endpoint details, and cross-endpoint issues section
-2. ✓ **`npx x402check config.json` detects single config with no regression**: Manual test with valid-v2-base.json shows "Detected: v2 config" + existing output format unchanged. All 410 tests pass (including pre-existing CLI tests)
+1. ✓ **`npx x402lint manifest.json` auto-detects manifest**: Manual test confirms detection message "Detected: manifest with 2 endpoints", summary table with Status/Endpoint/Errors/Warnings columns, per-endpoint details, and cross-endpoint issues section
+2. ✓ **`npx x402lint config.json` detects single config with no regression**: Manual test with valid-v2-base.json shows "Detected: v2 config" + existing output format unchanged. All 410 tests pass (including pre-existing CLI tests)
 3. ✓ **`--json` outputs pure JSON parseable by JSON.parse() with no ANSI codes**: JSON output verified parseable with JSON.parse(). ANSI code check: grep for `\x1b` returns 0 matches. Works for both manifests and single configs
 4. ✓ **`--quiet` suppresses output and communicates via exit code only**: --quiet output verified as empty string. Exit codes tested: 0 for valid manifest, 1 for majority fail, 2 for input errors (file not found)
 5. ✓ **All flag combinations compose correctly**: --strict --json verified (outputs strict-mode JSON with warnings promoted to errors, valid: false). --quiet takes precedence over --json (empty output). --strict --quiet verified (exit code reflects strict validation)
@@ -122,8 +122,8 @@ All manual tests executed successfully:
 
 ### Build Verification
 
-- `pnpm --filter x402check build` → Succeeds, generates dist/cli.mjs ✓
-- `pnpm --filter x402check test` → All 410 tests pass ✓
+- `pnpm --filter x402lint build` → Succeeds, generates dist/cli.mjs ✓
+- `pnpm --filter x402lint test` → All 410 tests pass ✓
 - CLI binary executable and functional ✓
 
 ## Summary

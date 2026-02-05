@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="../../assets/banner.png" alt="x402check — Lint for x402" width="100%" />
+  <img src="../../assets/banner.png" alt="x402lint — Lint for x402" width="100%" />
 </p>
 
-# x402check
+# x402lint
 
 Validate [x402](https://www.x402.org/) payment configurations. Works in Node, browsers, and edge runtimes — zero dependencies.
 
-**[x402check.com](https://www.x402check.com)** — try it in the browser
+**[x402lint.com](https://www.x402lint.com)** — try it in the browser
 
 ## Install
 
 ```
-npm i x402check
+npm i x402lint
 ```
 
 ## CLI
@@ -19,10 +19,10 @@ npm i x402check
 Validate configs from the command line — no code required.
 
 ```
-npx x402check '{"x402Version":2,"accepts":[...]}'
-npx x402check config.json
-npx x402check https://api.example.com/resource
-echo '...' | npx x402check
+npx x402lint '{"x402Version":2,"accepts":[...]}'
+npx x402lint config.json
+npx x402lint https://api.example.com/resource
+echo '...' | npx x402lint
 ```
 
 Flags:
@@ -35,20 +35,20 @@ Flags:
 
 Exit codes: `0` valid, `1` invalid, `2` input error.
 
-Install globally with `npm i -g x402check` to use `x402check` directly.
+Install globally with `npm i -g x402lint` to use `x402lint` directly.
 
 ## Claude Skill
 
 Teach Claude Code to create and validate x402 configs:
 
 ```
-npx skills add https://github.com/rawgroundbeef/x402check --skill x402check
+npx skills add https://github.com/rawgroundbeef/x402lint --skill x402lint
 ```
 
 ## Quick start
 
 ```js
-import { validate } from 'x402check'
+import { validate } from 'x402lint'
 
 const result = validate({
   x402Version: 2,
@@ -75,7 +75,7 @@ result.normalized // canonical v2 config
 All-in-one: extracts config from an HTTP 402 response, validates it, and enriches with registry data (network names, asset symbols, decimals).
 
 ```js
-import { check } from 'x402check'
+import { check } from 'x402lint'
 
 const res = await fetch(url)
 const result = check({
@@ -149,7 +149,7 @@ const v2Config = normalize(v1Config)
 ### Address validation
 
 ```js
-import { validateAddress, validateEvmAddress, validateSolanaAddress } from 'x402check'
+import { validateAddress, validateEvmAddress, validateSolanaAddress } from 'x402lint'
 
 validateAddress(addr, 'eip155:8453', 'payTo')   // dispatches by network
 validateEvmAddress(addr, 'payTo')                // EIP-55 checksum verification
@@ -162,7 +162,7 @@ validateSolanaAddress(addr, 'payTo')             // base58, 32-byte decode check
 import {
   isKnownNetwork, getNetworkInfo, getCanonicalNetwork,
   isKnownAsset, getAssetInfo, isValidCaip2
-} from 'x402check'
+} from 'x402lint'
 
 isValidCaip2('eip155:8453')           // true
 getCanonicalNetwork('base')           // 'eip155:8453'

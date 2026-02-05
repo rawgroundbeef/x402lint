@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-CLI command (`npx x402check`) that accepts a manifest file or URL and displays per-endpoint validation results in the terminal. Auto-detects manifest vs single-config input. Supports `--json`, `--quiet`, `--strict`, and flag composition. Website integration is Phase 15; publish is Phase 16.
+CLI command (`npx x402lint`) that accepts a manifest file or URL and displays per-endpoint validation results in the terminal. Auto-detects manifest vs single-config input. Supports `--json`, `--quiet`, `--strict`, and flag composition. Website integration is Phase 15; publish is Phase 16.
 
 </domain>
 
@@ -32,7 +32,7 @@ CLI command (`npx x402check`) that accepts a manifest file or URL and displays p
 - Exit 2 for input errors (file not found, network error, invalid JSON) — distinct from validation failure exit code, with human-readable message
 
 ### Input sources
-- Accept file paths, HTTP(S) URLs, and stdin via dash convention (`x402check -`)
+- Accept file paths, HTTP(S) URLs, and stdin via dash convention (`x402lint -`)
 - Auto-detect file vs URL based on argument format
 - Follow HTTP redirects up to 5 hops, then fail
 - Support `--header` flag (repeatable) for custom HTTP headers when fetching URLs (e.g., `--header 'Authorization: Bearer xxx'`)

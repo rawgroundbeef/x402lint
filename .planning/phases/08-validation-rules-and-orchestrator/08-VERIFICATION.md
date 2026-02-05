@@ -30,21 +30,21 @@ score: 5/5 must-haves verified
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `packages/x402check/src/validation/rules/structure.ts` | L1 structure validation | VERIFIED | 63 lines, exports `validateStructure`, imports `parseInput`, `isRecord`, `detect` |
-| `packages/x402check/src/validation/rules/version.ts` | L2 version validation | VERIFIED | 43 lines, exports `validateVersion`, checks x402Version value |
-| `packages/x402check/src/validation/rules/fields.ts` | L3 field validation + URL check | VERIFIED | 151 lines, exports `validateFields`, `validateAccepts`, `validateResource` with INVALID_URL |
-| `packages/x402check/src/validation/rules/network.ts` | L4 CAIP-2 validation + fix suggestions | VERIFIED | 96 lines, exports `validateNetwork`, `validateAsset`, provides fix via `getCanonicalNetwork` |
-| `packages/x402check/src/validation/rules/amount.ts` | L4 amount + timeout validation | VERIFIED | 112 lines, exports `validateAmount`, `validateTimeout` with INVALID_TIMEOUT |
-| `packages/x402check/src/validation/rules/legacy.ts` | L5 legacy format warnings | VERIFIED | 45 lines, exports `validateLegacy`, warns for flat-legacy and v1 |
-| `packages/x402check/src/validation/rules/index.ts` | Barrel export | VERIFIED | 11 lines, re-exports all 10 functions + StructureResult type |
-| `packages/x402check/src/validation/orchestrator.ts` | validate() pipeline | VERIFIED | 199 lines, exports `validate` and `ValidationOptions`, never throws, strict mode |
-| `packages/x402check/src/validation/index.ts` | Updated barrel with validate | VERIFIED | Exports `validate`, `ValidationOptions`, and address validators |
-| `packages/x402check/src/index.ts` | SDK entry point with validate() | VERIFIED | Exports `validate` from `./validation` at line 20 |
-| `packages/x402check/src/types/errors.ts` | INVALID_URL + INVALID_TIMEOUT codes | VERIFIED | Both codes and messages present, satisfies `Record<ErrorCode, string>` |
-| `packages/x402check/test/validation/orchestrator.test.ts` | Orchestrator integration tests | VERIFIED | 564 lines, 46 tests covering all 5 levels + strict mode + edge cases |
-| `packages/x402check/test/integration.test.ts` | End-to-end fixture tests | VERIFIED | 452 lines, 18 tests with JSON fixtures, round-trips, error code exhaustive coverage |
-| `packages/x402check/test/validation/rules/*.test.ts` | 6 rule unit test files | VERIFIED | 60 tests across structure(8), version(4), fields(16), network(10), amount(16), legacy(6) |
-| `packages/x402check/test/fixtures/*.json` | 7 JSON fixture files | VERIFIED | valid-v2-base, valid-v2-solana, valid-v1, valid-flat, invalid-no-accepts, invalid-bad-network, real-world/coinbase-x402-sample |
+| `packages/x402lint/src/validation/rules/structure.ts` | L1 structure validation | VERIFIED | 63 lines, exports `validateStructure`, imports `parseInput`, `isRecord`, `detect` |
+| `packages/x402lint/src/validation/rules/version.ts` | L2 version validation | VERIFIED | 43 lines, exports `validateVersion`, checks x402Version value |
+| `packages/x402lint/src/validation/rules/fields.ts` | L3 field validation + URL check | VERIFIED | 151 lines, exports `validateFields`, `validateAccepts`, `validateResource` with INVALID_URL |
+| `packages/x402lint/src/validation/rules/network.ts` | L4 CAIP-2 validation + fix suggestions | VERIFIED | 96 lines, exports `validateNetwork`, `validateAsset`, provides fix via `getCanonicalNetwork` |
+| `packages/x402lint/src/validation/rules/amount.ts` | L4 amount + timeout validation | VERIFIED | 112 lines, exports `validateAmount`, `validateTimeout` with INVALID_TIMEOUT |
+| `packages/x402lint/src/validation/rules/legacy.ts` | L5 legacy format warnings | VERIFIED | 45 lines, exports `validateLegacy`, warns for flat-legacy and v1 |
+| `packages/x402lint/src/validation/rules/index.ts` | Barrel export | VERIFIED | 11 lines, re-exports all 10 functions + StructureResult type |
+| `packages/x402lint/src/validation/orchestrator.ts` | validate() pipeline | VERIFIED | 199 lines, exports `validate` and `ValidationOptions`, never throws, strict mode |
+| `packages/x402lint/src/validation/index.ts` | Updated barrel with validate | VERIFIED | Exports `validate`, `ValidationOptions`, and address validators |
+| `packages/x402lint/src/index.ts` | SDK entry point with validate() | VERIFIED | Exports `validate` from `./validation` at line 20 |
+| `packages/x402lint/src/types/errors.ts` | INVALID_URL + INVALID_TIMEOUT codes | VERIFIED | Both codes and messages present, satisfies `Record<ErrorCode, string>` |
+| `packages/x402lint/test/validation/orchestrator.test.ts` | Orchestrator integration tests | VERIFIED | 564 lines, 46 tests covering all 5 levels + strict mode + edge cases |
+| `packages/x402lint/test/integration.test.ts` | End-to-end fixture tests | VERIFIED | 452 lines, 18 tests with JSON fixtures, round-trips, error code exhaustive coverage |
+| `packages/x402lint/test/validation/rules/*.test.ts` | 6 rule unit test files | VERIFIED | 60 tests across structure(8), version(4), fields(16), network(10), amount(16), legacy(6) |
+| `packages/x402lint/test/fixtures/*.json` | 7 JSON fixture files | VERIFIED | valid-v2-base, valid-v2-solana, valid-v1, valid-flat, invalid-no-accepts, invalid-bad-network, real-world/coinbase-x402-sample |
 
 ### Key Link Verification
 

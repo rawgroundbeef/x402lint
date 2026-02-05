@@ -7,7 +7,7 @@ tags: [iife, cdn, jsdelivr, adapter-pattern, browser-bundle, caip-2]
 # Dependency graph
 requires:
   - phase: 09-build-pipeline
-    provides: IIFE bundle at dist/index.iife.js with window.x402Validate global
+    provides: IIFE bundle at dist/index.iife.js with window.x402Lint global
   - phase: 08-validation-rules
     provides: validate() orchestrator returning ValidationResult
 provides:
@@ -19,7 +19,7 @@ affects: [10-02 cleanup and example config updates]
 
 # Tech tracking
 tech-stack:
-  added: [jsdelivr CDN for x402check IIFE bundle]
+  added: [jsdelivr CDN for x402lint IIFE bundle]
   patterns: [adapter pattern for SDK-to-legacy-UI mapping, CAIP-2 reverse lookup]
 
 key-files:

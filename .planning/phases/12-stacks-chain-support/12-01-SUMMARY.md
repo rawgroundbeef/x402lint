@@ -15,18 +15,18 @@ tech-stack:
   patterns: [crypto-wrapper-pattern, network-aware-validation]
 key-files:
   created:
-    - packages/x402check/src/crypto/c32check.ts
-    - packages/x402check/src/validation/stacks-address.ts
-    - packages/x402check/test/validation/stacks-address.test.ts
+    - packages/x402lint/src/crypto/c32check.ts
+    - packages/x402lint/src/validation/stacks-address.ts
+    - packages/x402lint/test/validation/stacks-address.test.ts
   modified:
-    - packages/x402check/package.json
-    - packages/x402check/src/crypto/index.ts
-    - packages/x402check/src/types/errors.ts
-    - packages/x402check/src/registries/networks.ts
-    - packages/x402check/src/registries/simple-names.ts
-    - packages/x402check/src/validation/address.ts
-    - packages/x402check/test/validation/address.test.ts
-    - packages/x402check/test/integration.test.ts
+    - packages/x402lint/package.json
+    - packages/x402lint/src/crypto/index.ts
+    - packages/x402lint/src/types/errors.ts
+    - packages/x402lint/src/registries/networks.ts
+    - packages/x402lint/src/registries/simple-names.ts
+    - packages/x402lint/src/validation/address.ts
+    - packages/x402lint/test/validation/address.test.ts
+    - packages/x402lint/test/integration.test.ts
 decisions:
   c32check-dependency: "Use standalone c32check package (not @stacks/transactions) for minimal bundle overhead"
   version-byte-validation: "Validate version bytes against network - SP/SM only valid on stacks:1, ST/SN only on stacks:2147483648"
@@ -49,7 +49,7 @@ completed: 2026-02-04
 
 ## What Was Built
 
-Added complete Stacks blockchain address validation to x402check, matching the depth and quality of existing EVM and Solana chain support:
+Added complete Stacks blockchain address validation to x402lint, matching the depth and quality of existing EVM and Solana chain support:
 
 1. **c32check Integration**
    - Installed c32check@2.0.0 as devDependency for c32 encoding/decoding
@@ -170,17 +170,17 @@ None. Implementation is complete and production-ready.
 
 ```bash
 # Task 1: Install c32check and infrastructure
-pnpm add -D c32check --filter x402check
-pnpm tsc --noEmit --project packages/x402check
-pnpm build --filter x402check
+pnpm add -D c32check --filter x402lint
+pnpm tsc --noEmit --project packages/x402lint
+pnpm build --filter x402lint
 
 # Task 2: Implement validator and tests
-pnpm test --filter x402check
-pnpm build --filter x402check
+pnpm test --filter x402lint
+pnpm build --filter x402lint
 
 # Verification
-pnpm ls c32check --filter x402check
-ls -la packages/x402check/dist/index.iife.js
+pnpm ls c32check --filter x402lint
+ls -la packages/x402lint/dist/index.iife.js
 ```
 
 ## Test Results
@@ -211,9 +211,9 @@ New Stacks tests: 20+
 6. ✅ All 219 existing EVM/Solana tests still pass (zero regressions)
 
 ✅ **All 3 artifacts created:**
-1. ✅ `packages/x402check/src/crypto/c32check.ts` exports decodeC32Address
-2. ✅ `packages/x402check/src/validation/stacks-address.ts` exports validateStacksAddress
-3. ✅ `packages/x402check/src/registries/networks.ts` contains stacks:1 and stacks:2147483648
+1. ✅ `packages/x402lint/src/crypto/c32check.ts` exports decodeC32Address
+2. ✅ `packages/x402lint/src/validation/stacks-address.ts` exports validateStacksAddress
+3. ✅ `packages/x402lint/src/registries/networks.ts` contains stacks:1 and stacks:2147483648
 
 ✅ **All 3 key links verified:**
 1. ✅ address.ts → stacks-address.ts via `case 'stacks'` in dispatcher

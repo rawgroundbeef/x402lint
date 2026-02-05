@@ -28,11 +28,11 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/test/fixtures/valid-manifest.json
-    - packages/x402check/test/fixtures/invalid-manifest.json
+    - packages/x402lint/test/fixtures/valid-manifest.json
+    - packages/x402lint/test/fixtures/invalid-manifest.json
   modified:
-    - packages/x402check/test/cli.test.ts
-    - packages/x402check/src/cli/format.ts
+    - packages/x402lint/test/cli.test.ts
+    - packages/x402lint/src/cli/format.ts
 
 key-decisions:
   - "Bug fix: --quiet now takes precedence over --json in all formatters (formatValidationResult, formatCheckResult, formatManifestResult)"
@@ -74,10 +74,10 @@ Each task was committed atomically:
 2. **Task 2: Add manifest CLI tests to cli.test.ts** - `05ac517` (test)
 
 ## Files Created/Modified
-- `packages/x402check/test/fixtures/valid-manifest.json` - Test fixture with 2 valid endpoints for majority-pass testing
-- `packages/x402check/test/fixtures/invalid-manifest.json` - Test fixture with 2 valid + 1 invalid endpoint for edge case testing
-- `packages/x402check/test/cli.test.ts` - Added 13 new test cases for manifest mode (6 describe blocks)
-- `packages/x402check/src/cli/format.ts` - Fixed --quiet precedence in all 3 formatters
+- `packages/x402lint/test/fixtures/valid-manifest.json` - Test fixture with 2 valid endpoints for majority-pass testing
+- `packages/x402lint/test/fixtures/invalid-manifest.json` - Test fixture with 2 valid + 1 invalid endpoint for edge case testing
+- `packages/x402lint/test/cli.test.ts` - Added 13 new test cases for manifest mode (6 describe blocks)
+- `packages/x402lint/src/cli/format.ts` - Fixed --quiet precedence in all 3 formatters
 
 ## Decisions Made
 
@@ -100,7 +100,7 @@ Each task was committed atomically:
 - **Found during:** Task 2 (running CLI tests)
 - **Issue:** Test "--quiet takes precedence over --json" failed because --json was output even with --quiet flag. Current implementation checked args.json before args.quiet in all formatters.
 - **Fix:** Reordered checks in formatValidationResult, formatCheckResult, and formatManifestResult to check args.quiet first, then args.json. Updated docstrings to reflect precedence.
-- **Files modified:** packages/x402check/src/cli/format.ts (3 functions)
+- **Files modified:** packages/x402lint/src/cli/format.ts (3 functions)
 - **Verification:** All 410 tests pass including the precedence test
 - **Committed in:** 05ac517 (Task 2 commit)
 

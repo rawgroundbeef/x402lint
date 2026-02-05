@@ -1,6 +1,6 @@
 # Architecture Integration — v3.0
 
-**Project:** x402check v3.0 milestone
+**Project:** x402lint v3.0 milestone
 **Researched:** 2026-02-04
 **Confidence:** HIGH
 
@@ -18,7 +18,7 @@ The v2.0 architecture is well-designed for extension. All 5 new features integra
 ## Current Architecture Baseline
 
 ```
-packages/x402check/src/
+packages/x402lint/src/
 +-- index.ts              # Public API exports
 +-- cli.ts                # CLI entry (separate build)
 +-- types/                # TypeScript type definitions
@@ -137,11 +137,11 @@ Current `src/validation/rules/extensions.ts` already validates bazaar extensions
 
 Detection-first rendering — no framework needed:
 ```javascript
-const format = x402Validate.detect(inputText)
+const format = x402Lint.detect(inputText)
 if (format === 'manifest') {
-  renderManifestResult(x402Validate.validateManifest(inputText))
+  renderManifestResult(x402Lint.validateManifest(inputText))
 } else {
-  renderResult(x402Validate.validate(inputText))
+  renderResult(x402Lint.validate(inputText))
 }
 ```
 

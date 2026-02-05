@@ -1,6 +1,6 @@
 # Pitfalls Research — v3.0
 
-**Project:** x402check v3.0 milestone
+**Project:** x402lint v3.0 milestone
 **Researched:** 2026-02-04
 **Confidence:** HIGH
 
@@ -28,7 +28,7 @@
 
 **Prevention:**
 - CLI output is `dist/cli.mjs` (already configured correctly)
-- Test `npx x402check` on macOS/Linux
+- Test `npx x402lint` on macOS/Linux
 - Verify `bin` field points to `.mjs` file
 - tsdown adds shebang automatically
 

@@ -31,10 +31,10 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/validation/orchestrator.ts
+    - packages/x402lint/src/validation/orchestrator.ts
   modified:
-    - packages/x402check/src/validation/index.ts
-    - packages/x402check/src/index.ts
+    - packages/x402lint/src/validation/index.ts
+    - packages/x402lint/src/index.ts
 
 key-decisions:
   - "Separate runPipeline() from validate() for clean try/catch boundary"
@@ -64,7 +64,7 @@ completed: 2026-01-29
 ## Accomplishments
 - Created validate() orchestrator composing 10 rule validators into a sequential pipeline
 - Implemented strict mode that promotes all warnings to errors for CI/CD use cases
-- Wired validate() into SDK entry point -- `import { validate } from 'x402check'` now works
+- Wired validate() into SDK entry point -- `import { validate } from 'x402lint'` now works
 - Never-throw safety net ensures all invalid inputs produce structured error results
 
 ## Task Commits
@@ -75,9 +75,9 @@ Each task was committed atomically:
 2. **Task 2: Wire validate() into barrel exports and SDK entry point** - `0450a4c` (feat)
 
 ## Files Created/Modified
-- `packages/x402check/src/validation/orchestrator.ts` - validate() orchestrator composing all rule modules into pipeline
-- `packages/x402check/src/validation/index.ts` - Updated barrel export with validate and ValidationOptions
-- `packages/x402check/src/index.ts` - Updated SDK entry point exporting validate()
+- `packages/x402lint/src/validation/orchestrator.ts` - validate() orchestrator composing all rule modules into pipeline
+- `packages/x402lint/src/validation/index.ts` - Updated barrel export with validate and ValidationOptions
+- `packages/x402lint/src/index.ts` - Updated SDK entry point exporting validate()
 
 ## Decisions Made
 - Separated runPipeline() from validate() for clean try/catch boundary -- keeps the safety net code minimal and the pipeline logic readable

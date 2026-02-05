@@ -256,7 +256,7 @@ stdin.on('data', (chunk) => chunks.push(chunk));
 **What goes wrong:** Windows ignores shebang, requires explicit `node` invocation
 **Why it happens:** Shebang is Unix convention; Windows npm handles it via wrapper scripts
 **How to avoid:** npm automatically creates `.cmd` wrapper on Windows when `bin` field in package.json points to `.mjs` file. Trust npm's bin handling; test on Windows via WSL or CI.
-**Warning signs:** Works on macOS/Linux but fails on Windows, or requires `node dist/cli.mjs` instead of `x402check`
+**Warning signs:** Works on macOS/Linux but fails on Windows, or requires `node dist/cli.mjs` instead of `x402lint`
 
 ## Code Examples
 

@@ -46,7 +46,7 @@ describe('cli --help', () => {
   test('prints help text and exits 0', () => {
     const { stdout, exitCode } = run(['--help'])
     expect(exitCode).toBe(0)
-    expect(stdout).toContain('x402check')
+    expect(stdout).toContain('x402lint')
     expect(stdout).toContain('Usage:')
     expect(stdout).toContain('Flags:')
     expect(stdout).toContain('Exit codes:')

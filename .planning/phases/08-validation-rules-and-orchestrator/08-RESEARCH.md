@@ -47,7 +47,7 @@ No new dependencies needed. All validation logic uses existing TypeScript, built
 
 ### Recommended Project Structure
 ```
-packages/x402check/src/
+packages/x402lint/src/
 ├── validation/
 │   ├── rules/
 │   │   ├── structure.ts      # Level 1: JSON parsing, format detection
@@ -190,7 +190,7 @@ export function validate(
 **Example:**
 ```typescript
 // Source: Validation pattern from FluentValidation and Zod approaches
-// packages/x402check/src/validation/rules/fields.ts
+// packages/x402lint/src/validation/rules/fields.ts
 
 import type { AcceptsEntry, ValidationIssue } from '../../types'
 import { ErrorCode, ErrorMessages } from '../../types/errors'

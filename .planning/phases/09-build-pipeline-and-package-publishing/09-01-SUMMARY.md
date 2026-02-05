@@ -27,8 +27,8 @@ tech-stack:
 key-files:
   created: []
   modified:
-    - "packages/x402check/tsdown.config.ts"
-    - "packages/x402check/package.json"
+    - "packages/x402lint/tsdown.config.ts"
+    - "packages/x402lint/package.json"
 
 key-decisions:
   - "Use IIFE format instead of UMD (tsdown supports IIFE natively, functionally equivalent for browser script tags)"
@@ -74,8 +74,8 @@ Each task was committed atomically:
 2. **Task 2: Build SDK and verify all output artifacts** - `62b2eee` (feat)
 
 ## Files Created/Modified
-- `packages/x402check/tsdown.config.ts` - Multi-format array config: ESM+CJS (neutral, dts, sourcemaps) + IIFE (browser, minified, globalName x402Validate)
-- `packages/x402check/package.json` - Split exports with per-condition types, files whitelist, sideEffects: false, publint devDep, prepublishOnly script
+- `packages/x402lint/tsdown.config.ts` - Multi-format array config: ESM+CJS (neutral, dts, sourcemaps) + IIFE (browser, minified, globalName x402Lint)
+- `packages/x402lint/package.json` - Split exports with per-condition types, files whitelist, sideEffects: false, publint devDep, prepublishOnly script
 - `pnpm-lock.yaml` - Updated with publint dependency
 
 ## Build Output Summary
@@ -90,7 +90,7 @@ Each task was committed atomically:
 
 ## Decisions Made
 
-1. **IIFE instead of UMD**: tsdown v0.20.1 supports IIFE format natively. UMD and IIFE are functionally equivalent for browser `<script>` tags -- both assign to a global variable (`window.x402Validate`).
+1. **IIFE instead of UMD**: tsdown v0.20.1 supports IIFE format natively. UMD and IIFE are functionally equivalent for browser `<script>` tags -- both assign to a global variable (`window.x402Lint`).
 
 2. **ESM output as `.js` not `.mjs`**: Since the package declares `"type": "module"`, Node.js interprets `.js` files as ESM. tsdown follows this convention. No `.mjs` extension needed.
 
@@ -106,7 +106,7 @@ Each task was committed atomically:
 - **Found during:** Task 2 (build verification)
 - **Issue:** Plan specified `./dist/index.mjs` for ESM output, but tsdown produces `./dist/index.js` when package type is "module"
 - **Fix:** Updated package.json module and exports.import to reference `./dist/index.js`
-- **Files modified:** packages/x402check/package.json
+- **Files modified:** packages/x402lint/package.json
 - **Verification:** ESM import test passes, publint validates
 - **Committed in:** `62b2eee` (Task 2 commit)
 
@@ -114,13 +114,13 @@ Each task was committed atomically:
 - **Found during:** Task 2 (build verification)
 - **Issue:** Plan expected `index.umd.js` but tsdown IIFE format outputs `index.iife.js`
 - **Fix:** No code change needed -- IIFE is functionally equivalent, tests updated to use actual filename
-- **Verification:** IIFE test passes in vm context with window.x402Validate
+- **Verification:** IIFE test passes in vm context with window.x402Lint
 
 **3. [Rule 2 - Missing Critical] publint types warning for CJS consumers**
 - **Found during:** Task 2 (publint validation)
 - **Issue:** Single `types` field in exports was ambiguous for `require` condition consumers
 - **Fix:** Split into nested `import.types` and `require.types` conditions pointing to `.d.ts` and `.d.cts` respectively
-- **Files modified:** packages/x402check/package.json
+- **Files modified:** packages/x402lint/package.json
 - **Verification:** publint reports "All good!" (zero errors, zero warnings)
 - **Committed in:** `62b2eee` (Task 2 commit)
 
@@ -133,7 +133,7 @@ Each task was committed atomically:
 
 - **IIFE bundle size (26.78KB) exceeds 15KB plan target**: The vendored crypto libraries (keccak256, base58, bech32) account for the majority of the bundle. This is an inherent tradeoff of the zero-runtime-deps architecture decision. The gzipped size (9.06KB) is well within acceptable limits for browser delivery. No action taken -- removing crypto would break address validation.
 
-- **IIFE global scope testing in Node.js**: The `var x402Validate = (function(e){...})({})` pattern creates a module-scoped variable in Node.js CJS, not a global. Used Node.js `vm.runInContext()` to simulate browser global scope for testing. In actual browser `<script>` tags, `var` at top level correctly becomes `window.x402Validate`.
+- **IIFE global scope testing in Node.js**: The `var x402Lint = (function(e){...})({})` pattern creates a module-scoped variable in Node.js CJS, not a global. Used Node.js `vm.runInContext()` to simulate browser global scope for testing. In actual browser `<script>` tags, `var` at top level correctly becomes `window.x402Lint`.
 
 ## User Setup Required
 
@@ -142,7 +142,7 @@ None - no external service configuration required.
 ## Next Phase Readiness
 - Build pipeline complete and validated
 - dist/ outputs ready for Phase 10 website integration (IIFE filename is `index.iife.js`)
-- Package is publish-ready: `pnpm --filter x402check prepublishOnly` runs tests + build + publint
+- Package is publish-ready: `pnpm --filter x402lint prepublishOnly` runs tests + build + publint
 - No blockers for Phase 10
 
 ---

@@ -23,9 +23,9 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/test/manifest-validation.test.ts
+    - packages/x402lint/test/manifest-validation.test.ts
   modified:
-    - packages/x402check/test/integration.test.ts
+    - packages/x402lint/test/integration.test.ts
 
 key-decisions:
   - "Use valid checksummed EVM addresses in test helpers to ensure per-endpoint validation passes cleanly"
@@ -66,8 +66,8 @@ Each task was committed atomically:
 2. **Task 2: Update integration test error code coverage** - `7a3177f` (test)
 
 ## Files Created/Modified
-- `packages/x402check/test/manifest-validation.test.ts` - 36 test cases covering all validateManifest scenarios
-- `packages/x402check/test/integration.test.ts` - Clarified manifest error code coverage in expectedUnreachableFromPipeline
+- `packages/x402lint/test/manifest-validation.test.ts` - 36 test cases covering all validateManifest scenarios
+- `packages/x402lint/test/integration.test.ts` - Clarified manifest error code coverage in expectedUnreachableFromPipeline
 
 ## Test Coverage Details
 

@@ -39,16 +39,16 @@ re_verification: false
 
 | Artifact | Expected | Exists | Substantive | Wired | Status |
 |----------|----------|--------|-------------|-------|--------|
-| `packages/x402check/src/types/config.ts` | V2Config, V1Config, FlatLegacyConfig types | ✓ | ✓ (86+ lines, full interfaces) | ✓ (imported in detection, tests) | ✓ VERIFIED |
-| `packages/x402check/src/types/errors.ts` | ErrorCode const, ErrorMessages mapping | ✓ | ✓ (86 lines, 27 codes, all messages) | ✓ (imported in tests, exported from index) | ✓ VERIFIED |
-| `packages/x402check/src/types/parse-input.ts` | parseInput utility | ✓ | ✓ (substantive JSON parsing logic) | ✓ (used by detect and normalize) | ✓ VERIFIED |
-| `packages/x402check/src/detection/detect.ts` | detect() function | ✓ | ✓ (32 lines, complete logic) | ✓ (exported, tested, used by normalize) | ✓ VERIFIED |
-| `packages/x402check/src/detection/normalize.ts` | normalize() with format transformers | ✓ | ✓ (217 lines, all 3 transformers) | ✓ (exported, tested, calls detect + registries) | ✓ VERIFIED |
-| `packages/x402check/src/detection/guards.ts` | Type guard functions | ✓ | ✓ (substantive type guards) | ✓ (used by detect.ts) | ✓ VERIFIED |
-| `packages/x402check/src/registries/networks.ts` | KNOWN_NETWORKS, CAIP-2 validation | ✓ | ✓ (74 lines, 11 networks, helpers) | ✓ (imported by normalize, tests) | ✓ VERIFIED |
-| `packages/x402check/src/registries/assets.ts` | KNOWN_ASSETS registry | ✓ | ✓ (4 USDC entries, lookup helpers) | ✓ (exported, tested) | ✓ VERIFIED |
-| `packages/x402check/src/registries/simple-names.ts` | Simple name mapping | ✓ | ✓ (11 mappings, getCanonicalNetwork) | ✓ (used by normalize for legacy format) | ✓ VERIFIED |
-| `packages/x402check/src/index.ts` | Package entry point | ✓ | ✓ (18 lines, exports all modules) | ✓ (tests import from it) | ✓ VERIFIED |
+| `packages/x402lint/src/types/config.ts` | V2Config, V1Config, FlatLegacyConfig types | ✓ | ✓ (86+ lines, full interfaces) | ✓ (imported in detection, tests) | ✓ VERIFIED |
+| `packages/x402lint/src/types/errors.ts` | ErrorCode const, ErrorMessages mapping | ✓ | ✓ (86 lines, 27 codes, all messages) | ✓ (imported in tests, exported from index) | ✓ VERIFIED |
+| `packages/x402lint/src/types/parse-input.ts` | parseInput utility | ✓ | ✓ (substantive JSON parsing logic) | ✓ (used by detect and normalize) | ✓ VERIFIED |
+| `packages/x402lint/src/detection/detect.ts` | detect() function | ✓ | ✓ (32 lines, complete logic) | ✓ (exported, tested, used by normalize) | ✓ VERIFIED |
+| `packages/x402lint/src/detection/normalize.ts` | normalize() with format transformers | ✓ | ✓ (217 lines, all 3 transformers) | ✓ (exported, tested, calls detect + registries) | ✓ VERIFIED |
+| `packages/x402lint/src/detection/guards.ts` | Type guard functions | ✓ | ✓ (substantive type guards) | ✓ (used by detect.ts) | ✓ VERIFIED |
+| `packages/x402lint/src/registries/networks.ts` | KNOWN_NETWORKS, CAIP-2 validation | ✓ | ✓ (74 lines, 11 networks, helpers) | ✓ (imported by normalize, tests) | ✓ VERIFIED |
+| `packages/x402lint/src/registries/assets.ts` | KNOWN_ASSETS registry | ✓ | ✓ (4 USDC entries, lookup helpers) | ✓ (exported, tested) | ✓ VERIFIED |
+| `packages/x402lint/src/registries/simple-names.ts` | Simple name mapping | ✓ | ✓ (11 mappings, getCanonicalNetwork) | ✓ (used by normalize for legacy format) | ✓ VERIFIED |
+| `packages/x402lint/src/index.ts` | Package entry point | ✓ | ✓ (18 lines, exports all modules) | ✓ (tests import from it) | ✓ VERIFIED |
 
 ### Key Link Verification
 

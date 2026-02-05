@@ -18,7 +18,7 @@ export default defineConfig([
     entry: ['./src/index.ts'],
     format: ['iife'],
     platform: 'browser',
-    globalName: 'x402Validate',
+    globalName: 'x402Lint',
     target: ['es2020'],
     minify: true,
     sourcemap: false,

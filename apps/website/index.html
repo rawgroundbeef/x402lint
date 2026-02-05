@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>x402check — Validate x402 Payment Configs</title>
+  <title>x402lint — Validate x402 Payment Configs</title>
   <meta name="description" content="Lint for x402. Validate and create x402 payment configurations — zero dependencies.">
-  <meta property="og:title" content="x402check — Lint for x402">
+  <meta property="og:title" content="x402lint — Lint for x402">
   <meta property="og:description" content="Validate and create x402 payment configurations — zero dependencies.">
-  <meta property="og:image" content="https://x402check.com/og.png">
-  <meta property="og:url" content="https://x402check.com">
+  <meta property="og:image" content="https://x402lint.com/og.png">
+  <meta property="og:url" content="https://x402lint.com">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="x402check — Lint for x402">
+  <meta name="twitter:title" content="x402lint — Lint for x402">
   <meta name="twitter:description" content="Validate and create x402 payment configurations — zero dependencies.">
-  <meta name="twitter:image" content="https://x402check.com/og.png">
+  <meta name="twitter:image" content="https://x402lint.com/og.png">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -96,14 +96,14 @@
       color: var(--text-primary);
     }
 
-    .logo-check {
+    .logo-lint {
       background: linear-gradient(135deg, var(--accent), #00b377);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    html[data-theme="light"] .logo-check {
+    html[data-theme="light"] .logo-lint {
       background: linear-gradient(135deg, var(--accent), #00b377);
       -webkit-background-clip: text;
       background-clip: text;
@@ -1394,7 +1394,7 @@
   <script>
     // Apply theme before first paint to prevent flash
     (function() {
-      var saved = localStorage.getItem('x402check-theme');
+      var saved = localStorage.getItem('x402lint-theme');
       if (saved) {
         document.documentElement.setAttribute('data-theme', saved);
       } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
@@ -1405,10 +1405,10 @@
 </head>
 <body>
   <div class="top-nav">
-    <a class="nav-icon" href="https://x.com/x402check" target="_blank" rel="noopener" aria-label="X (Twitter)">
+    <a class="nav-icon" href="https://x.com/x402lint" target="_blank" rel="noopener" aria-label="X (Twitter)">
       <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
-    <a class="nav-icon" href="https://github.com/rawgroundbeef/x402check" target="_blank" rel="noopener" aria-label="GitHub">
+    <a class="nav-icon" href="https://github.com/rawgroundbeef/x402lint" target="_blank" rel="noopener" aria-label="GitHub">
       <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
     </a>
     <button class="nav-icon theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
@@ -1435,7 +1435,7 @@
         <span class="logo-icon">
           <svg width="32" height="32" viewBox="0 0 89 89" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="89" height="89" rx="16" fill="#00D992"/><path d="M31 45L39.6786 54L58 35" stroke="white" stroke-width="11.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span class="logo-402">x402</span><span class="logo-check">check</span>
+        <span class="logo-402">x402</span><span class="logo-lint">lint</span>
       </div>
       <p class="tagline">Lint for x402</p>
     </header>
@@ -1545,24 +1545,24 @@
           <div class="integration-header"><span class="integration-icon">📦</span><span class="integration-title">npm</span></div>
           <div class="integration-desc">Validate configs in your app, server, or website</div>
           <div class="integration-cta">
-            <code>npm i x402check</code>
-            <button class="copy-btn" data-copy="npm i x402check" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <code>npm i x402lint</code>
+            <button class="copy-btn" data-copy="npm i x402lint" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
           </div>
         </div>
         <div class="integration-card available" id="cli-card">
           <div class="integration-header"><span class="integration-icon">&gt;_</span><span class="integration-title">CLI</span></div>
           <div class="integration-desc">Check endpoints from your terminal</div>
           <div class="integration-cta">
-            <code>npx x402check</code>
-            <button class="copy-btn" data-copy="npx x402check" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <code>npx x402lint</code>
+            <button class="copy-btn" data-copy="npx x402lint" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
           </div>
         </div>
         <div class="integration-card available" id="skill-card">
           <div class="integration-header"><span class="integration-icon">🤖</span><span class="integration-title">Claude Skill</span></div>
           <div class="integration-desc">Teach Claude to create valid x402 configs</div>
           <div class="integration-cta">
-            <code>npx skills add --skill x402check</code>
-            <button class="copy-btn" data-copy="npx skills add https://github.com/rawgroundbeef/x402check --skill x402check" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+            <code>npx skills add --skill x402lint</code>
+            <button class="copy-btn" data-copy="npx skills add https://github.com/rawgroundbeef/x402lint --skill x402lint" aria-label="Copy"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
           </div>
         </div>
       </div>
@@ -1715,7 +1715,7 @@
         <div class="faq-answer">
           <strong>Chains:</strong> <code>base</code> (eip155:8453), <code>solana</code> (solana:5eykt...), <code>base-sepolia</code>, <code>solana-devnet</code>, <code>avalanche</code>, and more. Networks use <a href="https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-2.md" target="_blank" rel="noopener">CAIP-2</a> identifiers internally.<br><br>
           <strong>Formats:</strong> Three formats are supported: Flat (legacy), v1 (accepts), and v2 (canonical). All work, but v2 is recommended for new endpoints.<br><br>
-          Powered by the <a href="https://github.com/rawgroundbeef/x402check.com" target="_blank" rel="noopener">x402check SDK</a>.
+          Powered by the <a href="https://github.com/rawgroundbeef/x402lint.com" target="_blank" rel="noopener">x402lint SDK</a>.
         </div>
       </details>
 
@@ -1766,7 +1766,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      Made by <a href="https://x.com/rawgroundbeef" target="_blank" rel="noopener">@rawgroundbeef</a> &nbsp;&middot;&nbsp; <a href="https://github.com/rawgroundbeef/x402check.com" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp; Powered by <a href="https://openfacilitator.io" target="_blank" rel="noopener">OpenFacilitator</a>
+      Made by <a href="https://x.com/rawgroundbeef" target="_blank" rel="noopener">@rawgroundbeef</a> &nbsp;&middot;&nbsp; <a href="https://github.com/rawgroundbeef/x402lint.com" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp; Powered by <a href="https://openfacilitator.io" target="_blank" rel="noopener">OpenFacilitator</a>
     </footer>
   </div>
 
@@ -1777,12 +1777,12 @@
       var isLight = document.documentElement.getAttribute('data-theme') === 'light';
       var next = isLight ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('x402check-theme', next);
+      localStorage.setItem('x402lint-theme', next);
     });
   </script>
 
   <!-- Scripts: SDK IIFE bundle + input handler with adapter -->
-  <script src="x402check.iife.js"></script>
+  <script src="x402lint.iife.js"></script>
   <script src="input.js"></script>
 
   <script>
@@ -2148,7 +2148,7 @@
     function showV2Equivalent() {
       try {
         const config = JSON.parse(inputEl.value);
-        const normalized = window.x402Validate.normalize(config);
+        const normalized = window.x402Lint.normalize(config);
         if (normalized) {
           inputEl.value = JSON.stringify(normalized, null, 2);
           validateBtn.click();

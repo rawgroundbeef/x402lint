@@ -7,7 +7,7 @@ tags: [typescript, error-codes, validation, type-system, json-parsing]
 # Dependency graph
 requires:
   - phase: 05-repository-restructuring
-    provides: Monorepo structure with x402check package and shared tsconfig
+    provides: Monorepo structure with x402lint package and shared tsconfig
 provides:
   - Complete TypeScript type system for all x402 config formats (v2, v1, flat-legacy)
   - ErrorCode vocabulary (27 codes) with human-readable messages
@@ -26,14 +26,14 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/types/config.ts
-    - packages/x402check/src/types/validation.ts
-    - packages/x402check/src/types/errors.ts
-    - packages/x402check/src/types/parse-input.ts
-    - packages/x402check/src/types/index.ts
-    - packages/x402check/test/types.test.ts
+    - packages/x402lint/src/types/config.ts
+    - packages/x402lint/src/types/validation.ts
+    - packages/x402lint/src/types/errors.ts
+    - packages/x402lint/src/types/parse-input.ts
+    - packages/x402lint/src/types/index.ts
+    - packages/x402lint/test/types.test.ts
   modified:
-    - packages/x402check/src/index.ts
+    - packages/x402lint/src/index.ts
 
 key-decisions:
   - "27 error codes cover structure, version, accepts, fields, addresses, and warnings"
@@ -53,7 +53,7 @@ completed: 2026-01-29
 
 # Phase 6 Plan 01: Types, Error Vocabulary, and Input Parsing Summary
 
-**Complete type system with 27 error codes, config format types (v2/v1/flat-legacy), and JSON parsing utility for x402check SDK**
+**Complete type system with 27 error codes, config format types (v2/v1/flat-legacy), and JSON parsing utility for x402lint SDK**
 
 ## Performance
 
@@ -78,13 +78,13 @@ Each task was committed atomically:
 2. **Task 2: Input parsing utility and package entry point** - `ab1a1bc` (feat)
 
 ## Files Created/Modified
-- `packages/x402check/src/types/config.ts` - V2Config, V1Config, FlatLegacyConfig, NormalizedConfig, AcceptsEntry, Resource interfaces
-- `packages/x402check/src/types/validation.ts` - ValidationResult, ValidationIssue, ParsedInput, Severity types
-- `packages/x402check/src/types/errors.ts` - ErrorCode const object (27 codes) and ErrorMessages with type-safe mapping
-- `packages/x402check/src/types/parse-input.ts` - parseInput(string | object) utility with JSON parsing
-- `packages/x402check/src/types/index.ts` - Barrel re-export of all type modules
-- `packages/x402check/src/index.ts` - Activated type system exports from package entry point
-- `packages/x402check/test/types.test.ts` - Comprehensive tests for ErrorCode, ErrorMessages, parseInput
+- `packages/x402lint/src/types/config.ts` - V2Config, V1Config, FlatLegacyConfig, NormalizedConfig, AcceptsEntry, Resource interfaces
+- `packages/x402lint/src/types/validation.ts` - ValidationResult, ValidationIssue, ParsedInput, Severity types
+- `packages/x402lint/src/types/errors.ts` - ErrorCode const object (27 codes) and ErrorMessages with type-safe mapping
+- `packages/x402lint/src/types/parse-input.ts` - parseInput(string | object) utility with JSON parsing
+- `packages/x402lint/src/types/index.ts` - Barrel re-export of all type modules
+- `packages/x402lint/src/index.ts` - Activated type system exports from package entry point
+- `packages/x402lint/test/types.test.ts` - Comprehensive tests for ErrorCode, ErrorMessages, parseInput
 
 ## Decisions Made
 

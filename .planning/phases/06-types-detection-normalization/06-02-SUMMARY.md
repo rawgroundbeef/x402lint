@@ -27,13 +27,13 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/detection/guards.ts
-    - packages/x402check/src/detection/detect.ts
-    - packages/x402check/src/detection/normalize.ts
-    - packages/x402check/src/detection/index.ts
-    - packages/x402check/test/detection.test.ts
+    - packages/x402lint/src/detection/guards.ts
+    - packages/x402lint/src/detection/detect.ts
+    - packages/x402lint/src/detection/normalize.ts
+    - packages/x402lint/src/detection/index.ts
+    - packages/x402lint/test/detection.test.ts
   modified:
-    - packages/x402check/src/index.ts
+    - packages/x402lint/src/index.ts
 
 key-decisions:
   - "Detection uses accepts array + x402Version value, not resource presence"
@@ -81,14 +81,14 @@ Each task was committed atomically:
 ## Files Created/Modified
 
 **Created:**
-- `packages/x402check/src/detection/guards.ts` - Runtime type guards for format detection
-- `packages/x402check/src/detection/detect.ts` - Main detect() function with ordered format checking
-- `packages/x402check/src/detection/normalize.ts` - Normalization pipeline with format transformers
-- `packages/x402check/src/detection/index.ts` - Barrel exports for detection module
-- `packages/x402check/test/detection.test.ts` - Comprehensive test suite (23 tests)
+- `packages/x402lint/src/detection/guards.ts` - Runtime type guards for format detection
+- `packages/x402lint/src/detection/detect.ts` - Main detect() function with ordered format checking
+- `packages/x402lint/src/detection/normalize.ts` - Normalization pipeline with format transformers
+- `packages/x402lint/src/detection/index.ts` - Barrel exports for detection module
+- `packages/x402lint/test/detection.test.ts` - Comprehensive test suite (23 tests)
 
 **Modified:**
-- `packages/x402check/src/index.ts` - Exported detect and normalize from package entry point
+- `packages/x402lint/src/index.ts` - Exported detect and normalize from package entry point
 
 ## Decisions Made
 
@@ -112,7 +112,7 @@ Each task was committed atomically:
 - **Found during:** Task 2 (Running tests)
 - **Issue:** Test "detects flat config with payments array" failed - guard required root-level network field but payments variant has nested network
 - **Fix:** Updated isFlatLegacyConfig to check for payments array first, making it sufficient for detection
-- **Files modified:** packages/x402check/src/detection/guards.ts
+- **Files modified:** packages/x402lint/src/detection/guards.ts
 - **Verification:** Test passes, payments array with nested chain/network fields correctly detects as flat-legacy
 - **Committed in:** 0f797d5 (Task 2 commit)
 

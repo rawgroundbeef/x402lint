@@ -26,13 +26,13 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/registries/networks.ts
-    - packages/x402check/src/registries/assets.ts
-    - packages/x402check/src/registries/simple-names.ts
-    - packages/x402check/src/registries/index.ts
-    - packages/x402check/test/registries.test.ts
+    - packages/x402lint/src/registries/networks.ts
+    - packages/x402lint/src/registries/assets.ts
+    - packages/x402lint/src/registries/simple-names.ts
+    - packages/x402lint/src/registries/index.ts
+    - packages/x402lint/test/registries.test.ts
   modified:
-    - packages/x402check/src/index.ts
+    - packages/x402lint/src/index.ts
 
 key-decisions:
   - "Store EVM addresses in lowercase for case-insensitive lookup"
@@ -81,14 +81,14 @@ Each task was committed atomically:
 ## Files Created/Modified
 
 **Created:**
-- `packages/x402check/src/registries/networks.ts` - KNOWN_NETWORKS registry, CAIP-2 validation, NetworkInfo type
-- `packages/x402check/src/registries/assets.ts` - KNOWN_ASSETS registry, AssetInfo type, case-insensitive lookup
-- `packages/x402check/src/registries/simple-names.ts` - SIMPLE_NAME_TO_CAIP2 mapping for legacy chain names
-- `packages/x402check/src/registries/index.ts` - Barrel export for all registry modules
-- `packages/x402check/test/registries.test.ts` - Comprehensive tests for all registry operations
+- `packages/x402lint/src/registries/networks.ts` - KNOWN_NETWORKS registry, CAIP-2 validation, NetworkInfo type
+- `packages/x402lint/src/registries/assets.ts` - KNOWN_ASSETS registry, AssetInfo type, case-insensitive lookup
+- `packages/x402lint/src/registries/simple-names.ts` - SIMPLE_NAME_TO_CAIP2 mapping for legacy chain names
+- `packages/x402lint/src/registries/index.ts` - Barrel export for all registry modules
+- `packages/x402lint/test/registries.test.ts` - Comprehensive tests for all registry operations
 
 **Modified:**
-- `packages/x402check/src/index.ts` - Added `export * from './registries'`
+- `packages/x402lint/src/index.ts` - Added `export * from './registries'`
 
 ## Decisions Made
 

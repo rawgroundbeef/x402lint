@@ -1,7 +1,7 @@
 {
   "name": "x402lint",
   "version": "0.3.1",
-  "description": "Validate x402 payment configurations (alias for x402check)",
+  "description": "Validate x402 payment configurations",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -27,9 +27,12 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsdown",
-    "test": "echo 'tests run via x402check'",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "tsc --noEmit",
-    "prepublishOnly": "pnpm build && publint"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm test && pnpm build && publint",
+    "postpublish": "cd ../x402check && npm version $npm_package_version --no-git-tag-version && pnpm build && npm publish --access public"
   },
   "keywords": [
     "x402",
@@ -42,7 +45,7 @@
     "type": "git",
     "url": "git+https://github.com/rawgroundbeef/x402check.com.git"
   },
-  "homepage": "https://www.x402check.com",
+  "homepage": "https://www.x402lint.com",
   "bugs": {
     "url": "https://github.com/rawgroundbeef/x402check.com/issues"
   },
@@ -50,8 +53,11 @@
     "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
     "@types/node": "^25.1.0",
+    "c32check": "^2.0.0",
+    "cli-table3": "^0.6.5",
     "publint": "^0.3.16",
     "tsdown": "^0.20.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

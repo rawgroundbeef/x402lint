@@ -27,15 +27,15 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/validation/rules/structure.ts
-    - packages/x402check/src/validation/rules/version.ts
-    - packages/x402check/src/validation/rules/fields.ts
-    - packages/x402check/src/validation/rules/network.ts
-    - packages/x402check/src/validation/rules/amount.ts
-    - packages/x402check/src/validation/rules/legacy.ts
-    - packages/x402check/src/validation/rules/index.ts
+    - packages/x402lint/src/validation/rules/structure.ts
+    - packages/x402lint/src/validation/rules/version.ts
+    - packages/x402lint/src/validation/rules/fields.ts
+    - packages/x402lint/src/validation/rules/network.ts
+    - packages/x402lint/src/validation/rules/amount.ts
+    - packages/x402lint/src/validation/rules/legacy.ts
+    - packages/x402lint/src/validation/rules/index.ts
   modified:
-    - packages/x402check/src/types/errors.ts
+    - packages/x402lint/src/types/errors.ts
 
 key-decisions:
   - "Pulled INVALID_URL and INVALID_TIMEOUT error codes into Task 1 to unblock fields.ts URL validation"
@@ -82,14 +82,14 @@ Each task was committed atomically:
 2. **Task 2: Create network, amount, legacy rule modules with barrel export** - `6e4ce37` (feat)
 
 ## Files Created/Modified
-- `packages/x402check/src/types/errors.ts` - Added INVALID_URL, INVALID_TIMEOUT codes and messages
-- `packages/x402check/src/validation/rules/structure.ts` - L1: JSON parse, object check, format detection
-- `packages/x402check/src/validation/rules/version.ts` - L2: x402Version value validation
-- `packages/x402check/src/validation/rules/fields.ts` - L3: Required field checks, accepts array, resource/URL validation
-- `packages/x402check/src/validation/rules/network.ts` - L4: CAIP-2 format, known network, known asset checks
-- `packages/x402check/src/validation/rules/amount.ts` - L4: Digit-only amount, zero check, timeout validation
-- `packages/x402check/src/validation/rules/legacy.ts` - L5: Legacy format warnings with upgrade suggestions
-- `packages/x402check/src/validation/rules/index.ts` - Barrel export for all rule modules
+- `packages/x402lint/src/types/errors.ts` - Added INVALID_URL, INVALID_TIMEOUT codes and messages
+- `packages/x402lint/src/validation/rules/structure.ts` - L1: JSON parse, object check, format detection
+- `packages/x402lint/src/validation/rules/version.ts` - L2: x402Version value validation
+- `packages/x402lint/src/validation/rules/fields.ts` - L3: Required field checks, accepts array, resource/URL validation
+- `packages/x402lint/src/validation/rules/network.ts` - L4: CAIP-2 format, known network, known asset checks
+- `packages/x402lint/src/validation/rules/amount.ts` - L4: Digit-only amount, zero check, timeout validation
+- `packages/x402lint/src/validation/rules/legacy.ts` - L5: Legacy format warnings with upgrade suggestions
+- `packages/x402lint/src/validation/rules/index.ts` - Barrel export for all rule modules
 
 ## Decisions Made
 - **Pulled error codes to Task 1:** INVALID_URL and INVALID_TIMEOUT were planned for Task 2 but fields.ts (Task 1) needs INVALID_URL for URL format validation. Added both error codes in Task 1 to keep errors.ts consistent.
@@ -103,7 +103,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (fields.ts compilation)
 - **Issue:** fields.ts references `ErrorCode.INVALID_URL` for URL format validation, but that code was planned to be added in Task 2
 - **Fix:** Added both INVALID_URL and INVALID_TIMEOUT to errors.ts in Task 1 instead of Task 2
-- **Files modified:** packages/x402check/src/types/errors.ts
+- **Files modified:** packages/x402lint/src/types/errors.ts
 - **Verification:** TypeScript compilation passes with zero errors
 - **Committed in:** ad0e968 (Task 1 commit)
 
@@ -111,7 +111,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (version.ts compilation)
 - **Issue:** NormalizedConfig has `x402Version: 2` (literal type), so `version !== 1` is flagged by TypeScript as always true
 - **Fix:** Cast `config.x402Version` to `number` for runtime safety check
-- **Files modified:** packages/x402check/src/validation/rules/version.ts
+- **Files modified:** packages/x402lint/src/validation/rules/version.ts
 - **Verification:** TypeScript compilation passes
 - **Committed in:** ad0e968 (Task 1 commit)
 

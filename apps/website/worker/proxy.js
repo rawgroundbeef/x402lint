@@ -1,14 +1,14 @@
 /**
- * x402check CORS Proxy
+ * x402lint CORS Proxy
  * Cloudflare Worker that proxies requests to arbitrary URLs with CORS headers.
  * Enables browser fetching of x402 configs from any endpoint.
  */
 
 // Allowed origins for CORS requests
 const allowedOrigins = [
-  'https://x402check.com',
-  'https://www.x402check.com',
-  'https://x402check.pages.dev',
+  'https://x402lint.com',
+  'https://www.x402lint.com',
+  'https://x402lint.pages.dev',
   'http://localhost:8000',
   'http://localhost:8080',
   'http://localhost:3000',
@@ -84,7 +84,7 @@ export default {
     // Validate Origin header (allow null for direct browser navigation/testing)
     const isAllowedOrigin = origin === null ||
       allowedOrigins.includes(origin) ||
-      (origin && origin.endsWith('.x402check.pages.dev'));
+      (origin && origin.endsWith('.x402lint.pages.dev'));
 
     if (!isAllowedOrigin) {
       return errorResponse('Forbidden', 403, null);
@@ -124,7 +124,7 @@ export default {
       response = await fetch(targetUrl, {
         method: method.toUpperCase(),
         headers: {
-          'User-Agent': 'x402check/1.0',
+          'User-Agent': 'x402lint/1.0',
         },
       });
     } catch (error) {

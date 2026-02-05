@@ -11,9 +11,9 @@ tech-stack:
   patterns: [post-validation-strict-mode]
 key-files:
   created:
-    - packages/x402check/src/cli/format.ts
+    - packages/x402lint/src/cli/format.ts
   modified:
-    - packages/x402check/src/cli.ts
+    - packages/x402lint/src/cli.ts
 decisions:
   - id: post-validation-strict
     title: Apply strict mode post-validation for manifests
@@ -123,7 +123,7 @@ None - plan executed exactly as written.
 ## Testing Performed
 
 **Manual verification tests:**
-1. `pnpm --filter x402check build` - Build succeeded (216.42 KB CLI bundle)
+1. `pnpm --filter x402lint build` - Build succeeded (216.42 KB CLI bundle)
 2. `node dist/cli.mjs --help` - Updated help text with manifest examples
 3. `node dist/cli.mjs --version` - Prints 0.3.1
 4. Manifest input → Summary table + endpoint details displayed correctly
@@ -174,10 +174,10 @@ None - plan executed exactly as written.
 ## Files Changed
 
 **Created:**
-- `packages/x402check/src/cli/format.ts` (320 lines)
+- `packages/x402lint/src/cli/format.ts` (320 lines)
 
 **Modified:**
-- `packages/x402check/src/cli.ts` (rewritten, 278 lines)
+- `packages/x402lint/src/cli.ts` (rewritten, 278 lines)
 
 ## Commits
 

@@ -1,7 +1,7 @@
 /**
  * x402 Input Handler v4
  *
- * Uses the unified check() API from x402check SDK.
+ * Uses the unified check() API from x402lint SDK.
  * No more adapter layer — check() returns display-ready data directly.
  */
 
@@ -74,7 +74,7 @@ async function testX402Url(url, method = 'GET', body = null) {
   }
 
   // Unified check: extraction + validation + registry lookups
-  const checkResult = window.x402Validate.check({ body: parsedBody, headers });
+  const checkResult = window.x402Lint.check({ body: parsedBody, headers });
 
   // Build endpoint checklist from response + checkResult
   const checks = {
@@ -145,7 +145,7 @@ async function handleValidation(inputValue, method, displayResultsFn, displayErr
         displayErrorFn('Invalid JSON: ' + e.message);
         return;
       }
-      const checkResult = window.x402Validate.check({ body: parsed });
+      const checkResult = window.x402Lint.check({ body: parsed });
       displayResultsFn({
         type: 'json',
         validation: checkResult,

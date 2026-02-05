@@ -1,4 +1,4 @@
-// x402check SDK - entry point
+// x402lint SDK - entry point
 // Named exports only (no default) for IIFE compatibility
 
 // Re-export types (Phase 6 Plan 01)
@@ -8,7 +8,7 @@ export * from './types'
 export * from './registries'
 
 // Re-export detection (Phase 6 Plan 02)
-export { detect, normalize } from './detection'
+export { detect, normalize, isManifestConfig, isV2Config, isV1Config } from './detection'
 
 // Re-export crypto primitives (Phase 7 Plan 01)
 export * from './crypto'
@@ -19,6 +19,10 @@ export { validateAddress, validateEvmAddress, validateSolanaAddress } from './va
 // Re-export validation orchestrator (Phase 8)
 export { validate } from './validation'
 export type { ValidationOptions } from './validation'
+
+// Re-export manifest validation (Phase 13)
+export { validateManifest } from './validation'
+export type { ManifestValidationResult } from './types'
 
 // Re-export HTTP config extraction
 export { extractConfig } from './extraction'

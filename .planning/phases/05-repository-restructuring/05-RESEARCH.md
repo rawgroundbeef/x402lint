@@ -65,7 +65,7 @@ repo-root/
 │       ├── *.js           # Website scripts
 │       └── package.json   # Website-specific dependencies
 ├── packages/
-│   ├── x402check/         # SDK library package
+│   ├── x402lint/         # SDK library package
 │   │   ├── src/
 │   │   │   ├── types/     # Type definitions (Phase 6)
 │   │   │   ├── detection/ # Format detection (Phase 7)
@@ -109,7 +109,7 @@ packages:
 // apps/website/package.json (future use)
 {
   "dependencies": {
-    "x402check": "workspace:*"
+    "x402lint": "workspace:*"
   }
 }
 ```
@@ -124,9 +124,9 @@ packages:
 // Source: https://pnpm.io/filtering
 {
   "scripts": {
-    "build:sdk": "pnpm --filter x402check build",
-    "test:sdk": "pnpm --filter x402check test",
-    "lint:sdk": "pnpm --filter x402check lint"
+    "build:sdk": "pnpm --filter x402lint build",
+    "test:sdk": "pnpm --filter x402lint test",
+    "lint:sdk": "pnpm --filter x402lint lint"
   }
 }
 ```
@@ -154,7 +154,7 @@ packages:
   }
 }
 
-// packages/x402check/tsconfig.json
+// packages/x402lint/tsconfig.json
 {
   "extends": "../config/typescript/base.json",
   "compilerOptions": {
@@ -171,7 +171,7 @@ packages:
 **When to use:** Testing libraries that don't need browser environment
 **Example:**
 ```typescript
-// packages/x402check/vitest.config.ts
+// packages/x402lint/vitest.config.ts
 // Source: https://vitest.dev/config/
 import { defineConfig } from 'vitest/config'
 
@@ -192,7 +192,7 @@ export default defineConfig({
 **When to use:** Building libraries that need to support both module systems
 **Example:**
 ```typescript
-// packages/x402check/tsdown.config.ts
+// packages/x402lint/tsdown.config.ts
 // Source: https://tsdown.dev/guide/getting-started
 import { defineConfig } from 'tsdown'
 
@@ -209,10 +209,10 @@ export default defineConfig({
 **When to use:** All published libraries supporting ESM and CJS
 **Example:**
 ```json
-// packages/x402check/package.json
+// packages/x402lint/package.json
 // Source: https://hirok.io/posts/package-json-exports
 {
-  "name": "x402check",
+  "name": "x402lint",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -297,15 +297,15 @@ Verified patterns from official sources:
 
 ### Minimal Smoke Test for SDK Package
 ```typescript
-// packages/x402check/test/index.test.ts
+// packages/x402lint/test/index.test.ts
 // Source: https://vitest.dev/guide/
 import { describe, it, expect } from 'vitest'
-import * as x402check from '../src/index'
+import * as x402lint from '../src/index'
 
-describe('x402check package', () => {
+describe('x402lint package', () => {
   it('exports an object', () => {
-    expect(x402check).toBeDefined()
-    expect(typeof x402check).toBe('object')
+    expect(x402lint).toBeDefined()
+    expect(typeof x402lint).toBe('object')
   })
 
   it('compiles without errors', () => {
@@ -317,7 +317,7 @@ describe('x402check package', () => {
 
 ### Initial SDK Barrel Export (Stub)
 ```typescript
-// packages/x402check/src/index.ts
+// packages/x402lint/src/index.ts
 // Empty barrel export - proper exports added in later phases
 // Named exports only (no default) for IIFE compatibility
 
@@ -336,32 +336,32 @@ export const __SDK_VERSION__ = '0.0.1'
 # Source: https://pnpm.io/filtering
 
 # Install dependencies for specific package
-pnpm --filter x402check install
+pnpm --filter x402lint install
 
 # Run build in SDK package only
-pnpm --filter x402check build
+pnpm --filter x402lint build
 
 # Run tests in SDK package
-pnpm --filter x402check test
+pnpm --filter x402lint test
 
 # Run command in all packages matching pattern
 pnpm --filter "@x402/*" build
 
 # Run in SDK and its dependencies (if any)
-pnpm --filter x402check... build
+pnpm --filter x402lint... build
 
 # Run in SDK's dependents (packages that depend on it)
-pnpm --filter ...x402check test
+pnpm --filter ...x402lint test
 ```
 
 ### Shared Config Package Structure
 ```json
 // packages/config/package.json
 {
-  "name": "@x402check/config",
+  "name": "@x402lint/config",
   "version": "1.0.0",
   "private": true,
-  "description": "Shared configuration for x402check monorepo",
+  "description": "Shared configuration for x402lint monorepo",
   "files": [
     "typescript"
   ]

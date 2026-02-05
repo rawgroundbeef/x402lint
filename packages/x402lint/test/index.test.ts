@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { VERSION } from '../src/index'
 
-describe('x402check package', () => {
+describe('x402lint package', () => {
   it('exports VERSION constant', () => {
     expect(VERSION).toBe('0.3.1')
   })

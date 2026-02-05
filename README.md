@@ -1,13 +1,13 @@
 <p align="center">
-  <img src="assets/banner.png" alt="x402check — Lint for x402" width="100%" />
+  <img src="assets/banner.png" alt="x402lint — Lint for x402" width="100%" />
 </p>
 
-# x402check
+# x402lint
 
 Validate [x402](https://www.x402.org/) payment configurations. Checks structure, address formats, network identifiers, and more — with zero dependencies.
 
-**[x402check.com](https://www.x402check.com)** — validate in the browser
-**[npm](https://www.npmjs.com/package/x402check)** — `npm i x402check`
+**[x402lint.com](https://www.x402lint.com)** — validate in the browser
+**[npm](https://www.npmjs.com/package/x402lint)** — `npm i x402lint`
 
 ## What it does
 
@@ -23,17 +23,18 @@ Validate [x402](https://www.x402.org/) payment configurations. Checks structure,
 Teach Claude Code to create and validate x402 configs:
 
 ```
-npx skills add https://github.com/rawgroundbeef/x402check --skill x402check
+npx skills add https://github.com/rawgroundbeef/x402lint --skill x402lint
 ```
 
 ## Monorepo structure
 
 ```
 packages/
-  x402check/      SDK — published to npm as x402check
+  x402lint/       SDK — published to npm as x402lint
+  x402check/      Thin alias — re-exports x402lint
   config/         Shared TypeScript config
 apps/
-  website/        x402check.com — hosted on Cloudflare Pages
+  website/        x402lint.com — hosted on Cloudflare Pages
     worker/       CORS proxy — Cloudflare Worker
 ```
 
@@ -48,8 +49,8 @@ pnpm test:sdk
 ## Links
 
 - [x402 protocol](https://www.x402.org/)
-- [x402check.com](https://www.x402check.com)
-- [npm package](https://www.npmjs.com/package/x402check)
+- [x402lint.com](https://www.x402lint.com)
+- [npm package](https://www.npmjs.com/package/x402lint)
 
 ## License
 

@@ -44,22 +44,22 @@ score: 18/18 must-haves verified
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `packages/x402check/src/crypto/keccak256.ts` | keccak256(input: string \| Uint8Array): string — hex output, no 0x prefix | ✓ VERIFIED | 24 lines, exports keccak256, uses @noble/hashes/sha3.js, returns 64-char lowercase hex |
-| `packages/x402check/src/crypto/base58.ts` | decodeBase58(input: string): Uint8Array — preserves leading zeros | ✓ VERIFIED | 24 lines, exports decodeBase58, wraps @scure/base with error handling |
-| `packages/x402check/src/crypto/eip55.ts` | toChecksumAddress(address: string): string and isValidChecksum(address: string): boolean | ✓ VERIFIED | 52 lines, exports both functions, uses keccak256 for hash |
-| `packages/x402check/src/crypto/index.ts` | Barrel re-exports for all crypto modules | ✓ VERIFIED | 7 lines, re-exports keccak256, decodeBase58, toChecksumAddress, isValidChecksum |
-| `packages/x402check/src/types/errors.ts` | NO_EVM_CHECKSUM error code added to ErrorCode and ErrorMessages | ✓ VERIFIED | Error code exists at lines 34, 79 with human-readable message |
-| `packages/x402check/src/validation/evm-address.ts` | validateEvmAddress(address, field) -> ValidationIssue[] | ✓ VERIFIED | 80 lines, exports validateEvmAddress, uses toChecksumAddress/isValidChecksum |
-| `packages/x402check/src/validation/solana-address.ts` | validateSolanaAddress(address, field) -> ValidationIssue[] | ✓ VERIFIED | 68 lines, exports validateSolanaAddress, uses decodeBase58, validates 32-byte length |
-| `packages/x402check/src/validation/address.ts` | validateAddress(address, network, field) -> ValidationIssue[] with CAIP-2 dispatch | ✓ VERIFIED | 59 lines, exports validateAddress, dispatches by namespace from getNetworkNamespace |
-| `packages/x402check/src/validation/index.ts` | Barrel re-exports for all validation modules | ✓ VERIFIED | 4 lines, re-exports all three validation functions |
-| `packages/x402check/src/index.ts` | Re-exports crypto and validation modules | ✓ VERIFIED | Lines 14, 17 export crypto and validation modules |
-| `packages/x402check/test/crypto/keccak256.test.ts` | Keccak-256 tests with canary vectors | ✓ VERIFIED | 5 tests, all passing |
-| `packages/x402check/test/crypto/base58.test.ts` | Base58 tests with leading-zero canary | ✓ VERIFIED | 5 tests, all passing |
-| `packages/x402check/test/crypto/eip55.test.ts` | EIP-55 tests with reference vectors | ✓ VERIFIED | 5 tests (grouped), all passing |
-| `packages/x402check/test/validation/evm-address.test.ts` | EVM address validation tests | ✓ VERIFIED | 13 tests, all passing |
-| `packages/x402check/test/validation/solana-address.test.ts` | Solana address validation tests | ✓ VERIFIED | 9 tests, all passing |
-| `packages/x402check/test/validation/address.test.ts` | Address dispatch and cross-chain tests | ✓ VERIFIED | 12 tests, all passing |
+| `packages/x402lint/src/crypto/keccak256.ts` | keccak256(input: string \| Uint8Array): string — hex output, no 0x prefix | ✓ VERIFIED | 24 lines, exports keccak256, uses @noble/hashes/sha3.js, returns 64-char lowercase hex |
+| `packages/x402lint/src/crypto/base58.ts` | decodeBase58(input: string): Uint8Array — preserves leading zeros | ✓ VERIFIED | 24 lines, exports decodeBase58, wraps @scure/base with error handling |
+| `packages/x402lint/src/crypto/eip55.ts` | toChecksumAddress(address: string): string and isValidChecksum(address: string): boolean | ✓ VERIFIED | 52 lines, exports both functions, uses keccak256 for hash |
+| `packages/x402lint/src/crypto/index.ts` | Barrel re-exports for all crypto modules | ✓ VERIFIED | 7 lines, re-exports keccak256, decodeBase58, toChecksumAddress, isValidChecksum |
+| `packages/x402lint/src/types/errors.ts` | NO_EVM_CHECKSUM error code added to ErrorCode and ErrorMessages | ✓ VERIFIED | Error code exists at lines 34, 79 with human-readable message |
+| `packages/x402lint/src/validation/evm-address.ts` | validateEvmAddress(address, field) -> ValidationIssue[] | ✓ VERIFIED | 80 lines, exports validateEvmAddress, uses toChecksumAddress/isValidChecksum |
+| `packages/x402lint/src/validation/solana-address.ts` | validateSolanaAddress(address, field) -> ValidationIssue[] | ✓ VERIFIED | 68 lines, exports validateSolanaAddress, uses decodeBase58, validates 32-byte length |
+| `packages/x402lint/src/validation/address.ts` | validateAddress(address, network, field) -> ValidationIssue[] with CAIP-2 dispatch | ✓ VERIFIED | 59 lines, exports validateAddress, dispatches by namespace from getNetworkNamespace |
+| `packages/x402lint/src/validation/index.ts` | Barrel re-exports for all validation modules | ✓ VERIFIED | 4 lines, re-exports all three validation functions |
+| `packages/x402lint/src/index.ts` | Re-exports crypto and validation modules | ✓ VERIFIED | Lines 14, 17 export crypto and validation modules |
+| `packages/x402lint/test/crypto/keccak256.test.ts` | Keccak-256 tests with canary vectors | ✓ VERIFIED | 5 tests, all passing |
+| `packages/x402lint/test/crypto/base58.test.ts` | Base58 tests with leading-zero canary | ✓ VERIFIED | 5 tests, all passing |
+| `packages/x402lint/test/crypto/eip55.test.ts` | EIP-55 tests with reference vectors | ✓ VERIFIED | 5 tests (grouped), all passing |
+| `packages/x402lint/test/validation/evm-address.test.ts` | EVM address validation tests | ✓ VERIFIED | 13 tests, all passing |
+| `packages/x402lint/test/validation/solana-address.test.ts` | Solana address validation tests | ✓ VERIFIED | 9 tests, all passing |
+| `packages/x402lint/test/validation/address.test.ts` | Address dispatch and cross-chain tests | ✓ VERIFIED | 12 tests, all passing |
 
 ### Key Link Verification
 

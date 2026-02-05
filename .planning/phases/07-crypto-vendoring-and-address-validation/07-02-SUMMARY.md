@@ -31,15 +31,15 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/validation/evm-address.ts
-    - packages/x402check/src/validation/solana-address.ts
-    - packages/x402check/src/validation/address.ts
-    - packages/x402check/src/validation/index.ts
-    - packages/x402check/test/validation/evm-address.test.ts
-    - packages/x402check/test/validation/solana-address.test.ts
-    - packages/x402check/test/validation/address.test.ts
+    - packages/x402lint/src/validation/evm-address.ts
+    - packages/x402lint/src/validation/solana-address.ts
+    - packages/x402lint/src/validation/address.ts
+    - packages/x402lint/src/validation/index.ts
+    - packages/x402lint/test/validation/evm-address.test.ts
+    - packages/x402lint/test/validation/solana-address.test.ts
+    - packages/x402lint/test/validation/address.test.ts
   modified:
-    - packages/x402check/src/index.ts
+    - packages/x402lint/src/index.ts
 
 key-decisions:
   - "Checksum errors are warnings (not errors) - all-lowercase/bad-checksum addresses are valid but risky"
@@ -92,19 +92,19 @@ Each task was committed atomically:
 ## Files Created/Modified
 
 **Created:**
-- `packages/x402check/src/validation/evm-address.ts` - EVM address format + EIP-55 checksum validation
-- `packages/x402check/src/validation/solana-address.ts` - Solana Base58 + 32-byte length validation
-- `packages/x402check/src/validation/address.ts` - CAIP-2 namespace dispatch router
-- `packages/x402check/src/validation/index.ts` - Validation barrel export
-- `packages/x402check/test/validation/evm-address.test.ts` - 13 EVM validation tests
-- `packages/x402check/test/validation/solana-address.test.ts` - 9 Solana validation tests
-- `packages/x402check/test/validation/address.test.ts` - 12 dispatch and cross-chain tests
+- `packages/x402lint/src/validation/evm-address.ts` - EVM address format + EIP-55 checksum validation
+- `packages/x402lint/src/validation/solana-address.ts` - Solana Base58 + 32-byte length validation
+- `packages/x402lint/src/validation/address.ts` - CAIP-2 namespace dispatch router
+- `packages/x402lint/src/validation/index.ts` - Validation barrel export
+- `packages/x402lint/test/validation/evm-address.test.ts` - 13 EVM validation tests
+- `packages/x402lint/test/validation/solana-address.test.ts` - 9 Solana validation tests
+- `packages/x402lint/test/validation/address.test.ts` - 12 dispatch and cross-chain tests
 
 **Modified:**
-- `packages/x402check/src/index.ts` - Added crypto and validation exports
+- `packages/x402lint/src/index.ts` - Added crypto and validation exports
 
 **Deleted:**
-- `packages/x402check/src/validation/.gitkeep` - Replaced with real modules
+- `packages/x402lint/src/validation/.gitkeep` - Replaced with real modules
 
 ## Decisions Made
 
@@ -141,7 +141,7 @@ Each task was committed atomically:
 - **Found during:** Task 2 test execution
 - **Issue:** Address `0x0000000000000000000000000000000000000000` triggered NO_EVM_CHECKSUM warning because `address === address.toLowerCase()` is true for all-digits strings
 - **Fix:** Added `/[a-f]/.test(hexPart)` check before issuing NO_EVM_CHECKSUM warning, plus `/^[0-9]{40}$/.test(hexPart)` check to explicitly accept all-digits addresses
-- **Files modified:** `packages/x402check/src/validation/evm-address.ts`
+- **Files modified:** `packages/x402lint/src/validation/evm-address.ts`
 - **Verification:** All 93 tests pass, zero address produces no issues
 - **Committed in:** `66b85eb` (Task 2 commit)
 

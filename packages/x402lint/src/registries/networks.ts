@@ -2,7 +2,7 @@
 // REG-01: Known CAIP-2 network registry
 // REG-02: Format validation and registry lookup
 
-export type NetworkType = 'evm' | 'solana' | 'stellar' | 'aptos'
+export type NetworkType = 'evm' | 'solana' | 'stellar' | 'aptos' | 'stacks'
 
 export interface NetworkInfo {
   name: string
@@ -39,6 +39,10 @@ export const KNOWN_NETWORKS = {
     type: 'solana',
     testnet: true,
   },
+
+  // Stacks networks
+  'stacks:1': { name: 'Stacks Mainnet', type: 'stacks', testnet: false },
+  'stacks:2147483648': { name: 'Stacks Testnet', type: 'stacks', testnet: true },
 
   // Stellar networks
   'stellar:pubnet': { name: 'Stellar Mainnet', type: 'stellar', testnet: false },

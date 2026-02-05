@@ -1,5 +1,5 @@
 /**
- * Error and warning code vocabulary for x402check
+ * Error and warning code vocabulary for x402lint
  */
 
 export const ErrorCode = {
@@ -35,7 +35,27 @@ export const ErrorCode = {
   BAD_EVM_CHECKSUM: 'BAD_EVM_CHECKSUM',
   NO_EVM_CHECKSUM: 'NO_EVM_CHECKSUM',
   INVALID_SOLANA_ADDRESS: 'INVALID_SOLANA_ADDRESS',
+  INVALID_STACKS_ADDRESS: 'INVALID_STACKS_ADDRESS',
+  STACKS_NETWORK_MISMATCH: 'STACKS_NETWORK_MISMATCH',
   ADDRESS_NETWORK_MISMATCH: 'ADDRESS_NETWORK_MISMATCH',
+
+  // Manifest errors
+  MISSING_ENDPOINTS: 'MISSING_ENDPOINTS',
+  INVALID_ENDPOINTS: 'INVALID_ENDPOINTS',
+  EMPTY_ENDPOINTS: 'EMPTY_ENDPOINTS',
+  INVALID_ENDPOINT_CONFIG: 'INVALID_ENDPOINT_CONFIG',
+  WILD_MANIFEST_ARRAY_FORMAT: 'WILD_MANIFEST_ARRAY_FORMAT',
+  WILD_MANIFEST_NESTED_FORMAT: 'WILD_MANIFEST_NESTED_FORMAT',
+  WILD_MANIFEST_NAME_PROMOTED: 'WILD_MANIFEST_NAME_PROMOTED',
+
+  // Manifest validation (Phase 13)
+  DUPLICATE_ENDPOINT_URL: 'DUPLICATE_ENDPOINT_URL',
+  MIXED_NETWORKS: 'MIXED_NETWORKS',
+  DUPLICATE_BAZAAR_ROUTE: 'DUPLICATE_BAZAAR_ROUTE',
+  BAZAAR_GET_WITH_BODY: 'BAZAAR_GET_WITH_BODY',
+  BAZAAR_GET_MISSING_QUERY_PARAMS: 'BAZAAR_GET_MISSING_QUERY_PARAMS',
+  BAZAAR_POST_WITH_QUERY_PARAMS: 'BAZAAR_POST_WITH_QUERY_PARAMS',
+  BAZAAR_POST_MISSING_BODY: 'BAZAAR_POST_MISSING_BODY',
 
   // Extension / schema warnings
   INVALID_BAZAAR_INFO: 'INVALID_BAZAAR_INFO',
@@ -90,7 +110,27 @@ export const ErrorMessages = {
   BAD_EVM_CHECKSUM: 'EVM address has invalid checksum',
   NO_EVM_CHECKSUM: 'EVM address is all-lowercase with no checksum protection',
   INVALID_SOLANA_ADDRESS: 'Invalid Solana address format',
+  INVALID_STACKS_ADDRESS: 'Invalid Stacks address',
+  STACKS_NETWORK_MISMATCH: 'Stacks address does not match the specified network',
   ADDRESS_NETWORK_MISMATCH: 'Address format does not match network type',
+
+  // Manifest errors
+  MISSING_ENDPOINTS: 'Manifest must have an endpoints field',
+  INVALID_ENDPOINTS: 'endpoints must be a Record (object) mapping IDs to v2 configs',
+  EMPTY_ENDPOINTS: 'Manifest has no endpoints defined',
+  INVALID_ENDPOINT_CONFIG: 'Endpoint config is not a valid v2 PaymentRequired object',
+  WILD_MANIFEST_ARRAY_FORMAT: 'Detected non-standard array format, normalized to endpoints collection',
+  WILD_MANIFEST_NESTED_FORMAT: 'Detected non-standard nested service format, normalized to endpoints collection',
+  WILD_MANIFEST_NAME_PROMOTED: 'Top-level name field promoted to service.name',
+
+  // Manifest validation (Phase 13)
+  DUPLICATE_ENDPOINT_URL: 'Multiple endpoints share the same URL',
+  MIXED_NETWORKS: 'Manifest contains both mainnet and testnet networks',
+  DUPLICATE_BAZAAR_ROUTE: 'Multiple endpoints share the same HTTP method + path',
+  BAZAAR_GET_WITH_BODY: 'GET requests cannot have body input shape',
+  BAZAAR_GET_MISSING_QUERY_PARAMS: 'GET requests should define queryParams input shape',
+  BAZAAR_POST_WITH_QUERY_PARAMS: 'POST/PUT/PATCH/DELETE requests should not use queryParams input shape',
+  BAZAAR_POST_MISSING_BODY: 'POST/PUT/PATCH/DELETE requests should define body input shape',
 
   // Extension / schema warnings
   INVALID_BAZAAR_INFO: 'extensions.bazaar.info must be an object with input and output',

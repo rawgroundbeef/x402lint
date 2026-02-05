@@ -35,13 +35,13 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/validation/manifest.ts
+    - packages/x402lint/src/validation/manifest.ts
   modified:
-    - packages/x402check/src/types/manifest.ts
-    - packages/x402check/src/types/errors.ts
-    - packages/x402check/src/validation/index.ts
-    - packages/x402check/src/index.ts
-    - packages/x402check/test/integration.test.ts
+    - packages/x402lint/src/types/manifest.ts
+    - packages/x402lint/src/types/errors.ts
+    - packages/x402lint/src/validation/index.ts
+    - packages/x402lint/src/index.ts
+    - packages/x402lint/test/integration.test.ts
 
 key-decisions:
   - "Use Record instead of Map for endpointResults to enable direct JSON serialization"
@@ -96,12 +96,12 @@ Each task was committed atomically:
 
 ## Files Created/Modified
 
-- `packages/x402check/src/validation/manifest.ts` - validateManifest() implementation with composition pattern, cross-endpoint checks, bazaar discrimination
-- `packages/x402check/src/types/manifest.ts` - Updated ManifestValidationResult to use Record<string, ValidationResult> and added normalized field
-- `packages/x402check/src/types/errors.ts` - Added seven new manifest validation error codes and messages
-- `packages/x402check/src/validation/index.ts` - Exported validateManifest
-- `packages/x402check/src/index.ts` - Re-exported validateManifest and ManifestValidationResult from package public API
-- `packages/x402check/test/integration.test.ts` - Updated error code coverage test to mark new manifest validation codes as expected unreachable from single-config pipeline
+- `packages/x402lint/src/validation/manifest.ts` - validateManifest() implementation with composition pattern, cross-endpoint checks, bazaar discrimination
+- `packages/x402lint/src/types/manifest.ts` - Updated ManifestValidationResult to use Record<string, ValidationResult> and added normalized field
+- `packages/x402lint/src/types/errors.ts` - Added seven new manifest validation error codes and messages
+- `packages/x402lint/src/validation/index.ts` - Exported validateManifest
+- `packages/x402lint/src/index.ts` - Re-exported validateManifest and ManifestValidationResult from package public API
+- `packages/x402lint/test/integration.test.ts` - Updated error code coverage test to mark new manifest validation codes as expected unreachable from single-config pipeline
 
 ## Decisions Made
 
@@ -139,7 +139,7 @@ None - plan executed exactly as written. All requirements met:
 - Bazaar method discrimination produces errors for GET with body, POST with queryParams, etc. ✓
 - Empty endpoints ({}) returns valid:true with zero issues ✓
 - Top-level valid is true only when ALL endpoints pass AND no manifest-level errors exist ✓
-- validateManifest is importable from x402check package ✓
+- validateManifest is importable from x402lint package ✓
 
 ## Issues Encountered
 

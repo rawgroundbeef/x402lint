@@ -1,6 +1,6 @@
 # Research Summary — v3.0 Manifest Validation & CLI
 
-**Project:** x402check
+**Project:** x402lint
 **Milestone:** v3.0
 **Researched:** 2026-02-04
 **Dimensions:** Stack, Features, Architecture, Pitfalls
@@ -86,7 +86,7 @@ v2.0 architecture requires no structural changes — all features are additive:
 
 1. **Bundle size target:** 40 KB hard limit or soft? (Stack says 36-37 KB, Architecture says 45 KB)
 2. **Wild manifest examples:** No live examples found (x402.biwas.xyz). Need concrete format to finalize normalization.
-3. **Manifest schema:** This is net-new for x402 ecosystem. No official spec — x402check defines it.
+3. **Manifest schema:** This is net-new for x402 ecosystem. No official spec — x402lint defines it.
 
 ## Research Confidence
 

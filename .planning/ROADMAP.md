@@ -1,4 +1,4 @@
-# Roadmap: x402check
+# Roadmap: x402lint
 
 ## Milestones
 
@@ -114,7 +114,7 @@ Plans:
 
 #### Phase 14: CLI Manifest Mode
 
-**Goal:** Developers can run `npx x402check` against a manifest file or URL and get per-endpoint validation results in the terminal.
+**Goal:** Developers can run `npx x402lint` against a manifest file or URL and get per-endpoint validation results in the terminal.
 
 **Dependencies:** Phase 13 (manifest validation orchestrator)
 
@@ -126,11 +126,11 @@ Plans:
 - [x] 14-03-PLAN.md — Manifest CLI test fixtures and comprehensive test coverage
 
 **Requirements:**
-- MAN-06: CLI (`npx x402check <url-or-file>`) with auto-detection of single config vs manifest
+- MAN-06: CLI (`npx x402lint <url-or-file>`) with auto-detection of single config vs manifest
 
 **Success Criteria:**
-1. `npx x402check manifest.json` auto-detects the input as a manifest and runs `validateManifest()`, displaying per-endpoint summaries followed by cross-endpoint issues
-2. `npx x402check config.json` auto-detects a single config and runs `validate()` with existing output formatting (no regression)
+1. `npx x402lint manifest.json` auto-detects the input as a manifest and runs `validateManifest()`, displaying per-endpoint summaries followed by cross-endpoint issues
+2. `npx x402lint config.json` auto-detects a single config and runs `validate()` with existing output formatting (no regression)
 3. `--json` flag outputs pure JSON (parseable by `JSON.parse()`) for both single configs and manifests, with no ANSI codes
 4. `--quiet` suppresses output and communicates results via exit code only (0=valid, 1=validation errors, 2=input errors)
 5. All flag combinations compose correctly: `--strict --json` outputs strict-mode JSON, `--quiet` takes precedence over `--json`
@@ -141,7 +141,7 @@ Plans:
 
 #### Phase 15: Website Manifest UI
 
-**Goal:** Developers can paste a manifest JSON or URL into x402check.com and see per-endpoint validation results with the same clarity as single-config validation.
+**Goal:** Developers can paste a manifest JSON or URL into x402lint.com and see per-endpoint validation results with the same clarity as single-config validation.
 
 **Dependencies:** Phase 13 (manifest validation orchestrator); parallel with Phase 14
 
@@ -160,7 +160,7 @@ Plans:
 
 #### Phase 16: Build & Publish
 
-**Goal:** The `x402check` package is published to npm and installable by any developer worldwide.
+**Goal:** The `x402lint` package is published to npm and installable by any developer worldwide.
 
 **Dependencies:** Phases 11-15 complete (all features landed)
 
@@ -168,9 +168,9 @@ Plans:
 - MAN-07: npm publish to registry
 
 **Success Criteria:**
-1. `npm install x402check` installs successfully and `validate()`, `validateManifest()`, `detect()`, `normalize()` are all importable
-2. `npx x402check --version` prints the correct version and `npx x402check --help` prints usage
-3. IIFE bundle loads in a browser `<script>` tag and exposes all public APIs on `window.x402check` (or equivalent global)
+1. `npm install x402lint` installs successfully and `validate()`, `validateManifest()`, `detect()`, `normalize()` are all importable
+2. `npx x402lint --version` prints the correct version and `npx x402lint --help` prints usage
+3. IIFE bundle loads in a browser `<script>` tag and exposes all public APIs on `window.x402lint` (or equivalent global)
 4. `npm pack` output contains all expected files: ESM, CJS, IIFE, CLI binary, TypeScript declarations
 5. Bundle size stays under 45 KB minified (measured, not estimated)
 

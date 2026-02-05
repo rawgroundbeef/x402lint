@@ -10,7 +10,7 @@ This phase defines the TypeScript types for x402 manifests (multi-endpoint colle
 
 The standard approach is to define manifests as wrapper types containing a service metadata object and an endpoints collection (Map or Record). Detection uses a type guard that checks for the collection structure BEFORE checking for single v2 config, since manifests may contain `x402Version: 2` at the service level. Normalization handles non-standard "wild manifests" by mapping fields to canonical structure while preserving financial data exactly.
 
-x402 v2 introduced the Bazaar discovery extension which exposes structured service metadata that facilitators can crawl. The IETF DNS discovery draft defines `_x402` TXT records pointing to `/.well-known/x402` manifest URLs, but the manifest format itself is not yet standardized. This phase defines the canonical manifest schema that x402check will recognize.
+x402 v2 introduced the Bazaar discovery extension which exposes structured service metadata that facilitators can crawl. The IETF DNS discovery draft defines `_x402` TXT records pointing to `/.well-known/x402` manifest URLs, but the manifest format itself is not yet standardized. This phase defines the canonical manifest schema that x402lint will recognize.
 
 **Primary recommendation:** Define `ManifestConfig` as a wrapper type with `service` metadata (name, description, version) and `endpoints` collection (Record<id, V2Config>). Extend `detect()` to check for manifest structure first using `isManifestConfig()` guard. Use the same normalization pattern as v1/v2 for wild manifests, emitting warnings for each transformation. Detection order is critical: manifest → v2 → v1 → unknown.
 
@@ -570,7 +570,7 @@ function generateStableEndpointId(
 | Hard-coded discovery | DNS-based discovery (IETF draft) | 2025-2026 | Automatic service discovery via TXT records |
 | Manual endpoint lists | Bazaar extension crawling | x402 V2 Discovery | Facilitators automatically index services |
 | Array-based collections | Record-based with IDs | TypeScript best practices | Stable references, better error reporting |
-| No manifest schema | Emerging community patterns | 2025-2026 | x402check defines canonical format |
+| No manifest schema | Emerging community patterns | 2025-2026 | x402lint defines canonical format |
 
 **Deprecated/outdated:**
 - **Single config per service:** V2 supports manifests for multi-endpoint services
@@ -585,7 +585,7 @@ Things that couldn't be fully resolved:
 1. **Official Manifest Schema**
    - What we know: IETF DNS discovery draft mentions manifests but doesn't define schema; Bazaar extension provides discovery metadata
    - What's unclear: No official x402 manifest schema specification exists as of Feb 2026
-   - Recommendation: x402check defines canonical schema; submit to x402 community for feedback; potential future IETF draft
+   - Recommendation: x402lint defines canonical schema; submit to x402 community for feedback; potential future IETF draft
 
 2. **Wild Manifest Formats (Biwas-style)**
    - What we know: Research mentions "biwas-style" wild manifests but no concrete examples found

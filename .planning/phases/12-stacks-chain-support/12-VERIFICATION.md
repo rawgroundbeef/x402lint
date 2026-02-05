@@ -35,10 +35,10 @@ re_verification: false
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `packages/x402check/src/crypto/c32check.ts` | c32check decode wrapper (matches base58.ts pattern) | ✓ VERIFIED | EXISTS (24 lines), SUBSTANTIVE (exports decodeC32Address, wraps c32addressDecode with error handling, no stubs), WIRED (imported by stacks-address.ts, exported via crypto/index.ts) |
-| `packages/x402check/src/validation/stacks-address.ts` | Stacks address validation function | ✓ VERIFIED | EXISTS (121 lines), SUBSTANTIVE (exports validateStacksAddress, 121 lines well over minimum, complete implementation with format check, checksum decode, version validation), WIRED (imported by address.ts dispatcher, uses decodeC32Address) |
-| `packages/x402check/src/registries/networks.ts` | Stacks network entries in KNOWN_NETWORKS | ✓ VERIFIED | EXISTS, SUBSTANTIVE (contains 'stacks:1': { name: 'Stacks Mainnet', type: 'stacks', testnet: false } and 'stacks:2147483648' for testnet), WIRED (used by address.ts getNetworkNamespace) |
-| `packages/x402check/test/validation/stacks-address.test.ts` | Comprehensive Stacks address validation tests | ✓ VERIFIED | EXISTS (223 lines), SUBSTANTIVE (223 lines >> 80 min, 18 comprehensive tests covering valid addresses, invalid format, invalid checksum, network mismatch, contract name handling), WIRED (tests imported validateStacksAddress from src/validation/stacks-address) |
+| `packages/x402lint/src/crypto/c32check.ts` | c32check decode wrapper (matches base58.ts pattern) | ✓ VERIFIED | EXISTS (24 lines), SUBSTANTIVE (exports decodeC32Address, wraps c32addressDecode with error handling, no stubs), WIRED (imported by stacks-address.ts, exported via crypto/index.ts) |
+| `packages/x402lint/src/validation/stacks-address.ts` | Stacks address validation function | ✓ VERIFIED | EXISTS (121 lines), SUBSTANTIVE (exports validateStacksAddress, 121 lines well over minimum, complete implementation with format check, checksum decode, version validation), WIRED (imported by address.ts dispatcher, uses decodeC32Address) |
+| `packages/x402lint/src/registries/networks.ts` | Stacks network entries in KNOWN_NETWORKS | ✓ VERIFIED | EXISTS, SUBSTANTIVE (contains 'stacks:1': { name: 'Stacks Mainnet', type: 'stacks', testnet: false } and 'stacks:2147483648' for testnet), WIRED (used by address.ts getNetworkNamespace) |
+| `packages/x402lint/test/validation/stacks-address.test.ts` | Comprehensive Stacks address validation tests | ✓ VERIFIED | EXISTS (223 lines), SUBSTANTIVE (223 lines >> 80 min, 18 comprehensive tests covering valid addresses, invalid format, invalid checksum, network mismatch, contract name handling), WIRED (tests imported validateStacksAddress from src/validation/stacks-address) |
 
 ### Key Link Verification
 
@@ -80,11 +80,11 @@ None. All verification completed programmatically through:
 ### Level 1: Existence Verification
 
 All required artifacts exist:
-- ✓ `packages/x402check/src/crypto/c32check.ts` (24 lines)
-- ✓ `packages/x402check/src/validation/stacks-address.ts` (121 lines)
-- ✓ `packages/x402check/src/registries/networks.ts` (79 lines, includes Stacks entries)
-- ✓ `packages/x402check/src/registries/simple-names.ts` (38 lines, includes Stacks mappings)
-- ✓ `packages/x402check/test/validation/stacks-address.test.ts` (223 lines)
+- ✓ `packages/x402lint/src/crypto/c32check.ts` (24 lines)
+- ✓ `packages/x402lint/src/validation/stacks-address.ts` (121 lines)
+- ✓ `packages/x402lint/src/registries/networks.ts` (79 lines, includes Stacks entries)
+- ✓ `packages/x402lint/src/registries/simple-names.ts` (38 lines, includes Stacks mappings)
+- ✓ `packages/x402lint/test/validation/stacks-address.test.ts` (223 lines)
 
 ### Level 2: Substantive Verification
 

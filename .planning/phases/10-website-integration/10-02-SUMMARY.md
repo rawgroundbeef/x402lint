@@ -66,7 +66,7 @@ completed: 2026-01-29
 - `apps/website/chains.js` - DELETED
 
 ## Deviations from Plan
-- SDK IIFE script tag changed from jsdelivr CDN to local `x402check.iife.js` symlink (package not yet published to npm)
+- SDK IIFE script tag changed from jsdelivr CDN to local `x402lint.iife.js` symlink (package not yet published to npm)
 
 ## Issues Encountered
 - jsdelivr CDN URL 404'd because package not published yet; switched to local bundle symlink

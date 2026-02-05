@@ -1,236 +1,227 @@
 /**
- * x402check CLI
+ * x402lint CLI
  *
  * Validate x402 payment configurations from the command line.
- *
- * Usage:
- *   x402check <json>              Validate inline JSON
- *   x402check <file.json>         Validate a JSON file
- *   x402check <url>               Fetch URL, extract + validate 402 config
- *   echo '{}' | x402check         Validate from stdin
- *   x402check --version            Print version
- *   x402check --help               Print help
- *
- * Flags:
- *   --strict                       Promote all warnings to errors
- *   --json                         Output raw JSON (for piping)
- *   --quiet                        Only print errors (exit code only)
+ * Supports single configs (v1, v2) and manifests with auto-detection.
  */
 
-import { readFileSync, existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { parseCliArgs } from './cli/args'
+import { fetchWithRedirects } from './cli/fetch'
+import { resolveInput, readStdin, isUrl } from './cli/detect'
+import { formatManifestResult, formatValidationResult, formatCheckResult, calculateExitCode } from './cli/format'
 import { validate } from './validation/orchestrator'
+import { validateManifest } from './validation/manifest'
 import { check } from './check'
 import { VERSION } from './index'
-import type { ValidationResult } from './types/validation'
-import type { CheckResult } from './types/check'
-import type { ValidationIssue } from './types/validation'
-
-// ── Arg parsing ──────────────────────────────────────────────────────────
-
-interface CliArgs {
-  input: string | null
-  strict: boolean
-  json: boolean
-  quiet: boolean
-  help: boolean
-  version: boolean
-}
-
-function parseArgs(argv: string[]): CliArgs {
-  const args: CliArgs = {
-    input: null,
-    strict: false,
-    json: false,
-    quiet: false,
-    help: false,
-    version: false,
-  }
-
-  for (const arg of argv) {
-    if (arg === '--strict') args.strict = true
-    else if (arg === '--json') args.json = true
-    else if (arg === '--quiet' || arg === '-q') args.quiet = true
-    else if (arg === '--help' || arg === '-h') args.help = true
-    else if (arg === '--version' || arg === '-v') args.version = true
-    else if (!arg.startsWith('-')) args.input = arg
-  }
-
-  return args
-}
+import { detect } from './detection/detect'
+import { isManifestConfig } from './detection/guards'
+import type { ManifestConfig, ManifestValidationResult } from './types/manifest'
+import type { CliArgs } from './cli/args'
 
 // ── Help text ────────────────────────────────────────────────────────────
 
-const HELP = `x402check v${VERSION} — validate x402 payment configurations
+const HELP = `x402lint v${VERSION} — validate x402 payment configurations
 
 Usage:
-  x402check <json>              Validate inline JSON string
-  x402check <file.json>         Validate a JSON file
-  x402check <url>               Fetch URL and check 402 response
-  echo '...' | x402check        Validate from stdin
+  x402lint <json>              Validate inline JSON string
+  x402lint <file.json>         Validate a JSON file
+  x402lint <manifest.json>     Validate a manifest with multiple endpoints
+  x402lint <url>               Fetch URL and check 402 response
+  x402lint -                   Read from stdin
+  echo '...' | x402lint        Validate from stdin
 
 Flags:
-  --strict     Promote all warnings to errors
-  --json       Output raw JSON result
-  --quiet      Suppress output, exit code only
-  -h, --help   Show this help
-  -v, --version  Show version
+  --strict        Promote all warnings to errors
+  --json          Output raw JSON result
+  --quiet, -q     Suppress output, exit code only
+  --header <H:V>  Add custom header (repeatable, for URL fetching)
+  -h, --help      Show this help
+  -v, --version   Show version
 
 Exit codes:
-  0  Valid config (or --help/--version)
-  1  Invalid config or errors found
+  0  Valid config or majority of endpoints pass
+  1  Invalid config or majority of endpoints fail
   2  Input error (no input, bad file, fetch failure)
 
 Examples:
-  x402check '{"x402Version":2,"accepts":[...]}'
-  x402check config.json
-  x402check https://api.example.com/resource --strict
-  curl -s https://example.com | x402check --json
+  x402lint '{"x402Version":2,"accepts":[...]}'
+  x402lint config.json
+  x402lint manifest.json
+  x402lint https://api.example.com/resource --strict
+  x402lint https://api.example.com/resource --header "Authorization: Bearer xyz"
+  curl -s https://example.com | x402lint --json
+  echo '{}' | x402lint -
 `
 
-// ── Input resolution ─────────────────────────────────────────────────────
+// ── Strict mode helper for manifests ────────────────────────────────────
 
-function isUrl(s: string): boolean {
-  return /^https?:\/\//i.test(s)
-}
+/**
+ * Apply strict mode to manifest result (promotes warnings to errors)
+ *
+ * Since validateManifest() doesn't accept options, we apply strict mode
+ * post-validation by promoting all warnings to errors and recomputing validity.
+ */
+function applyStrictMode(result: ManifestValidationResult): ManifestValidationResult {
+  // Promote manifest-level warnings to errors
+  const manifestErrors = [...result.errors]
+  const manifestWarnings: typeof result.warnings = []
 
-function isJsonLike(s: string): boolean {
-  const trimmed = s.trim()
-  return trimmed.startsWith('{') || trimmed.startsWith('[')
-}
+  for (const warning of result.warnings) {
+    manifestErrors.push({ ...warning, severity: 'error' })
+  }
 
-function readStdin(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = []
-    const { stdin } = process
+  // Promote endpoint-level warnings to errors
+  const newEndpointResults: typeof result.endpointResults = {}
 
-    // If stdin is a TTY (no pipe), return empty
-    if (stdin.isTTY) {
-      resolve('')
-      return
+  for (const [endpointId, endpointResult] of Object.entries(result.endpointResults)) {
+    const endpointErrors = [...endpointResult.errors]
+
+    for (const warning of endpointResult.warnings) {
+      endpointErrors.push({ ...warning, severity: 'error' })
     }
 
-    stdin.on('data', (chunk: Buffer) => chunks.push(chunk))
-    stdin.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')))
-    stdin.on('error', reject)
-  })
-}
+    // Recompute valid flag (invalid if any errors)
+    const valid = endpointErrors.length === 0
 
-async function fetchUrl(url: string): Promise<{ status: number; body: unknown; headers: Record<string, string> }> {
-  const res = await fetch(url)
-  const headers: Record<string, string> = {}
-  res.headers.forEach((value, key) => {
-    headers[key] = value
-  })
-
-  let body: unknown
-  const ct = res.headers.get('content-type') || ''
-  if (ct.includes('json')) {
-    body = await res.json()
-  } else {
-    body = await res.text()
-  }
-
-  return { status: res.status, body, headers }
-}
-
-// ── Formatting ───────────────────────────────────────────────────────────
-
-function formatIssue(issue: ValidationIssue): string {
-  const icon = issue.severity === 'error' ? '\x1b[31m✗\x1b[0m' : '\x1b[33m⚠\x1b[0m'
-  const line = `  ${icon} ${issue.code} [${issue.field}]: ${issue.message}`
-  if (issue.fix) {
-    return line + `\n      ↳ ${issue.fix}`
-  }
-  return line
-}
-
-function formatValidationResult(result: ValidationResult, args: CliArgs): string {
-  if (args.json) return JSON.stringify(result, null, 2)
-  if (args.quiet) return ''
-
-  const lines: string[] = []
-
-  // Status line
-  if (result.valid) {
-    lines.push(`\x1b[32m✓ Valid\x1b[0m x402 config (${result.version})`)
-  } else {
-    lines.push(`\x1b[31m✗ Invalid\x1b[0m x402 config (${result.version})`)
-  }
-
-  // Errors
-  if (result.errors.length > 0) {
-    lines.push('')
-    lines.push(`Errors (${result.errors.length}):`)
-    for (const e of result.errors) lines.push(formatIssue(e))
-  }
-
-  // Warnings
-  if (result.warnings.length > 0) {
-    lines.push('')
-    lines.push(`Warnings (${result.warnings.length}):`)
-    for (const w of result.warnings) lines.push(formatIssue(w))
-  }
-
-  return lines.join('\n')
-}
-
-function formatCheckResult(result: CheckResult, args: CliArgs): string {
-  if (args.json) return JSON.stringify(result, null, 2)
-  if (args.quiet) return ''
-
-  const lines: string[] = []
-
-  // Extraction status
-  if (!result.extracted) {
-    lines.push(`\x1b[31m✗ No x402 config found\x1b[0m`)
-    if (result.extractionError) {
-      lines.push(`  ${result.extractionError}`)
-    }
-    return lines.join('\n')
-  }
-
-  lines.push(`Extracted from: ${result.source}`)
-
-  // Validation status
-  if (result.valid) {
-    lines.push(`\x1b[32m✓ Valid\x1b[0m x402 config (${result.version})`)
-  } else {
-    lines.push(`\x1b[31m✗ Invalid\x1b[0m x402 config (${result.version})`)
-  }
-
-  // Summary
-  if (result.summary.length > 0) {
-    lines.push('')
-    lines.push('Payment options:')
-    for (const s of result.summary) {
-      const symbol = s.assetSymbol ?? s.asset
-      const net = s.networkName
-      lines.push(`  [${s.index}] ${s.amount} ${symbol} on ${net} → ${s.payTo.slice(0, 10)}...`)
+    newEndpointResults[endpointId] = {
+      ...endpointResult,
+      valid,
+      errors: endpointErrors,
+      warnings: [],
     }
   }
 
-  // Errors
-  if (result.errors.length > 0) {
-    lines.push('')
-    lines.push(`Errors (${result.errors.length}):`)
-    for (const e of result.errors) lines.push(formatIssue(e))
-  }
+  // Recompute manifest-level valid flag
+  const allEndpointsValid = Object.values(newEndpointResults).every(r => r.valid)
+  const valid = manifestErrors.length === 0 && allEndpointsValid
 
-  // Warnings
-  if (result.warnings.length > 0) {
-    lines.push('')
-    lines.push(`Warnings (${result.warnings.length}):`)
-    for (const w of result.warnings) lines.push(formatIssue(w))
+  return {
+    valid,
+    errors: manifestErrors,
+    warnings: manifestWarnings,
+    endpointResults: newEndpointResults,
+    normalized: result.normalized,
   }
+}
 
-  return lines.join('\n')
+// ── URL handler ──────────────────────────────────────────────────────────
+
+async function handleUrl(url: string, args: CliArgs): Promise<number> {
+  try {
+    const { status, body, headers } = await fetchWithRedirects(url, {
+      headers: args.headers,
+    })
+
+    // For URLs, use check() API which handles extraction from headers + body
+    // But first detect if the body itself is a manifest (for direct manifest URLs)
+    if (typeof body === 'object' && body !== null) {
+      const format = detect(body)
+
+      if (format === 'manifest' && isManifestConfig(body)) {
+        // Direct manifest URL
+        if (!args.quiet && !args.json) {
+          const endpointCount = Object.keys((body as ManifestConfig).endpoints).length
+          console.log(`Detected: manifest with ${endpointCount} endpoints`)
+        }
+
+        let result = validateManifest(body as ManifestConfig)
+        if (args.strict) {
+          result = applyStrictMode(result)
+        }
+
+        const output = formatManifestResult(result, args)
+        if (output) console.log(output)
+
+        return calculateExitCode(result, args.strict)
+      }
+    }
+
+    // Single-config URL (or non-manifest)
+    if (status !== 402 && !args.quiet && !args.json) {
+      console.log(`HTTP ${status} (expected 402)`)
+    }
+
+    if (!args.quiet && !args.json && typeof body === 'object' && body !== null) {
+      const format = detect(body)
+      if (format === 'v2') {
+        console.log('Detected: v2 config')
+      } else if (format === 'v1') {
+        console.log('Detected: v1 config')
+      }
+    }
+
+    const result = check({ body, headers }, { strict: args.strict })
+    const output = formatCheckResult(result, args)
+    if (output) console.log(output)
+
+    return result.valid ? 0 : 1
+  } catch (err) {
+    console.error(`Fetch failed: ${(err as Error).message}`)
+    return 2
+  }
+}
+
+// ── File or JSON handler ─────────────────────────────────────────────────
+
+async function handleFileOrJson(rawInput: string, args: CliArgs): Promise<number> {
+  try {
+    const resolved = resolveInput(rawInput)
+
+    // Show normalization warnings if present (wild manifest conversion)
+    if (resolved.normalizationWarnings && resolved.normalizationWarnings.length > 0) {
+      if (!args.quiet && !args.json) {
+        for (const warning of resolved.normalizationWarnings) {
+          console.log(`Wild manifest normalization: ${warning}`)
+        }
+        console.log('')
+      }
+    }
+
+    // Manifest path
+    if (resolved.type === 'manifest') {
+      const manifestData = resolved.data as ManifestConfig
+      const endpointCount = Object.keys(manifestData.endpoints).length
+
+      if (!args.quiet && !args.json) {
+        console.log(`Detected: manifest with ${endpointCount} endpoints`)
+      }
+
+      let result = validateManifest(manifestData)
+      if (args.strict) {
+        result = applyStrictMode(result)
+      }
+
+      const output = formatManifestResult(result, args)
+      if (output) console.log(output)
+
+      return calculateExitCode(result, args.strict)
+    }
+
+    // Single-config path
+    if (!args.quiet && !args.json && typeof resolved.data === 'object' && resolved.data !== null) {
+      const format = detect(resolved.data)
+      if (format === 'v2') {
+        console.log('Detected: v2 config')
+      } else if (format === 'v1') {
+        console.log('Detected: v1 config')
+      }
+    }
+
+    const result = validate(resolved.data, { strict: args.strict })
+    const output = formatValidationResult(result, args)
+    if (output) console.log(output)
+
+    return result.valid ? 0 : 1
+  } catch (err) {
+    console.error(`Error: ${(err as Error).message}`)
+    return 2
+  }
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
 
 async function main(): Promise<number> {
-  const args = parseArgs(process.argv.slice(2))
+  const args = parseCliArgs(process.argv.slice(2))
 
   if (args.version) {
     console.log(VERSION)
@@ -242,64 +233,38 @@ async function main(): Promise<number> {
     return 0
   }
 
-  // Resolve input
-  let input: string | null = args.input
+  // Resolve input source
+  let rawInput: string | null = args.input
 
-  // Try stdin if no positional arg
-  if (!input) {
-    const stdinData = await readStdin()
-    if (stdinData.trim()) {
-      input = stdinData.trim()
+  // Handle dash (-) stdin convention
+  if (rawInput === '-') {
+    rawInput = await readStdin()
+    if (!rawInput.trim()) {
+      console.error('No input from stdin.')
+      return 2
     }
   }
 
-  if (!input) {
-    console.error('No input provided. Run x402check --help for usage.')
+  // Try stdin if no positional arg
+  if (!rawInput) {
+    const stdinData = await readStdin()
+    if (stdinData.trim()) {
+      rawInput = stdinData.trim()
+    }
+  }
+
+  if (!rawInput) {
+    console.error('No input provided. Run x402lint --help for usage.')
     return 2
   }
 
-  // URL mode → fetch + check()
-  if (isUrl(input)) {
-    try {
-      const { status, body, headers } = await fetchUrl(input)
-
-      if (status !== 402) {
-        if (!args.quiet) {
-          console.log(`HTTP ${status} (expected 402)`)
-        }
-      }
-
-      const result = check({ body, headers }, { strict: args.strict })
-      const output = formatCheckResult(result, args)
-      if (output) console.log(output)
-      return result.valid ? 0 : 1
-    } catch (err) {
-      console.error(`Fetch failed: ${(err as Error).message}`)
-      return 2
-    }
+  // URL mode: fetch then detect manifest vs single
+  if (isUrl(rawInput)) {
+    return handleUrl(rawInput, args)
   }
 
-  // File mode → read file + validate()
-  if (!isJsonLike(input)) {
-    const filePath = resolve(input)
-    if (!existsSync(filePath)) {
-      console.error(`File not found: ${filePath}`)
-      return 2
-    }
-
-    try {
-      input = readFileSync(filePath, 'utf-8')
-    } catch (err) {
-      console.error(`Cannot read file: ${(err as Error).message}`)
-      return 2
-    }
-  }
-
-  // JSON mode → validate()
-  const result = validate(input, { strict: args.strict })
-  const output = formatValidationResult(result, args)
-  if (output) console.log(output)
-  return result.valid ? 0 : 1
+  // File or inline JSON mode
+  return handleFileOrJson(rawInput, args)
 }
 
 main().then(

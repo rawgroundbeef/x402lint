@@ -29,11 +29,11 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/detection/wild-manifest.ts
-    - packages/x402check/test/manifest.test.ts
+    - packages/x402lint/src/detection/wild-manifest.ts
+    - packages/x402lint/test/manifest.test.ts
   modified:
-    - packages/x402check/src/detection/index.ts
-    - packages/x402check/test/detection.test.ts
+    - packages/x402lint/src/detection/index.ts
+    - packages/x402lint/test/detection.test.ts
 
 key-decisions:
   - "Wild manifests return warnings (not errors) to enable migration path"
@@ -84,12 +84,12 @@ Each task was committed atomically:
 ## Files Created/Modified
 
 **Created:**
-- `packages/x402check/src/detection/wild-manifest.ts` - normalizeWildManifest() with array-style and nested-service-style detection, generateStableEndpointId() helper, WildManifestResult interface
-- `packages/x402check/test/manifest.test.ts` - 42 comprehensive tests covering isManifestConfig(), detect() for manifests, normalizeWildManifest() patterns, service metadata, edge cases
+- `packages/x402lint/src/detection/wild-manifest.ts` - normalizeWildManifest() with array-style and nested-service-style detection, generateStableEndpointId() helper, WildManifestResult interface
+- `packages/x402lint/test/manifest.test.ts` - 42 comprehensive tests covering isManifestConfig(), detect() for manifests, normalizeWildManifest() patterns, service metadata, edge cases
 
 **Modified:**
-- `packages/x402check/src/detection/index.ts` - Exported normalizeWildManifest and WildManifestResult
-- `packages/x402check/test/detection.test.ts` - Added 3 manifest regression tests
+- `packages/x402lint/src/detection/index.ts` - Exported normalizeWildManifest and WildManifestResult
+- `packages/x402lint/test/detection.test.ts` - Added 3 manifest regression tests
 
 ## Decisions Made
 

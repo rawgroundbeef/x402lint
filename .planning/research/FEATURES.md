@@ -1,6 +1,6 @@
 # Features Research — v3.0 Manifest Validation & CLI
 
-**Project:** x402check v3.0 milestone
+**Project:** x402lint v3.0 milestone
 **Researched:** 2026-02-04
 **Confidence:** MEDIUM-HIGH
 

@@ -28,15 +28,15 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/types/manifest.ts
+    - packages/x402lint/src/types/manifest.ts
   modified:
-    - packages/x402check/src/types/config.ts
-    - packages/x402check/src/types/errors.ts
-    - packages/x402check/src/detection/guards.ts
-    - packages/x402check/src/detection/detect.ts
-    - packages/x402check/src/detection/normalize.ts
-    - packages/x402check/src/index.ts
-    - packages/x402check/test/integration.test.ts
+    - packages/x402lint/src/types/config.ts
+    - packages/x402lint/src/types/errors.ts
+    - packages/x402lint/src/detection/guards.ts
+    - packages/x402lint/src/detection/detect.ts
+    - packages/x402lint/src/detection/normalize.ts
+    - packages/x402lint/src/index.ts
+    - packages/x402lint/test/integration.test.ts
 
 key-decisions:
   - "Manifest detection must occur before v2 (manifests may have x402Version: 2)"
@@ -91,18 +91,18 @@ Each task was committed atomically:
 
 3. **Export manifest type guards from main entry** - `8647179` (feat)
    - Exported isManifestConfig, isV2Config, isV1Config from main index
-   - Ensures type guards importable from x402check package
+   - Ensures type guards importable from x402lint package
 
 ## Files Created/Modified
-- `packages/x402check/src/types/manifest.ts` - ManifestConfig, ServiceMetadata, ServiceContact, ManifestValidationResult types
-- `packages/x402check/src/types/config.ts` - Extended ConfigFormat union to include 'manifest'
-- `packages/x402check/src/types/errors.ts` - Added 7 manifest-specific error codes and messages
-- `packages/x402check/src/types/index.ts` - Export manifest types
-- `packages/x402check/src/detection/guards.ts` - isManifestConfig() type guard
-- `packages/x402check/src/detection/detect.ts` - Manifest-first detection order
-- `packages/x402check/src/detection/normalize.ts` - Handle 'manifest' case (returns null)
-- `packages/x402check/src/index.ts` - Export type guards from main entry
-- `packages/x402check/test/integration.test.ts` - Mark manifest error codes as unreachable until Phase 13
+- `packages/x402lint/src/types/manifest.ts` - ManifestConfig, ServiceMetadata, ServiceContact, ManifestValidationResult types
+- `packages/x402lint/src/types/config.ts` - Extended ConfigFormat union to include 'manifest'
+- `packages/x402lint/src/types/errors.ts` - Added 7 manifest-specific error codes and messages
+- `packages/x402lint/src/types/index.ts` - Export manifest types
+- `packages/x402lint/src/detection/guards.ts` - isManifestConfig() type guard
+- `packages/x402lint/src/detection/detect.ts` - Manifest-first detection order
+- `packages/x402lint/src/detection/normalize.ts` - Handle 'manifest' case (returns null)
+- `packages/x402lint/src/index.ts` - Export type guards from main entry
+- `packages/x402lint/test/integration.test.ts` - Mark manifest error codes as unreachable until Phase 13
 
 ## Decisions Made
 - **Manifest detection order:** Manifest must be checked before v2 since manifests may contain `x402Version: 2` at the manifest level. Checking v2 first would incorrectly classify manifests as single v2 configs.
@@ -118,15 +118,15 @@ Each task was committed atomically:
 - **Found during:** Task 2 verification (test run)
 - **Issue:** Integration test exercises all ErrorCode values. Added 7 manifest error codes but they're not reachable until Phase 13 implements validateManifest(). Test was failing.
 - **Fix:** Added 7 manifest error codes to `expectedUnreachableFromPipeline` array with comment explaining they're not yet exercised (manifest validation is Phase 13)
-- **Files modified:** packages/x402check/test/integration.test.ts
+- **Files modified:** packages/x402lint/test/integration.test.ts
 - **Verification:** All 294 tests pass
 - **Committed in:** a9755a9 (Task 2 commit)
 
 **2. [Rule 2 - Missing Critical] Export type guards from main entry point**
 - **Found during:** Task 2 verification (checking plan verification criteria)
-- **Issue:** Plan verification states "isManifestConfig function is importable from x402check" but it was only exported from detection module, not main entry point
+- **Issue:** Plan verification states "isManifestConfig function is importable from x402lint" but it was only exported from detection module, not main entry point
 - **Fix:** Added isManifestConfig, isV2Config, isV1Config to main index.ts exports
-- **Files modified:** packages/x402check/src/index.ts
+- **Files modified:** packages/x402lint/src/index.ts
 - **Verification:** Checked dist/index.d.ts contains isManifestConfig in export list, runtime test confirmed isManifestConfig(manifest) = true, isManifestConfig(v2) = false
 - **Committed in:** 8647179 (separate commit)
 

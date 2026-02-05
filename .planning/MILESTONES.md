@@ -1,14 +1,14 @@
-# Project Milestones: x402check
+# Project Milestones: x402lint
 
 ## v2.0 Spec-Compliant SDK (Shipped: 2026-02-04)
 
-**Delivered:** Standalone TypeScript npm package (`x402check`) that correctly validates x402 v1/v2 payment configs with 30 error codes, vendored crypto, and zero runtime dependencies — plus website rebuilt on SDK's 27KB browser bundle.
+**Delivered:** Standalone TypeScript npm package (`x402lint`) that correctly validates x402 v1/v2 payment configs with 30 error codes, vendored crypto, and zero runtime dependencies — plus website rebuilt on SDK's 27KB browser bundle.
 
 **Phases completed:** 5-10 (12 plans total)
 
 **Key accomplishments:**
 
-- Standalone `x402check` npm package with validate(), detect(), normalize() pure-function APIs
+- Standalone `x402lint` npm package with validate(), detect(), normalize() pure-function APIs
 - Spec-correct validation with 30 error codes, CAIP-2 network validation, and actionable fix suggestions
 - Vendored keccak-256 and Base58 with canary tests proving correctness against reference vectors
 - Multi-format build (ESM + CJS + IIFE) at 27KB minified / 9KB gzipped, publint validated

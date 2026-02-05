@@ -367,7 +367,7 @@ await fetch(targetUrl);
 export default {
   async fetch(request) {
     const origin = request.headers.get('Origin');
-    const allowedOrigins = ['https://x402check.example.com', 'http://localhost:8000'];
+    const allowedOrigins = ['https://x402lint.example.com', 'http://localhost:8000'];
 
     if (!allowedOrigins.includes(origin)) {
       return new Response('Forbidden', { status: 403 });
@@ -541,7 +541,7 @@ export default {
     // Only allow from specific origins
     const origin = request.headers.get('Origin');
     const allowedOrigins = [
-      'https://x402check.example.com',
+      'https://x402lint.example.com',
       'http://localhost:8000'
     ];
 
@@ -581,7 +581,7 @@ export default {
       const response = await fetch(targetUrl, {
         method: request.method,
         headers: {
-          'User-Agent': 'x402check/1.0'
+          'User-Agent': 'x402lint/1.0'
         }
       });
 

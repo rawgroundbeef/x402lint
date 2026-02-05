@@ -1,6 +1,6 @@
 # Technology Stack — v3.0 Additions
 
-**Project:** x402check v3.0 milestone
+**Project:** x402lint v3.0 milestone
 **Researched:** 2026-02-04
 **Overall confidence:** HIGH
 

@@ -26,7 +26,7 @@ re_verification: false
 | 4 | Bazaar method discrimination produces errors for GET with body, POST with queryParams, etc. | ✓ VERIFIED | `validateBazaarMethodDiscrimination()` at lines 246-309 implements strict checks. Wired into main function at lines 100-103. Tests confirm all 4 error codes work: BAZAAR_GET_WITH_BODY, BAZAAR_GET_MISSING_QUERY_PARAMS, BAZAAR_POST_WITH_QUERY_PARAMS, BAZAAR_POST_MISSING_BODY |
 | 5 | Empty endpoints ({}) returns valid:true with zero issues | ✓ VERIFIED | Lines 77-86 handle empty endpoints. Smoke test confirms: `validateManifest({ endpoints: {} })` returns `valid: true` with empty endpointResults and no errors/warnings. |
 | 6 | Top-level valid is true only when ALL endpoints pass AND no manifest-level errors exist | ✓ VERIFIED | Lines 106-108 compute validity: `allEndpointsValid && noManifestErrors`. Warnings do NOT affect valid flag. Test confirms manifest with warnings but no errors returns valid:true. |
-| 7 | validateManifest is importable from x402check package | ✓ VERIFIED | Exported from `src/validation/index.ts` line 7, re-exported from `src/index.ts` line 24. Smoke test confirms: `require('./dist/index.cjs').validateManifest` is a function. Type definition exists in dist/index.d.ts line 641. |
+| 7 | validateManifest is importable from x402lint package | ✓ VERIFIED | Exported from `src/validation/index.ts` line 7, re-exported from `src/index.ts` line 24. Smoke test confirms: `require('./dist/index.cjs').validateManifest` is a function. Type definition exists in dist/index.d.ts line 641. |
 
 **Score:** 7/7 truths verified
 
@@ -34,21 +34,21 @@ re_verification: false
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `packages/x402check/src/validation/manifest.ts` | validateManifest function with cross-endpoint checks and bazaar discrimination | ✓ VERIFIED | 310 lines. Exports validateManifest(). Contains prefixFieldPaths(), performCrossEndpointChecks(), validateBazaarMethodDiscrimination() helpers. Min 100 lines requirement met. |
-| `packages/x402check/src/types/manifest.ts` | ManifestValidationResult with Record (not Map) | ✓ VERIFIED | 50 lines. Lines 43-49 define ManifestValidationResult with `endpointResults: Record<string, ValidationResult>` and `normalized: ManifestConfig` field. Contains pattern requirement met. |
-| `packages/x402check/src/types/errors.ts` | New manifest validation error codes | ✓ VERIFIED | 149 lines. Lines 52-58 define 7 new error codes: DUPLICATE_ENDPOINT_URL, MIXED_NETWORKS, DUPLICATE_BAZAAR_ROUTE, BAZAAR_GET_WITH_BODY, BAZAAR_GET_MISSING_QUERY_PARAMS, BAZAAR_POST_WITH_QUERY_PARAMS, BAZAAR_POST_MISSING_BODY. Lines 127-133 provide matching ErrorMessages. Contains pattern requirement met. |
-| `packages/x402check/test/manifest-validation.test.ts` | Comprehensive test suite for validateManifest | ✓ VERIFIED | 766 lines, 36 test cases. Covers basic validation (6), per-endpoint (6), cross-endpoint (7), bazaar discrimination (11), edge cases (6). Min 200 lines requirement met. |
-| `packages/x402check/test/integration.test.ts` | Updated error code coverage | ✓ VERIFIED | Lines 434-440 add all 7 new manifest error codes to expectedUnreachableFromPipeline with comment explaining they're exercised in manifest-validation.test.ts. |
+| `packages/x402lint/src/validation/manifest.ts` | validateManifest function with cross-endpoint checks and bazaar discrimination | ✓ VERIFIED | 310 lines. Exports validateManifest(). Contains prefixFieldPaths(), performCrossEndpointChecks(), validateBazaarMethodDiscrimination() helpers. Min 100 lines requirement met. |
+| `packages/x402lint/src/types/manifest.ts` | ManifestValidationResult with Record (not Map) | ✓ VERIFIED | 50 lines. Lines 43-49 define ManifestValidationResult with `endpointResults: Record<string, ValidationResult>` and `normalized: ManifestConfig` field. Contains pattern requirement met. |
+| `packages/x402lint/src/types/errors.ts` | New manifest validation error codes | ✓ VERIFIED | 149 lines. Lines 52-58 define 7 new error codes: DUPLICATE_ENDPOINT_URL, MIXED_NETWORKS, DUPLICATE_BAZAAR_ROUTE, BAZAAR_GET_WITH_BODY, BAZAAR_GET_MISSING_QUERY_PARAMS, BAZAAR_POST_WITH_QUERY_PARAMS, BAZAAR_POST_MISSING_BODY. Lines 127-133 provide matching ErrorMessages. Contains pattern requirement met. |
+| `packages/x402lint/test/manifest-validation.test.ts` | Comprehensive test suite for validateManifest | ✓ VERIFIED | 766 lines, 36 test cases. Covers basic validation (6), per-endpoint (6), cross-endpoint (7), bazaar discrimination (11), edge cases (6). Min 200 lines requirement met. |
+| `packages/x402lint/test/integration.test.ts` | Updated error code coverage | ✓ VERIFIED | Lines 434-440 add all 7 new manifest error codes to expectedUnreachableFromPipeline with comment explaining they're exercised in manifest-validation.test.ts. |
 
 ### Key Link Verification
 
 | From | To | Via | Status | Details |
 |------|----|----|--------|---------|
-| `packages/x402check/src/validation/manifest.ts` | `packages/x402check/src/validation/orchestrator.ts` | import { validate } | ✓ WIRED | Line 10: `import { validate } from './orchestrator'`. Line 90 calls validate(endpointConfig) per endpoint. |
-| `packages/x402check/src/index.ts` | `packages/x402check/src/validation/manifest.ts` | re-export validateManifest | ✓ WIRED | Line 24 exports validateManifest from './validation'. Chained through src/validation/index.ts line 7. |
-| `packages/x402check/src/validation/manifest.ts` | `packages/x402check/src/registries/networks.ts` | import getNetworkInfo | ✓ WIRED | Line 12: `import { getNetworkInfo } from '../registries/networks'`. Line 187 calls getNetworkInfo(network) for testnet detection. |
-| `packages/x402check/test/manifest-validation.test.ts` | `packages/x402check/src/validation/manifest.ts` | import { validateManifest } | ✓ WIRED | Line 2: `import { validateManifest } from '../src/index'`. 36 test cases exercise validateManifest(). |
-| `packages/x402check/test/integration.test.ts` | `packages/x402check/src/types/errors.ts` | exercises all ErrorCode values | ✓ WIRED | Lines 434-440 list all 7 new manifest error codes in expectedUnreachableFromPipeline. Test coverage check passes with 397/397 tests. |
+| `packages/x402lint/src/validation/manifest.ts` | `packages/x402lint/src/validation/orchestrator.ts` | import { validate } | ✓ WIRED | Line 10: `import { validate } from './orchestrator'`. Line 90 calls validate(endpointConfig) per endpoint. |
+| `packages/x402lint/src/index.ts` | `packages/x402lint/src/validation/manifest.ts` | re-export validateManifest | ✓ WIRED | Line 24 exports validateManifest from './validation'. Chained through src/validation/index.ts line 7. |
+| `packages/x402lint/src/validation/manifest.ts` | `packages/x402lint/src/registries/networks.ts` | import getNetworkInfo | ✓ WIRED | Line 12: `import { getNetworkInfo } from '../registries/networks'`. Line 187 calls getNetworkInfo(network) for testnet detection. |
+| `packages/x402lint/test/manifest-validation.test.ts` | `packages/x402lint/src/validation/manifest.ts` | import { validateManifest } | ✓ WIRED | Line 2: `import { validateManifest } from '../src/index'`. 36 test cases exercise validateManifest(). |
+| `packages/x402lint/test/integration.test.ts` | `packages/x402lint/src/types/errors.ts` | exercises all ErrorCode values | ✓ WIRED | Lines 434-440 list all 7 new manifest error codes in expectedUnreachableFromPipeline. Test coverage check passes with 397/397 tests. |
 
 ### Requirements Coverage
 

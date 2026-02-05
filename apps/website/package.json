@@ -1,6 +1,6 @@
 {
-  "name": "@x402check/website",
+  "name": "@x402lint/website",
   "version": "0.0.0",
   "private": true,
-  "description": "x402check validation website"
+  "description": "x402lint validation website"
 }

@@ -124,7 +124,7 @@ try {
 **When to use:** For all c32check operations
 **Example:**
 ```typescript
-// packages/x402check/src/crypto/c32check.ts
+// packages/x402lint/src/crypto/c32check.ts
 import { c32addressDecode as c32Decode } from 'c32check'
 
 export function decodeStacksAddress(address: string): [number, string] {
@@ -269,7 +269,7 @@ export function validateStacksAddress(
 
 ### Network Registry Addition
 ```typescript
-// Source: packages/x402check/src/registries/networks.ts pattern
+// Source: packages/x402lint/src/registries/networks.ts pattern
 export const KNOWN_NETWORKS = {
   // ... existing networks ...
 

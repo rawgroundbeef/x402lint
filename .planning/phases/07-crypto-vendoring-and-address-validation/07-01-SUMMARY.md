@@ -29,17 +29,17 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/src/crypto/keccak256.ts
-    - packages/x402check/src/crypto/base58.ts
-    - packages/x402check/src/crypto/eip55.ts
-    - packages/x402check/src/crypto/index.ts
-    - packages/x402check/test/crypto/keccak256.test.ts
-    - packages/x402check/test/crypto/base58.test.ts
-    - packages/x402check/test/crypto/eip55.test.ts
+    - packages/x402lint/src/crypto/keccak256.ts
+    - packages/x402lint/src/crypto/base58.ts
+    - packages/x402lint/src/crypto/eip55.ts
+    - packages/x402lint/src/crypto/index.ts
+    - packages/x402lint/test/crypto/keccak256.test.ts
+    - packages/x402lint/test/crypto/base58.test.ts
+    - packages/x402lint/test/crypto/eip55.test.ts
   modified:
-    - packages/x402check/src/types/errors.ts
-    - packages/x402check/tsconfig.json
-    - packages/x402check/package.json
+    - packages/x402lint/src/types/errors.ts
+    - packages/x402lint/tsconfig.json
+    - packages/x402lint/package.json
 
 key-decisions:
   - "Use @noble/hashes and @scure/base as devDependencies (tree-shakeable with bundler)"
@@ -89,18 +89,18 @@ Each task was committed atomically:
 ## Files Created/Modified
 
 **Created:**
-- `packages/x402check/src/crypto/keccak256.ts` - Keccak-256 hash (NOT SHA-3) via @noble/hashes
-- `packages/x402check/src/crypto/base58.ts` - Base58 decoder with error handling
-- `packages/x402check/src/crypto/eip55.ts` - EIP-55 mixed-case checksum encoder and validator
-- `packages/x402check/src/crypto/index.ts` - Barrel export for all crypto primitives
-- `packages/x402check/test/crypto/keccak256.test.ts` - 5 tests including Keccak-256 vs SHA-3 canary
-- `packages/x402check/test/crypto/base58.test.ts` - 5 tests including all-1s address canary
-- `packages/x402check/test/crypto/eip55.test.ts` - 5 tests with six EIP-55 reference vectors
+- `packages/x402lint/src/crypto/keccak256.ts` - Keccak-256 hash (NOT SHA-3) via @noble/hashes
+- `packages/x402lint/src/crypto/base58.ts` - Base58 decoder with error handling
+- `packages/x402lint/src/crypto/eip55.ts` - EIP-55 mixed-case checksum encoder and validator
+- `packages/x402lint/src/crypto/index.ts` - Barrel export for all crypto primitives
+- `packages/x402lint/test/crypto/keccak256.test.ts` - 5 tests including Keccak-256 vs SHA-3 canary
+- `packages/x402lint/test/crypto/base58.test.ts` - 5 tests including all-1s address canary
+- `packages/x402lint/test/crypto/eip55.test.ts` - 5 tests with six EIP-55 reference vectors
 
 **Modified:**
-- `packages/x402check/src/types/errors.ts` - Added NO_EVM_CHECKSUM error code and message
-- `packages/x402check/tsconfig.json` - Added DOM lib for TextEncoder support
-- `packages/x402check/package.json` - Added @noble/hashes and @scure/base devDependencies
+- `packages/x402lint/src/types/errors.ts` - Added NO_EVM_CHECKSUM error code and message
+- `packages/x402lint/tsconfig.json` - Added DOM lib for TextEncoder support
+- `packages/x402lint/package.json` - Added @noble/hashes and @scure/base devDependencies
 - `pnpm-lock.yaml` - Dependency lock update
 
 ## Decisions Made
@@ -129,7 +129,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (TypeScript compilation)
 - **Issue:** `import from '@noble/hashes/sha3'` failed with TS2307 (cannot find module)
 - **Fix:** Changed to `'@noble/hashes/sha3.js'` per package.json exports field requirement
-- **Files modified:** `packages/x402check/src/crypto/keccak256.ts`
+- **Files modified:** `packages/x402lint/src/crypto/keccak256.ts`
 - **Verification:** TypeScript compilation succeeds
 - **Committed in:** `2efc897` (Task 1 commit)
 
@@ -137,7 +137,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (TypeScript compilation)
 - **Issue:** TextEncoder not found despite ES2022 lib (TS2304)
 - **Fix:** Added `"lib": ["ES2022", "DOM"]` to package tsconfig.json
-- **Files modified:** `packages/x402check/tsconfig.json`
+- **Files modified:** `packages/x402lint/tsconfig.json`
 - **Verification:** TypeScript compilation succeeds, TextEncoder available
 - **Committed in:** `2efc897` (Task 1 commit)
 
@@ -145,7 +145,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (TypeScript compilation)
 - **Issue:** Array indexing returns `T | undefined` with noUncheckedIndexedAccess, causing TS18048 errors
 - **Fix:** Added `if (!char || !hashChar) continue` guard in checksum loop
-- **Files modified:** `packages/x402check/src/crypto/eip55.ts`
+- **Files modified:** `packages/x402lint/src/crypto/eip55.ts`
 - **Verification:** TypeScript compilation succeeds, runtime logic unchanged
 - **Committed in:** `2efc897` (Task 1 commit)
 
@@ -153,7 +153,7 @@ Each task was committed atomically:
 - **Found during:** Task 1 (TypeScript compilation)
 - **Issue:** `Array.from(hash).map(b => ...)` had `b: unknown` causing TS2345
 - **Fix:** Added explicit type: `.map((b: number) => ...)`
-- **Files modified:** `packages/x402check/src/crypto/keccak256.ts`
+- **Files modified:** `packages/x402lint/src/crypto/keccak256.ts`
 - **Verification:** TypeScript compilation succeeds
 - **Committed in:** `2efc897` (Task 1 commit)
 

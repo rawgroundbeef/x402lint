@@ -18,7 +18,7 @@ The established libraries/tools for browser bundle integration via CDN:
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
 | jsDelivr CDN | Latest | npm package delivery | Auto-serves package.json "browser" field, global CDN, supports SRI |
-| IIFE bundle | tsdown | Browser-compatible format | Exposes window.x402Validate namespace, zero module system required |
+| IIFE bundle | tsdown | Browser-compatible format | Exposes window.x402Lint namespace, zero module system required |
 | SRI (Subresource Integrity) | Native | CDN security | Browser validates cryptographic hash, prevents tampering |
 
 ### Supporting
@@ -33,12 +33,12 @@ The established libraries/tools for browser bundle integration via CDN:
 |------------|-----------|----------|
 | jsDelivr | unpkg.com | functionally equivalent, jsDelivr has multi-provider redundancy |
 | IIFE | ESM via `<script type="module">` | ESM cleaner but requires import maps, IIFE works everywhere |
-| Global window namespace | Custom namespace (`window.X402SDK`) | Less collision risk but breaks convention (x402Validate matches package) |
+| Global window namespace | Custom namespace (`window.X402SDK`) | Less collision risk but breaks convention (x402Lint matches package) |
 
 **Installation:**
 ```html
 <!-- Replace 5 script tags with 2 -->
-<script src="https://cdn.jsdelivr.net/npm/x402check@0.0.1/dist/index.iife.js"
+<script src="https://cdn.jsdelivr.net/npm/x402lint@0.0.1/dist/index.iife.js"
         integrity="sha384-[HASH]"
         crossorigin="anonymous"></script>
 <script src="input.js"></script>
@@ -50,7 +50,7 @@ The established libraries/tools for browser bundle integration via CDN:
 
 **Incremental replacement:**
 1. Keep existing display logic (renderVerdict, renderDetails) unchanged
-2. Replace validation function only (validateX402Config → window.x402Validate.validate)
+2. Replace validation function only (validateX402Config → window.x402Lint.validate)
 3. Map SDK result shape to old result shape in adapter
 4. Verify UI renders identically
 5. Clean up old files (validator.js, chains.js)
@@ -77,7 +77,7 @@ function validateX402Config(configText) {
 }
 
 // NEW SDK API
-window.x402Validate.validate(config, options) {
+window.x402Lint.validate(config, options) {
   return {
     valid: boolean,
     version: string,
@@ -89,7 +89,7 @@ window.x402Validate.validate(config, options) {
 
 // ADAPTER (maps new to old shape)
 function validateX402Config(configText) {
-  const result = window.x402Validate.validate(configText);
+  const result = window.x402Lint.validate(configText);
   return {
     valid: result.valid,
     errors: result.errors.map(e => ({
@@ -119,7 +119,7 @@ function validateX402Config(configText) {
 **Example:**
 ```html
 <!-- Primary: jsDelivr with SRI -->
-<script src="https://cdn.jsdelivr.net/npm/x402check@0.0.1/dist/index.iife.js"
+<script src="https://cdn.jsdelivr.net/npm/x402lint@0.0.1/dist/index.iife.js"
         integrity="sha384-[HASH]"
         crossorigin="anonymous"
         onerror="loadLocalFallback()"></script>
@@ -127,9 +127,9 @@ function validateX402Config(configText) {
 <script>
 // Fallback strategy
 function loadLocalFallback() {
-  if (!window.x402Validate) {
+  if (!window.x402Lint) {
     const script = document.createElement('script');
-    script.src = '/vendor/x402check.iife.js';
+    script.src = '/vendor/x402lint.iife.js';
     document.head.appendChild(script);
   }
 }
@@ -191,7 +191,7 @@ Problems that look simple but have existing solutions:
 | SRI hash generation | Manual sha384 calculation | `openssl dgst -sha384` or srihash.org | Hash must match byte-for-byte, human error likely |
 | CDN version pinning | Hardcode version numbers | jsDelivr version aliasing (`@latest`, `@0.x`) | Auto-updates patch versions, manual update for majors |
 | Bundle size measurement | Eyeball file sizes | webpack-bundle-analyzer | Visualizes treemap, identifies bloat sources |
-| Global namespace conflicts | Hope for the best | Check `window.x402Validate` exists | Other libs might use same name (unlikely but defensive) |
+| Global namespace conflicts | Hope for the best | Check `window.x402Lint` exists | Other libs might use same name (unlikely but defensive) |
 | API compatibility layer | Inline field mapping everywhere | Centralized adapter function | Single source of truth, easier to remove later |
 
 **Key insight:** Browser tooling is mature. Use standard tools (SRI, CDN versioning, analyzers) rather than custom solutions. The hard parts are hash generation and version management, both solved by ecosystem.
@@ -213,7 +213,7 @@ Problems that look simple but have existing solutions:
 <script src="..." integrity="sha384-..." crossorigin="anonymous"></script>
 ```
 
-**Warning signs:** Script tag in HTML but `window.x402Validate` is undefined. Console shows CORS error.
+**Warning signs:** Script tag in HTML but `window.x402Lint` is undefined. Console shows CORS error.
 
 **Source:** [MDN: Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
 
@@ -224,7 +224,7 @@ Problems that look simple but have existing solutions:
 **Why it happens:** `@latest` alias resolves to new version, but integrity hash is for old version. Browser rejects mismatched hash.
 
 **How to avoid:**
-- Option A: Pin exact version (`x402check@0.0.1`) and update hash manually when upgrading
+- Option A: Pin exact version (`x402lint@0.0.1`) and update hash manually when upgrading
 - Option B: Omit SRI for dev, generate during CI/deploy for production
 - Option C: Use CDN's SRI auto-generation (jsDelivr doesn't support this)
 
@@ -263,7 +263,7 @@ Problems that look simple but have existing solutions:
 
 **What goes wrong:** IIFE bundle balloons from 27KB to 200KB+ after adding feature
 
-**Why it happens:** Accidentally imported entire SDK (`import * from 'x402check'`) instead of named exports. Tree-shaking doesn't work for wildcard imports in IIFE format.
+**Why it happens:** Accidentally imported entire SDK (`import * from 'x402lint'`) instead of named exports. Tree-shaking doesn't work for wildcard imports in IIFE format.
 
 **How to avoid:**
 - Use named exports only: `export { validate, detect, normalize }`
@@ -291,7 +291,7 @@ Verified patterns from implementation planning:
 
 **AFTER (2 script tags, ~27KB):**
 ```html
-<script src="https://cdn.jsdelivr.net/npm/x402check@0.0.1/dist/index.iife.js"
+<script src="https://cdn.jsdelivr.net/npm/x402lint@0.0.1/dist/index.iife.js"
         integrity="sha384-[GENERATE_ON_PUBLISH]"
         crossorigin="anonymous"></script>
 <script src="input.js"></script>
@@ -310,7 +310,7 @@ Verified patterns from implementation planning:
  */
 function validateX402Config(configText) {
   try {
-    const sdkResult = window.x402Validate.validate(configText);
+    const sdkResult = window.x402Lint.validate(configText);
 
     // Map SDK shape to old shape
     return {
@@ -513,7 +513,7 @@ Things that couldn't be fully resolved:
 
 1. **Should we keep local fallback for IIFE bundle?**
    - What we know: CDN failures are rare, jsDelivr has multi-provider redundancy (Cloudflare + Fastly)
-   - What's unclear: Whether x402check.com serves enough traffic to justify fallback complexity
+   - What's unclear: Whether x402lint.com serves enough traffic to justify fallback complexity
    - Recommendation: Start without fallback (simpler), add if CDN issues occur. Document pattern in code comments for future.
 
 2. **Should example configs use CAIP-2 networks or simple names?**

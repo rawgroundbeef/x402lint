@@ -15,13 +15,13 @@ Restructure the repo into a monorepo with the SDK package skeleton. The existing
 
 ### Workspace tooling
 - pnpm workspaces (pnpm-workspace.yaml)
-- Root package.json has proxy scripts: `build:sdk`, `test:sdk`, `lint:sdk` that run `pnpm --filter x402check <command>`
+- Root package.json has proxy scripts: `build:sdk`, `test:sdk`, `lint:sdk` that run `pnpm --filter x402lint <command>`
 - Website is its own workspace member (not plain files at root)
-- SDK package name: `x402check` (matches repo, `import { validate } from 'x402check'`)
+- SDK package name: `x402lint` (matches repo, `import { validate } from 'x402lint'`)
 
 ### Directory layout
 - `apps/website/` — website workspace (deployable app)
-- `packages/x402check/` — SDK workspace (library)
+- `packages/x402lint/` — SDK workspace (library)
 - `packages/config/` — shared config package (tsconfig base, eslint, prettier)
 - `.planning/` stays at repo root (project-wide concern)
 - Website file reorganization within `apps/website/` — Claude's discretion based on current file structure

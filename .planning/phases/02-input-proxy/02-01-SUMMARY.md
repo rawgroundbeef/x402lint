@@ -27,7 +27,7 @@ key-decisions:
   - "Origin allowlist: localhost:8000, localhost:3000, 127.0.0.1:8000, null"
   - "SSRF protection: block 169.254.x.x, 10.x.x.x, 192.168.x.x, 127.x.x.x, localhost"
   - "Expose x402 headers: PAYMENT-REQUIRED, X-Payment via Access-Control-Expose-Headers"
-  - "User-Agent: x402check/1.0 for identification"
+  - "User-Agent: x402lint/1.0 for identification"
 
 patterns-established:
   - "Pattern: Cloudflare Workers ES modules format with default export"
@@ -83,7 +83,7 @@ This URL is needed for Plan 02-02 to configure fetch requests.
 **Security measures:**
 - Origin allowlist restricts which sites can use the proxy
 - SSRF protection blocks requests to internal IP ranges (169.254.x.x, 10.x.x.x, etc.)
-- User-Agent header identifies requests as coming from x402check
+- User-Agent header identifies requests as coming from x402lint
 
 **CORS configuration:**
 - Access-Control-Allow-Origin reflects request Origin (not wildcard)

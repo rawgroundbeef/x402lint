@@ -50,7 +50,7 @@ pnpm add -D tsdown@^0.20.1 typescript@^5.9.3
 
 ### Recommended Project Structure
 ```
-packages/x402check/
+packages/x402lint/
 ├── src/                    # TypeScript source
 │   ├── index.ts           # Public API (named exports only)
 │   ├── types/             # Type definitions
@@ -62,7 +62,7 @@ packages/x402check/
 │   ├── index.d.mts        # ESM types
 │   ├── index.cjs          # CJS bundle
 │   ├── index.d.cts        # CJS types
-│   ├── x402check.umd.js   # UMD bundle (browser)
+│   ├── x402lint.umd.js   # UMD bundle (browser)
 │   └── index.d.ts         # Universal types (fallback)
 ├── tsdown.config.ts       # Build configuration
 ├── package.json           # Package metadata + exports
@@ -94,7 +94,7 @@ export default defineConfig([
     entry: './src/index.ts',
     format: ['umd'],
     platform: 'browser',
-    globalName: 'x402Validate',  // window.x402Validate
+    globalName: 'x402Lint',  // window.x402Lint
     external: [],                 // Bundle everything
     minify: true,                 // Minify browser bundle
     sourcemap: false,
@@ -237,7 +237,7 @@ export default defineConfig({
 // tsdown.config.ts
 {
   format: ['umd'],
-  globalName: 'x402Validate',  // window.x402Validate.validate()
+  globalName: 'x402Lint',  // window.x402Lint.validate()
 }
 ```
 **Warning signs:** Browser console errors "validate is not defined"
@@ -263,7 +263,7 @@ export default defineConfig({
 - Set sourcemap: false for UMD build
 - Set external: [] but verify zero runtime deps
 - Use minify: true for browser bundle
-**Warning signs:** dist/x402check.umd.js >15KB
+**Warning signs:** dist/x402lint.umd.js >15KB
 
 ### Pitfall 7: Missing .js Extensions in Imports
 **What goes wrong:** Build fails with "Cannot find module" for @noble/hashes imports
@@ -313,7 +313,7 @@ export default defineConfig([
     entry: './src/index.ts',
     format: ['umd'],
     platform: 'browser',
-    globalName: 'x402Validate',
+    globalName: 'x402Lint',
     target: ['es2020'],      // Broad browser support
     minify: true,            // Minify for size
     sourcemap: false,        // No sourcemaps in UMD
@@ -328,7 +328,7 @@ export default defineConfig([
 ### Complete package.json for Dual ESM/CJS + UMD
 ```json
 {
-  "name": "x402check",
+  "name": "x402lint",
   "version": "0.0.1",
   "description": "Validate x402 payment configurations",
   "type": "module",
@@ -437,7 +437,7 @@ Things that couldn't be fully resolved:
 
 2. **isolatedDeclarations performance benefit**
    - What we know: tsdown uses oxc-transform for .d.ts generation if isolatedDeclarations: true (extremely fast)
-   - What's unclear: Whether x402check codebase is compatible with isolatedDeclarations compiler option
+   - What's unclear: Whether x402lint codebase is compatible with isolatedDeclarations compiler option
    - Recommendation: Try enabling, fall back to TypeScript compiler if errors
 
 3. **Bundle size with vendored crypto**
@@ -482,7 +482,7 @@ Things that couldn't be fully resolved:
 - Standard stack: HIGH - tsdown official docs, Node.js official docs, tool usage verified in examples
 - Architecture: HIGH - Patterns from official docs and verified real-world configs (vue-sonner)
 - Pitfalls: HIGH - Issues documented in official Node.js docs, TypeScript issues, and publint rules
-- Bundle size optimization: MEDIUM - Need to measure actual x402check bundle size
+- Bundle size optimization: MEDIUM - Need to measure actual x402lint bundle size
 - UMD filename customization: LOW - outputOptions API not fully documented in tsdown
 
 **Research date:** 2026-01-29

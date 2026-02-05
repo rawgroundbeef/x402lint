@@ -15,23 +15,23 @@ tech-stack:
 
 key-files:
   created:
-    - packages/x402check/test/fixtures/valid-v2-base.json
-    - packages/x402check/test/fixtures/valid-v2-solana.json
-    - packages/x402check/test/fixtures/valid-v1.json
-    - packages/x402check/test/fixtures/valid-flat.json
-    - packages/x402check/test/fixtures/invalid-no-accepts.json
-    - packages/x402check/test/fixtures/invalid-bad-network.json
-    - packages/x402check/test/fixtures/real-world/coinbase-x402-sample.json
-    - packages/x402check/test/validation/rules/structure.test.ts
-    - packages/x402check/test/validation/rules/version.test.ts
-    - packages/x402check/test/validation/rules/fields.test.ts
-    - packages/x402check/test/validation/rules/network.test.ts
-    - packages/x402check/test/validation/rules/amount.test.ts
-    - packages/x402check/test/validation/rules/legacy.test.ts
-    - packages/x402check/test/validation/orchestrator.test.ts
-    - packages/x402check/test/integration.test.ts
+    - packages/x402lint/test/fixtures/valid-v2-base.json
+    - packages/x402lint/test/fixtures/valid-v2-solana.json
+    - packages/x402lint/test/fixtures/valid-v1.json
+    - packages/x402lint/test/fixtures/valid-flat.json
+    - packages/x402lint/test/fixtures/invalid-no-accepts.json
+    - packages/x402lint/test/fixtures/invalid-bad-network.json
+    - packages/x402lint/test/fixtures/real-world/coinbase-x402-sample.json
+    - packages/x402lint/test/validation/rules/structure.test.ts
+    - packages/x402lint/test/validation/rules/version.test.ts
+    - packages/x402lint/test/validation/rules/fields.test.ts
+    - packages/x402lint/test/validation/rules/network.test.ts
+    - packages/x402lint/test/validation/rules/amount.test.ts
+    - packages/x402lint/test/validation/rules/legacy.test.ts
+    - packages/x402lint/test/validation/orchestrator.test.ts
+    - packages/x402lint/test/integration.test.ts
   modified:
-    - packages/x402check/src/validation/orchestrator.ts
+    - packages/x402lint/src/validation/orchestrator.ts
 
 decisions:
   - id: timeout-severity-routing
@@ -70,7 +70,7 @@ Created orchestrator.test.ts (40 tests) exercising the full validate() pipeline 
 - **Found during:** Task 2
 - **Issue:** orchestrator.ts line 158 pushed all timeout issues to warnings array unconditionally, but validateTimeout() returns INVALID_TIMEOUT with severity 'error'. This meant timeout errors were incorrectly classified as warnings.
 - **Fix:** Changed timeout dispatch to route by severity field (matching network and address dispatch patterns): errors go to errors array, warnings go to warnings array.
-- **Files modified:** packages/x402check/src/validation/orchestrator.ts
+- **Files modified:** packages/x402lint/src/validation/orchestrator.ts
 - **Commit:** 2203468
 
 ## Decisions Made

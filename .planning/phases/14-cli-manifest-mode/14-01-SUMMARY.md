@@ -11,11 +11,11 @@ tech-stack:
   patterns: [node-util-parseArgs, manual-redirect-tracking, manifest-auto-detection]
 key-files:
   created:
-    - packages/x402check/src/cli/args.ts
-    - packages/x402check/src/cli/fetch.ts
-    - packages/x402check/src/cli/detect.ts
+    - packages/x402lint/src/cli/args.ts
+    - packages/x402lint/src/cli/fetch.ts
+    - packages/x402lint/src/cli/detect.ts
   modified:
-    - packages/x402check/package.json
+    - packages/x402lint/package.json
 decisions:
   - slug: cli-table3-as-devdep
     title: cli-table3 installed as devDependency
@@ -60,10 +60,10 @@ Installed cli-table3 as devDependency and created `src/cli/args.ts` with modern 
 - Note: No `-s` short flag for `--strict` to avoid future conflicts
 
 **Files created:**
-- `packages/x402check/src/cli/args.ts` (2012 bytes)
+- `packages/x402lint/src/cli/args.ts` (2012 bytes)
 
 **Files modified:**
-- `packages/x402check/package.json` (added cli-table3 ^0.6.5)
+- `packages/x402lint/package.json` (added cli-table3 ^0.6.5)
 
 ### Task 2: Create Fetch Module with Redirect Tracking
 **Commit:** 2273f89
@@ -83,7 +83,7 @@ Created `src/cli/fetch.ts` with manual redirect handling:
 - New: Tracks redirect count, enforces timeout, supports custom headers
 
 **Files created:**
-- `packages/x402check/src/cli/fetch.ts` (2593 bytes)
+- `packages/x402lint/src/cli/fetch.ts` (2593 bytes)
 
 ### Task 3: Create Input Detection/Loading Module
 **Commit:** 579d984
@@ -108,7 +108,7 @@ Created `src/cli/detect.ts` with comprehensive input handling:
 - Preserves all normalization warnings for display to user
 
 **Files created:**
-- `packages/x402check/src/cli/detect.ts` (3380 bytes)
+- `packages/x402lint/src/cli/detect.ts` (3380 bytes)
 
 ## Deviations from Plan
 

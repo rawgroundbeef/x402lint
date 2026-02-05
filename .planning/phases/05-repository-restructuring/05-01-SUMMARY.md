@@ -11,7 +11,7 @@ requires:
 provides:
   - pnpm workspace monorepo with 4 members (root, website, config, SDK)
   - Strict TypeScript configuration with noUncheckedIndexedAccess + exactOptionalPropertyTypes
-  - SDK package skeleton at packages/x402check/ with vitest + tsdown
+  - SDK package skeleton at packages/x402lint/ with vitest + tsdown
   - Shared config package at packages/config/
   - Directory structure for future phases (types, detection, validation, crypto)
 affects: [06-type-system, 07-crypto-utilities, 08-validation-engine, 09-build-pipeline, 10-documentation]
@@ -29,11 +29,11 @@ key-files:
   created:
     - pnpm-workspace.yaml
     - packages/config/typescript/base.json
-    - packages/x402check/package.json
-    - packages/x402check/src/index.ts
-    - packages/x402check/tsconfig.json
-    - packages/x402check/vitest.config.ts
-    - packages/x402check/tsdown.config.ts
+    - packages/x402lint/package.json
+    - packages/x402lint/src/index.ts
+    - packages/x402lint/tsconfig.json
+    - packages/x402lint/vitest.config.ts
+    - packages/x402lint/tsdown.config.ts
   modified:
     - .gitignore (added dist/, .pnpm-debug.log)
 
@@ -56,7 +56,7 @@ completed: 2026-01-29
 
 # Phase 5 Plan 01: Repository Restructuring Summary
 
-**pnpm workspace monorepo with SDK skeleton at packages/x402check/, strict TypeScript config with noUncheckedIndexedAccess, and website preserved at apps/website/ with git history intact**
+**pnpm workspace monorepo with SDK skeleton at packages/x402lint/, strict TypeScript config with noUncheckedIndexedAccess, and website preserved at apps/website/ with git history intact**
 
 ## Performance
 
@@ -67,7 +67,7 @@ completed: 2026-01-29
 - **Files modified:** 25
 
 ## Accomplishments
-- Created pnpm workspace with 4 members: root, @x402check/website, @x402check/config, x402check
+- Created pnpm workspace with 4 members: root, @x402lint/website, @x402lint/config, x402lint
 - Moved all website files to apps/website/ preserving git history via git mv
 - Set up SDK package skeleton with TypeScript strict mode, vitest, and tsdown
 - Established shared TypeScript base config with maximum strictness (noUncheckedIndexedAccess + exactOptionalPropertyTypes)
@@ -90,13 +90,13 @@ Each task was committed atomically:
 - `apps/website/package.json` - Website workspace member package manifest
 - `packages/config/package.json` - Shared config package manifest
 - `packages/config/typescript/base.json` - Strict TypeScript base config
-- `packages/x402check/package.json` - SDK package manifest with ESM + CJS exports
-- `packages/x402check/tsconfig.json` - SDK TypeScript config extending shared base
-- `packages/x402check/vitest.config.ts` - Test runner configuration
-- `packages/x402check/tsdown.config.ts` - Build tool configuration
-- `packages/x402check/src/index.ts` - SDK entry point with VERSION export
-- `packages/x402check/test/index.test.ts` - Smoke test verifying SDK imports
-- `packages/x402check/src/{types,detection,validation,crypto}/.gitkeep` - Directory structure for future phases
+- `packages/x402lint/package.json` - SDK package manifest with ESM + CJS exports
+- `packages/x402lint/tsconfig.json` - SDK TypeScript config extending shared base
+- `packages/x402lint/vitest.config.ts` - Test runner configuration
+- `packages/x402lint/tsdown.config.ts` - Build tool configuration
+- `packages/x402lint/src/index.ts` - SDK entry point with VERSION export
+- `packages/x402lint/test/index.test.ts` - Smoke test verifying SDK imports
+- `packages/x402lint/src/{types,detection,validation,crypto}/.gitkeep` - Directory structure for future phases
 
 **Modified:**
 - `.gitignore` - Added monorepo patterns (dist/, .pnpm-debug.log)
@@ -138,7 +138,7 @@ None - no external service configuration required.
 ## Next Phase Readiness
 
 **Ready for Phase 6 (Type System):**
-- `packages/x402check/src/types/` directory exists and ready for type definitions
+- `packages/x402lint/src/types/` directory exists and ready for type definitions
 - TypeScript compilation works with strict mode enabled
 - Test infrastructure in place (vitest configured and passing)
 - Build tooling ready (tsdown configured for multi-format output)

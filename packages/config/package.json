@@ -1,7 +1,7 @@
 {
-  "name": "@x402check/config",
+  "name": "@x402lint/config",
   "version": "1.0.0",
   "private": true,
-  "description": "Shared configuration for x402check monorepo",
+  "description": "Shared configuration for x402lint monorepo",
   "files": ["typescript"]
 }

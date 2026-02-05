@@ -1,8 +1,8 @@
-# x402check
+# x402lint
 
 ## What This Is
 
-A developer tool and npm package for validating x402 payment configurations. The `x402check` SDK provides `validate()`, `detect()`, and `normalize()` APIs for any JavaScript/TypeScript project, while the website at x402check.com offers instant browser-based validation with actionable fix suggestions.
+A developer tool and npm package for validating x402 payment configurations. The `x402lint` SDK provides `validate()`, `detect()`, and `normalize()` APIs for any JavaScript/TypeScript project, while the website at x402lint.com offers instant browser-based validation with actionable fix suggestions.
 
 ## Core Value
 
@@ -11,10 +11,10 @@ Developers can validate their x402 config in under 30 seconds and get specific, 
 ## Current State
 
 **Shipped:** v2.0 Spec-Compliant SDK (2026-02-04)
-**Live:** x402check.com
+**Live:** x402lint.com
 **Stack:** TypeScript SDK (pnpm monorepo) + Plain HTML/JS website + Cloudflare Worker proxy
 **LOC:** 2,502 lines SDK TypeScript, 11,937 total project lines
-**Package:** `x402check` — ESM + CJS + IIFE (27KB minified, 9KB gzipped)
+**Package:** `x402lint` — ESM + CJS + IIFE (27KB minified, 9KB gzipped)
 **Tests:** 217 test cases
 
 The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network validation, EIP-55 address checksums, and vendored crypto primitives. The website is rebuilt on the SDK's browser bundle.
@@ -30,7 +30,7 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 - ✓ Example configs loadable with one click — v1.0
 - ✓ Mobile responsive — v1.0
 - ✓ Spec-correct validation of x402 v1 and v2 PaymentRequired responses — v2.0
-- ✓ Standalone npm package (`x402check`) usable by any JS/TS project — v2.0
+- ✓ Standalone npm package (`x402lint`) usable by any JS/TS project — v2.0
 - ✓ Browser-compatible IIFE bundle loadable via `<script>` tag — v2.0
 - ✓ Comprehensive test suite (217 cases, every field, every error path) — v2.0
 - ✓ Format detection (`v2`, `v1`, `flat-legacy`, `unknown`) — v2.0
@@ -49,7 +49,7 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 - [ ] MAN-03: Full bazaar extension validation (shape, JSON Schema, method type discrimination) — Phase 13
 - [ ] MAN-04: Compatibility layer for non-standard wild manifests (normalize biwas-style formats) — Phase 11
 - [ ] MAN-05: Stacks chain address validation (SP/SM addresses, c32check encoding) — Phase 12
-- [ ] MAN-06: CLI (`npx x402check <url-or-file>`) with auto-detection of single config vs manifest — Phase 14
+- [ ] MAN-06: CLI (`npx x402lint <url-or-file>`) with auto-detection of single config vs manifest — Phase 14
 - [ ] MAN-07: npm publish to registry — Phase 16
 - [ ] MAN-08: Website manifest validation mode (paste JSON/URL, per-endpoint results) — Phase 15
 - [ ] MAN-09: `validateManifest()` SDK export with `ManifestValidationResult` — Phase 13
@@ -78,8 +78,8 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 - Bazaar extension validation: full depth (shape + JSON Schema + method discrimination)
 - Wild manifest compatibility: detect/normalize non-standard formats (biwas-style)
 - Stacks address validation (c32check)
-- CLI: `npx x402check <url-or-file>` with auto-detect single vs manifest
-- npm publish: make `x402check` available on npm registry
+- CLI: `npx x402lint <url-or-file>` with auto-detect single vs manifest
+- npm publish: make `x402lint` available on npm registry
 - Website: manifest validation mode
 
 ## Context
@@ -96,7 +96,7 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 - Wild manifests exist (x402.biwas.xyz) using non-standard formats without proper `accepts` arrays
 
 **Architecture:**
-- Monorepo: `packages/x402check/` (SDK), `apps/website/` (site), `packages/config/` (shared TS config)
+- Monorepo: `packages/x402lint/` (SDK), `apps/website/` (site), `packages/config/` (shared TS config)
 - SDK: Pure functions, no side effects, tree-shakeable
 - Build: tsdown → ESM + CJS + IIFE
 - Crypto: @noble/hashes (keccak-256), @scure/base (Base58) as devDependencies, tree-shaken into bundle
@@ -106,7 +106,7 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 - **Client-side first**: All validation logic runs in browser, proxy only for URL fetching
 - **CORS**: Direct URL fetches will fail, proxy required for URL input method
 - **Zero runtime deps**: SDK must have no runtime dependencies for browser bundle size
-- **Monorepo**: SDK lives in `packages/x402check/`, website at `apps/website/`, pnpm workspaces
+- **Monorepo**: SDK lives in `packages/x402lint/`, website at `apps/website/`, pnpm workspaces
 
 ## Key Decisions
 
@@ -116,7 +116,7 @@ The SDK correctly implements the canonical x402 v1/v2 specs with CAIP-2 network 
 | Cloudflare Worker for proxy | Lightweight, free tier sufficient | ✓ Good — works well |
 | Skip facilitator reachability | Overkill for v1 | ✓ Good |
 | Layered validation (L1-L5) | Prevents error cascades | ✓ Good — keep pattern |
-| Monorepo structure | SDK in packages/x402check/, website at apps/website/ | ✓ Good — clean separation |
+| Monorepo structure | SDK in packages/x402lint/, website at apps/website/ | ✓ Good — clean separation |
 | Zero runtime deps | Vendor Base58 + keccak256 via tree-shaking | ✓ Good — 27KB IIFE bundle |
 | TypeScript + tsdown | Type safety, ESM/CJS/IIFE output | ✓ Good — publint validated |
 | Strict mode | Warnings→errors for CI/CD enforcement | ✓ Good — simple and effective |
