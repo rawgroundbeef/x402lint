@@ -1,0 +1,38 @@
+{
+  "x402Version": 2,
+  "service": {
+    "name": "Test API",
+    "url": "https://api.example.com"
+  },
+  "endpoints": {
+    "api/weather": {
+      "x402Version": 2,
+      "accepts": [{
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "1000000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed",
+        "maxTimeoutSeconds": 60
+      }],
+      "resource": { "url": "https://api.example.com/weather" }
+    },
+    "api/maps": {
+      "x402Version": 2,
+      "accepts": [{
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "2000000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed",
+        "maxTimeoutSeconds": 120
+      }],
+      "resource": { "url": "https://api.example.com/maps" }
+    },
+    "api/broken": {
+      "x402Version": 2,
+      "accepts": [],
+      "resource": { "url": "https://api.example.com/broken" }
+    }
+  }
+}
