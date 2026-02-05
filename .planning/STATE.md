@@ -10,17 +10,17 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 14 - CLI Manifest Mode (complete)
-Plan: 02 of 02 complete
+Plan: 03 of 03 complete
 Status: Phase 14 complete
 Progress: [█████.....] 5/6 v3.0 phases
-Last activity: 2026-02-05 -- Completed 14-02-PLAN.md (CLI manifest routing and formatting)
+Last activity: 2026-02-05 -- Completed 14-03-PLAN.md (CLI manifest test coverage)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 22 (3 v1.0 + 12 v2.0 + 7 v3.0)
+- Total plans completed: 23 (3 v1.0 + 12 v2.0 + 8 v3.0)
 - Average duration: 3.1 min
-- Total execution time: 1.08 hours
+- Total execution time: 1.13 hours
 
 ## Accumulated Context
 
@@ -81,6 +81,11 @@ See PROJECT.md Key Decisions table for full list.
 - Detection announcements printed before results for user clarity
 - cli-table3 bundled with CLI binary (216 KB bundle, acceptable for standalone)
 
+**Phase 14-03 decisions:**
+- --quiet flag takes precedence over --json in all formatters (bug fix)
+- Inline JSON manifest creation for majority-fail tests avoids fixture proliferation
+- Test fixtures use real checksummed addresses to ensure per-endpoint validation passes
+
 ### Pending Todos
 
 None.
@@ -91,7 +96,7 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-05 03:03 UTC
-Stopped at: Completed Phase 14 (CLI Manifest Mode)
+Last session: 2026-02-05 03:09 UTC
+Stopped at: Completed Phase 14-03 (CLI Manifest Test Coverage)
 Resume file: None
 Next: Phase 15 (Website Integration) or Phase 16 (Final v3.0 Release). Critical path continues through 16.
