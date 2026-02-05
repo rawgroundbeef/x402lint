@@ -12,6 +12,7 @@ export default defineConfig([
     clean: true,
     outDir: 'dist',
     external: [],
+    inlineOnly: false,
   },
   // UMD/IIFE for browser script tag
   {
@@ -26,6 +27,7 @@ export default defineConfig([
     clean: false,
     outDir: 'dist',
     external: [],
+    inlineOnly: false,
   },
   // CLI binary
   {
@@ -39,5 +41,6 @@ export default defineConfig([
     clean: false,
     outDir: 'dist',
     external: [],
+    inlineOnly: false,
   },
 ])
