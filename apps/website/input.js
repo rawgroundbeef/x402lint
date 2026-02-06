@@ -15,10 +15,29 @@ const FETCH_TIMEOUT_MS = 10000;
  */
 function detectInputType(input) {
   const trimmed = input.trim();
+
+  // Explicit protocol
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     return 'url';
   }
+
+  // Looks like a domain (contains dot, no spaces, doesn't start with { or [)
+  if (/^[a-zA-Z0-9][\w.-]+\.[a-zA-Z]{2,}(\/|$)/.test(trimmed) && !trimmed.includes(' ')) {
+    return 'url';
+  }
+
   return 'json';
+}
+
+/**
+ * Normalize URL input (add https:// if missing)
+ */
+function normalizeUrl(input) {
+  const trimmed = input.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  return 'https://' + trimmed;
 }
 
 // ── URL Testing ────────────────────────────────────────────────────────────
@@ -131,7 +150,7 @@ async function handleValidation(inputValue, method, displayResultsFn, displayErr
 
   try {
     if (inputType === 'url') {
-      const result = await testX402Url(inputValue, method);
+      const result = await testX402Url(normalizeUrl(inputValue), method);
       displayResultsFn({
         type: 'url',
         ...result

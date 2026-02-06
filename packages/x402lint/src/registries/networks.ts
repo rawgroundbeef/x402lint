@@ -25,7 +25,7 @@ export const KNOWN_NETWORKS = {
 
   // Solana networks
   'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp': {
-    name: 'Solana Mainnet',
+    name: 'Solana',
     type: 'solana',
     testnet: false,
   },
@@ -41,15 +41,15 @@ export const KNOWN_NETWORKS = {
   },
 
   // Stacks networks
-  'stacks:1': { name: 'Stacks Mainnet', type: 'stacks', testnet: false },
+  'stacks:1': { name: 'Stacks', type: 'stacks', testnet: false },
   'stacks:2147483648': { name: 'Stacks Testnet', type: 'stacks', testnet: true },
 
   // Stellar networks
-  'stellar:pubnet': { name: 'Stellar Mainnet', type: 'stellar', testnet: false },
+  'stellar:pubnet': { name: 'Stellar', type: 'stellar', testnet: false },
   'stellar:testnet': { name: 'Stellar Testnet', type: 'stellar', testnet: true },
 
   // Aptos networks (community convention, not official CAIP)
-  'aptos:1': { name: 'Aptos Mainnet', type: 'aptos', testnet: false },
+  'aptos:1': { name: 'Aptos', type: 'aptos', testnet: false },
   'aptos:2': { name: 'Aptos Testnet', type: 'aptos', testnet: true },
 } as const satisfies Record<string, NetworkInfo>
 

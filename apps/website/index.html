@@ -477,6 +477,19 @@
       padding: 16px;
     }
 
+    .parsed-config.multi-chain {
+      margin-bottom: 12px;
+    }
+
+    .chain-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     .parsed-title {
       font-size: 13px;
       font-weight: 600;
@@ -1999,21 +2012,24 @@
 
       // Parsed config (expandable) — uses AcceptSummary from check()
       if (validation.summary && validation.summary.length > 0) {
-        const s = validation.summary[0];
-        const displayAmount = formatCheckAmount(s.amount, s.assetDecimals);
         const formatLabels = { 'v1': 'v1', 'v2': 'v2 (Canonical)', 'unknown': 'Unknown' };
+        const multiChain = validation.summary.length > 1;
         html += `<details class="expand-section">
-          <summary class="expand-link"><span class="chevron">\u25B8</span> View parsed config</summary>
-          <div class="expand-content">
-            <div class="parsed-config">
-              <div class="parsed-row"><span class="parsed-label">Chain</span><span class="parsed-value">${escapeHtml(s.networkName || '\u2014')}</span></div>
+          <summary class="expand-link"><span class="chevron">\u25B8</span> View parsed config${multiChain ? ' (' + validation.summary.length + ' chains)' : ''}</summary>
+          <div class="expand-content">`;
+        validation.summary.forEach((s, idx) => {
+          const displayAmount = formatCheckAmount(s.amount, s.assetDecimals);
+          html += `${multiChain ? '<div class="chain-label">' + escapeHtml(s.networkName || 'Chain ' + (idx + 1)) + '</div>' : ''}
+            <div class="parsed-config${multiChain && idx < validation.summary.length - 1 ? ' multi-chain' : ''}">
+              ${!multiChain ? '<div class="parsed-row"><span class="parsed-label">Chain</span><span class="parsed-value">' + escapeHtml(s.networkName || '\u2014') + '</span></div>' : ''}
               <div class="parsed-row"><span class="parsed-label">Address</span><span class="parsed-value truncate" title="${escapeHtml(s.payTo || '')}">${escapeHtml(truncateAddr(s.payTo))}</span></div>
               <div class="parsed-row"><span class="parsed-label">Amount</span><span class="parsed-value">${escapeHtml(displayAmount)} ${escapeHtml(s.assetSymbol || '')}</span></div>
               <div class="parsed-row"><span class="parsed-label">Asset</span><span class="parsed-value">${s.assetSymbol ? escapeHtml(s.assetSymbol) + ' (' + escapeHtml(truncateAddr(s.asset)) + ')' : escapeHtml(s.asset || '\u2014')}</span></div>
               <div class="parsed-row"><span class="parsed-label">Scheme</span><span class="parsed-value">${escapeHtml(s.scheme || '\u2014')}</span></div>
-              <div class="parsed-row"><span class="parsed-label">Format</span><span class="parsed-value">${formatLabels[validation.version] || escapeHtml(validation.version)}</span></div>
-            </div>
-            ${validation.version !== 'v2' ? '<button class="upgrade-btn" onclick="showV2Equivalent()" style="margin-top: 8px;">Show v2 equivalent \u2192</button>' : ''}
+              ${idx === 0 ? '<div class="parsed-row"><span class="parsed-label">Format</span><span class="parsed-value">' + (formatLabels[validation.version] || escapeHtml(validation.version)) + '</span></div>' : ''}
+            </div>`;
+        });
+        html += `${validation.version !== 'v2' ? '<button class="upgrade-btn" onclick="showV2Equivalent()" style="margin-top: 8px;">Show v2 equivalent \u2192</button>' : ''}
           </div>
         </details>`;
       }
